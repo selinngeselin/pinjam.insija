@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinjam.in - Modern Peminjaman</title>
+    <style>
+        :root {
+            --primary: #007bff;
+            --bg: #f4f7f6;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg);
+        }
+
+        header {
+            max-width: 1000px;
+            margin: 0 auto 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        #searchInput {
+            padding: 10px 20px;
+            width: 300px;
+            border-radius: 25px;
+            border: 1px solid #ddd;
+            outline: none;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .item {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+
+        .item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .item-info {
+            padding: 15px;
+            text-align: left;
+        }
+
+        .item-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin: 0 0 10px 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .available { background: #d4edda; color: #155724; }
+        .unavailable { background: #f8d7da; color: #721c24; }
+
+        .btn-login {
+            background: var(--primary);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Pinjam<span style="color: var(--primary);">.in</span></h1>
+        <a href="login.html" class="btn-login">Login</a>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Cari barang apa hari ini?">
+    </div>
+
+    <div class="items-grid" id="items-grid">
+        </div>
+
+    <script>
+        async function loadItems() {
+            try {
+                
+                const itemsResponse = await fetch('items.json');
+                const items = await itemsResponse.json();
+                
+                const itemsGrid = document.getElementById('items-grid');
+                itemsGrid.innerHTML = ''; 
+
+                items.forEach(item => {
+                    const isAvailable = item.quantity > 0; 
+                    
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'item';
+                    itemDiv.innerHTML = `
+                        <img src="${item.img}" alt="${item.name}">
+                        <div class="item-info">
+                            <p class="item-name">${item.name}</p>
+                            <p style="font-size: 0.9em; color: #666;">Tersedia: ${item.quantity}</p>
+                            <span class="badge ${isAvailable ? 'available' : 'unavailable'}">
+                                ${isAvailable ? 'Tersedia' : 'Habis'}
+                            </span>
+                        </div>
+                    `;
+                    itemDiv.onclick = () => window.location.href = `borrow.html?item=${item.name}`;
+                    itemsGrid.appendChild(itemDiv);
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        loadItems();
+    </script>
+</body>
+</html>

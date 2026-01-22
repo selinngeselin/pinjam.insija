@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinjam Barang - Pinjam.in</title>
+    <link rel="stylesheet" href="borrow.css">
+</head>
+<body>
+    <h1>Detail Barang</h1>
+    <div class="item-detail">
+        <img id="itemImage" src="" alt="">
+        <h2 id="itemName"></h2>
+        <p id="itemDescription">Informasi barangnnya.</p>
+        <p id="itemQuantity"></p>
+        <p id="itemBorrowed"></p>
+        <p id="itemAvailable"></p>
+        <div class="form-container">
+            <input type="text" id="nama" placeholder="Nama" required>
+            <input type="text" id="kelas" placeholder="Kelas" required>
+            <input type="number" id="jumlah" placeholder="Jumlah" required>
+            <button onclick="submitForm()">OK</button>
+        </div>
+        <a href="index.html" class="back-link">Kembali ke Daftar Barang</a>
+    </div>
+    <div id="confirmation" style="display: none; margin-top: 20px; padding: 10px; border: 1px solid #ccc; background-color: #f9f9f9;">
+        <h3>Data Peminjaman:</h3>
+        <p id="confirmationText"></p>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const item = urlParams.get('item');
+
+        const itemData = {
+            'Laptop': { img: 'https://via.placeholder.com/200/FF5733/FFFFFF?text=Laptop', name: 'Laptop' },
+            'Proyektor': { img: 'https://via.placeholder.com/200/33FF57/FFFFFF?text=Proyektor', name: 'Proyektor' },
+            'Kabel HDMI': { img: 'https://via.placeholder.com/200/3357FF/FFFFFF?text=Kabel+HDMI', name: 'Kabel HDMI' },
+            'Mouse': { img: 'https://via.placeholder.com/200/FF33A1/FFFFFF?text=Mouse', name: 'Mouse' },
+            'Keyboard': { img: 'https://via.placeholder.com/200/33FFF5/FFFFFF?text=Keyboard', name: 'Keyboard' },
+            'Speaker': { img: 'https://via.placeholder.com/200/F5FF33/FFFFFF?text=Speaker', name: 'Speaker' },
+            'Webcam': { img: 'https://via.placeholder.com/200/FF8333/FFFFFF?text=Webcam', name: 'Webcam' },
+            'Mikrofon': { img: 'https://via.placeholder.com/200/8333FF/FFFFFF?text=Mikrofon', name: 'Mikrofon' }
+        };
+
+        if (item && itemData[item]) {
+            document.getElementById('itemImage').src = itemData[item].img;
+            document.getElementById('itemName').textContent = itemData[item].name;
+        } else {
+            document.getElementById('itemName').textContent = 'Barang tidak ditemukan';
+        }
+
+        async function submitForm() {
+            const nama = document.getElementById('nama').value;
+            const kelas = document.getElementById('kelas').value;
+            const jumlah = document.getElementById('jumlah').value;
+            if (nama && kelas && jumlah) {
+                const response = await fetch('/api/borrow', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ item, nama, kelas, jumlah })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    const waktu = new Date().toLocaleString();
+                    document.getElementById('confirmationText').textContent = `${nama} - ${kelas} - ${jumlah} - ${waktu}`;
+                    document.getElementById('confirmation').style.display = 'block';
+                    alert('Peminjaman berhasil!');
+                    // window.location.href = 'index.html'; // Commented out to show confirmation
+                } else {
+                    alert('Gagal meminjam barang');
+                }
+            } else {
+                alert('Harap isi semua field!');
+            }
+        }
+    </script>
+</body>
+</html>
