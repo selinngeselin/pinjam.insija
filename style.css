@@ -1,0 +1,107 @@
+/* --- Global Styles --- */
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #678dd3; /* Biru utama kamu */
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
+}
+
+/* --- Login Page Styles --- */
+.login-card {
+    max-width: 350px; 
+    margin: 80px auto; 
+    background: white; 
+    padding: 30px; 
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+#loginForm input, 
+#loginForm select, 
+#loginForm button {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box; /* Biar gak lebar sebelah */
+    font-size: 14px;
+}
+
+#loginForm button {
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+#loginForm button:hover {
+    background-color: #555;
+}
+
+/* --- Items Grid Styles (Beranda) --- */
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Membuat kotak otomatis menyamping */
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.item img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain; /* Agar gambar alat tidak terpotong */
+    background: #f9f9f9;
+}
+
+.item {
+    background-color: #ffffff; /* Putih bersih lebih bagus dari biru muda */
+    border: none;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+.item-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: contain; /* Menjaga proporsi gambar alat agar tidak gepeng */
+    padding: 10px;
+}
+
+.item p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.item p:first-of-type {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Pesan Error */
+#message {
+    color: #ff4d4d;
+    text-align: center;
+    font-size: 14px;
+}

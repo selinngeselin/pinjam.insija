@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinjam Barang - Pinjam.in</title>
+    <link rel="stylesheet" href="borrow.css">
+</head>
+<body>
+    <h1>Detail Barang</h1>
+    <div class="item-detail">
+        <img id="itemImage" src="" alt="">
+        <h2 id="itemName"></h2>
+        <p id="itemDescription">Informasi barangnnya.</p>
+        <p id="itemQuantity"></p>
+        <p id="itemBorrowed"></p>
+        <p id="itemAvailable"></p>
+        <div class="form-container">
+            <input type="text" id="nama" placeholder="Nama" required>
+            <input type="text" id="kelas" placeholder="Kelas" required>
+            <input type="number" id="jumlah" placeholder="Jumlah" min="1" value="1" required>
+            <button onclick="submitForm()">OK</button>
+        </div>
+        <a href="index.html" class="back-link">Kembali ke Daftar Barang</a>
+    </div>
+    <div id="confirmation" style="display: none; margin-top: 20px; padding: 10px; border: 1px solid #ccc; background-color: #f9f9f9;">
+        <h3>Data Peminjaman:</h3>
+        <p id="confirmationText"></p>
+    </div>
+
+    <script>
+        // 1. Ambil nama item dari URL (misal: ?item=Laptop)
+        const urlParams = new URLSearchParams(window.location.search);
+        const itemName = urlParams.get('item');
+
+        async function loadItemDetail() {
+            if (!itemName) {
+                document.getElementById('itemName').textContent = 'Barang tidak ditemukan';
+                return;
+            }
+
+            try {
+                // 2. Ambil data dari backend MongoDB
+                const response = await fetch(`/api/items/${itemName}`);
+                const data = await response.json();
+
+                if (data) {
+                    // 3. Update elemen HTML dengan data dari MongoDB
+                    // Pastikan menggunakan data.img dan data.name sesuai items.json
+                    document.getElementById('itemImage').src = data.img; 
+                    document.getElementById('itemImage').alt = data.name;
+                    document.getElementById('itemName').textContent = data.name;
+                    document.getElementById('itemDescription').textContent = data.description || "Informasi barang tersedia.";
+                    document.getElementById('itemQuantity').textContent = `Total Stok: ${data.quantity}`;
+                    
+                    // Pesan konfirmasi awal
+                    document.getElementById('confirmationText').innerText = `Anda akan meminjam: ${data.name}`;
+                }
+            } catch (error) {
+                console.error('Error fetching item:', error);
+                document.getElementById('itemName').textContent = 'Gagal memuat data barang';
+            }
+        }
+
+        // Jalankan fungsi saat halaman dibuka
+        loadItemDetail();
+
+        // Fungsi Submit Form
+        async function submitForm() {
+            const nama = document.getElementById('nama').value;
+            const kelas = document.getElementById('kelas').value;
+            const jumlahInput = document.getElementById('jumlah');
+            const jumlah = parseInt(jumlahInput.value);
+
+            // --- TAMBAHKAN KODE VALIDASI DI SINI ---
+            if (isNaN(jumlah) || jumlah < 1) {
+                alert('Jumlah peminjaman tidak boleh kurang dari 1!');
+                jumlahInput.value = 1; // Paksa kembali ke angka 1
+                return; // Berhenti, jangan kirim data ke server
+            }
+            // ---------------------------------------
+
+            if (nama && kelas && jumlah) {
+                try {
+                    const response = await fetch('/api/borrow', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            item: itemName, 
+                            nama: nama, 
+                            kelas: kelas, 
+                            jumlah: jumlah 
+                        })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) { // Pastikan mengecek result.success
+                        const waktu = new Date().toLocaleString();
+                        document.getElementById('confirmationText').textContent = 
+                            `Berhasil: ${nama} (${kelas}) meminjam ${jumlah} unit pada ${waktu}`;
+                        document.getElementById('confirmation').style.display = 'block';
+                        alert('Peminjaman berhasil dicatat!');
+                    } else {
+                        // Tampilkan pesan error dari server (misal: stok habis)
+                        alert('Gagal: ' + result.message);
+                    }
+                } catch (err) {
+                    alert('Gagal memproses peminjaman');
+                }
+            } else {
+                alert('Harap isi semua field!');
+            }
+        }
+    </script>
+</body>
+</html>
