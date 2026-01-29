@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Pinjam.in</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #f4f7f6; 
+            color: #333; 
+            margin: 0; 
+            padding: 0; 
+        }
+
+        .admin-container { 
+            max-width: 1200px; 
+            margin: 40px auto; 
+            padding: 30px; 
+            background-color: #ffffff; 
+            border-radius: 12px; 
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08); 
+        }
+
+        h1 { 
+            text-align: center; 
+            color: #2c3e50; 
+            margin-bottom: 30px; 
+            font-size: 2.2em; 
+        }
+
+        .dashboard-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 25px; 
+        }
+
+        .dashboard-header h2 { 
+            color: #34495e; 
+            font-size: 1.8em; 
+            margin: 0; 
+        }
+
+        .dashboard-header button { 
+            background-color: #e74c3c; 
+            color: white; 
+            padding: 10px 20px; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 1em; 
+            transition: background-color 0.3s ease; 
+        }
+
+        .dashboard-header button:hover { 
+            background-color: #c0392b; 
+        }
+        
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 20px; 
+        }
+
+        th, td { 
+            padding: 15px; 
+            text-align: left; 
+            border-bottom: 1px solid #ecf0f1; 
+        }
+
+        th { 
+            background-color: #3498db; 
+            color: white; 
+            font-weight: 600; 
+        }
+
+        tr:hover { 
+            background-color: #f8f8f8; 
+        }
+        
+        .status-badge { 
+            padding: 6px 10px; 
+            border-radius: 5px; 
+            font-weight: bold; 
+            font-size: 0.85em; 
+        }
+
+        .status-dikembalikan { 
+            background-color: #2ecc71; /* Hijau */
+            color: white; 
+        } 
+        
+        .status-belum { 
+            background-color: #e74c3c; /* Merah */
+            color: white; 
+        }    
+        
+        .return-button { 
+            background-color: #f39c12; 
+            color: white; 
+            padding: 8px 12px; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 0.9em; 
+            transition: background-color 0.3s ease; 
+        }
+
+        .return-button:hover { 
+            background-color: #e67e22; 
+        }
+
+        .return-button:disabled { 
+            background-color: #bdc3c7; 
+            cursor: not-allowed; 
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <h1>Admin Dashboard</h1>
+        
+        <div class="dashboard-header">
+            <h2>Daftar Peminjaman Barang</h2>
+            <button onclick="logout()">Logout</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Barang</th>
+                    <th>Peminjam</th>
+                    <th>Kelas</th>
+                    <th>Jumlah</th>
+                    <th>Tanggal Pinjam</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="loansTableBody">
+                </tbody>
+        </table>
+    </div>
+
+    <script>
+        // CLIENT-SIDE GUARD: Proteksi halaman Admin
+        const userRole = localStorage.getItem('role');
+        if (!userRole || userRole !== 'admin') {
+            alert("Akses ditolak! Anda tidak memiliki izin Admin.");
+            window.location.href = 'login.html';
+        }
+
+        async function loadLoans() {
+            try {
+                const response = await fetch('/api/loans'); // Memanggil API untuk semua peminjaman
+                const loans = await response.json();
+                const tableBody = document.getElementById('loansTableBody');
+                tableBody.innerHTML = ''; // Kosongkan tabel sebelum mengisi ulang
+
+                loans.forEach(loan => {
+                    const row = tableBody.insertRow();
+                    row.insertCell().textContent = loan.itemName;
+                    row.insertCell().textContent = loan.borrowerName;
+                    row.insertCell().textContent = loan.className;
+                    row.insertCell().textContent = loan.quantity;
+                    row.insertCell().textContent = new Date(loan.date).toLocaleDateString('id-ID'); // Format tanggal
+                    
+                    const statusCell = row.insertCell();
+                    const statusBadge = document.createElement('span');
+                    statusBadge.textContent = loan.status;
+                    statusBadge.className = `status-badge ${loan.status === 'Sudah Dikembalikan' ? 'status-dikembalikan' : 'status-belum'}`;
+                    statusCell.appendChild(statusBadge);
+
+                    const actionCell = row.insertCell();
+                    if (loan.status !== 'Sudah Dikembalikan') {
+                        const returnButton = document.createElement('button');
+                        returnButton.textContent = 'Tandai Kembali';
+                        returnButton.className = 'return-button';
+                        returnButton.onclick = () => returnItem(loan._id, loan.itemName, loan.quantity);
+                        actionCell.appendChild(returnButton);
+                    } else {
+                        actionCell.textContent = '—'; // Atau bisa juga tombol disabled
+                    }
+                });
+
+            } catch (error) {
+                console.error("Error loading loans:", error);
+                alert("Gagal memuat daftar peminjaman.");
+            }
+        }
+
+        async function returnItem(loanId, itemName, quantity) {
+            if (confirm(`Anda yakin ingin menandai '${itemName}' sudah dikembalikan? Stok akan ditambahkan kembali.`)) {
+                try {
+                    const response = await fetch(`/api/return-item/${loanId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ itemName, quantity }) // Kirim data barang untuk update stok
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        alert('Barang berhasil ditandai sudah dikembalikan!');
+                        loadLoans(); // Muat ulang daftar peminjaman
+                    } else {
+                        alert('Gagal menandai barang kembali: ' + data.message);
+                    }
+                } catch (error) {
+                    console.error("Error returning item:", error);
+                    alert("Terjadi kesalahan saat mengembalikan barang.");
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('role');
+            window.location.href = 'login.html';
+        }
+
+        // Muat data peminjaman saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', loadLoans);
+    </script>
+</body>
+</html>

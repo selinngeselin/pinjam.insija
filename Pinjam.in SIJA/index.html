@@ -7,8 +7,10 @@
     <style>
         :root {
             --primary: #007bff;
+            --primary-hover: #0056b3;
             --bg: #f4f7f6;
             --card-bg: #ffffff;
+            --text: #333;
         }
 
         body {
@@ -16,6 +18,7 @@
             margin: 0;
             padding: 20px;
             background-color: var(--bg);
+            color: var(--text);
         }
 
         header {
@@ -26,22 +29,66 @@
             align-items: center;
         }
 
+        /* Grouping Auth Buttons */
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-auth {
+            padding: 8px 18px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-login {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-login:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-register {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .btn-register:hover {
+            background: #e7f1ff;
+        }
+
+        .btn-logout {
+            background: #dc3545;
+            color: white;
+        }
+
         .search-container {
             text-align: center;
             margin-bottom: 30px;
         }
 
         #searchInput {
-            padding: 10px 20px;
-            width: 300px;
+            padding: 12px 25px;
+            width: 100%;
+            max-width: 400px;
             border-radius: 25px;
             border: 1px solid #ddd;
             outline: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
         .items-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 25px;
             max-width: 1000px;
             margin: 0 auto;
@@ -53,7 +100,7 @@
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
-            position: relative;
+            cursor: pointer;
         }
 
         .item:hover {
@@ -69,7 +116,6 @@
 
         .item-info {
             padding: 15px;
-            text-align: left;
         }
 
         .item-name {
@@ -80,21 +126,19 @@
 
         .badge {
             display: inline-block;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.8em;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75em;
             font-weight: bold;
+            margin-top: 10px;
         }
 
         .available { background: #d4edda; color: #155724; }
         .unavailable { background: #f8d7da; color: #721c24; }
 
-        .btn-login {
-            background: var(--primary);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            text-decoration: none;
+        #welcome-text {
+            font-weight: bold;
+            margin-right: 15px;
         }
     </style>
 </head>
@@ -102,7 +146,11 @@
 
     <header>
         <h1>Pinjam<span style="color: var(--primary);">.in</span></h1>
-        <a href="login.html" class="btn-login">Login</a>
+        
+        <div class="auth-buttons" id="auth-area">
+            <a href="register.html" class="btn-auth btn-register">Register</a>
+            <a href="login.html" class="btn-auth btn-login">Login</a>
+        </div>
     </header>
 
     <div class="search-container">
@@ -113,11 +161,30 @@
         </div>
 
     <script>
+        // 1. FUNGSI CEK STATUS LOGIN
+        function updateAuthUI() {
+            const username = localStorage.getItem('username');
+            const authArea = document.getElementById('auth-area');
+
+            if (username) {
+                // Jika sudah login, ganti tombol Login/Register dengan Nama & Logout
+                authArea.innerHTML = `
+                    <span id="welcome-text">Halo, ${username}</span>
+                    <button onclick="logout()" class="btn-auth btn-logout">Logout</button>
+                `;
+            }
+        }
+
+        function logout() {
+            localStorage.clear();
+            window.location.reload();
+        }
+
+        // 2. FUNGSI LOAD BARANG DARI SERVER
         async function loadItems() {
             try {
-                
-                const itemsResponse = await fetch('items.json');
-                const items = await itemsResponse.json();
+                const response = await fetch('/api/all-items'); 
+                const items = await response.json();
                 
                 const itemsGrid = document.getElementById('items-grid');
                 itemsGrid.innerHTML = ''; 
@@ -128,24 +195,33 @@
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'item';
                     itemDiv.innerHTML = `
-                        <img src="${item.img}" alt="${item.name}">
+                        <img src="${item.img}" 
+                             alt="${item.name}" 
+                             onerror="this.onerror=null; this.src='https://placehold.co/200?text=No+Image'">
                         <div class="item-info">
                             <p class="item-name">${item.name}</p>
-                            <p style="font-size: 0.9em; color: #666;">Tersedia: ${item.quantity}</p>
+                            <p style="font-size: 0.9em; color: #666;">Tersedia: ${item.quantity} unit</p>
                             <span class="badge ${isAvailable ? 'available' : 'unavailable'}">
-                                ${isAvailable ? 'Tersedia' : 'Habis'}
+                                ${isAvailable ? 'Dapat Dipinjam' : 'Stok Habis'}
                             </span>
                         </div>
                     `;
-                    itemDiv.onclick = () => window.location.href = `borrow.html?item=${item.name}`;
+                    
+                    itemDiv.onclick = () => {
+                        window.location.href = `borrow.html?item=${item.name}`;
+                    };
                     itemsGrid.appendChild(itemDiv);
                 });
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Gagal mengambil data:', error);
             }
         }
 
-        loadItems();
+        // Jalankan saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAuthUI();
+            loadItems();
+        });
     </script>
 </body>
 </html>

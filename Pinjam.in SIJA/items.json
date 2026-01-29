@@ -1,50 +1,50 @@
 [
   {
     "name": "Laptop",
-    "img": "https://via.placeholder.com/200/FF5733/FFFFFF?text=Laptop",
+    "img": "img/laptop.jpg",
     "description": "Laptop untuk keperluan komputasi dan presentasi.",
     "quantity": 5
   },
   {
     "name": "Proyektor",
-    "img": "https://via.placeholder.com/200/33FF57/FFFFFF?text=Proyektor",
+    "img": "img/proyektor.jpg",
     "description": "Proyektor untuk presentasi dan tayangan video.",
     "quantity": 3
   },
   {
     "name": "Kabel HDMI",
-    "img": "https://via.placeholder.com/200/3357FF/FFFFFF?text=Kabel+HDMI",
+    "img": "img/kabel_hdmi.jpg",
     "description": "Kabel HDMI untuk menghubungkan perangkat audio-visual.",
     "quantity": 10
   },
   {
     "name": "Mouse",
-    "img": "https://via.placeholder.com/200/FF33A1/FFFFFF?text=Mouse",
+    "img": "img/mouse.jpg",
     "description": "Mouse wireless untuk navigasi komputer.",
     "quantity": 8
   },
   {
     "name": "Keyboard",
-    "img": "https://via.placeholder.com/200/33FFF5/FFFFFF?text=Keyboard",
+    "img": "img/keyboard.jpg",
     "description": "Keyboard mekanik untuk mengetik.",
     "quantity": 6
   },
   {
-    "name": "Speaker",
-    "img": "https://via.placeholder.com/200/F5FF33/FFFFFF?text=Speaker",
-    "description": "Speaker portabel untuk audio.",
+    "name": "Mikrotik",
+    "img": "img/mikrotik.jpg",
+    "description": "Mikrotik untuk melakukan tugas jaringan",
     "quantity": 4
   },
   {
-    "name": "Webcam",
-    "img": "https://via.placeholder.com/200/FF8333/FFFFFF?text=Webcam",
-    "description": "Webcam HD untuk video conference.",
+    "name": "Nodemcu",
+    "img": "img/nodemcu.jpg",
+    "description": "Nodemcu untuk membantu tugas IoT",
     "quantity": 7
   },
   {
-    "name": "Mikrofon",
-    "img": "https://via.placeholder.com/200/8333FF/FFFFFF?text=Mikrofon",
-    "description": "Mikrofon kondenser untuk rekaman audio.",
+    "name": "Arduino",
+    "img": "img/arduino.jpg",
+    "description": "Arduino untuk membantu tugas mikrokontroller",
     "quantity": 5
   }
 ]

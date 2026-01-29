@@ -8,43 +8,63 @@ h1 {
     text-align: center;
     color: #333;
 }
+/* Container Utama agar di tengah */
 .item-detail {
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: #E0F6FF;
-    border: 1px solid #87CEEB;
-    border-radius: 8px;
-    padding: 20px;
+    max-width: 500px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     text-align: center;
 }
-.item-detail img {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 4px;
-    margin-bottom: 20px;
-}
-.form-container {
-    margin-top: 20px;
-}
-.form-container input {
+
+/* Gambar agar proporsional */
+#itemImage {
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #87CEEB;
-    border-radius: 4px;
+    max-width: 250px;
+    height: 200px;
+    object-fit: contain; /* Menjaga gambar agar tidak gepeng */
+    margin-bottom: 20px;
+    border-radius: 10px;
 }
+
+/* Form agar lurus ke bawah dan simetris */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Memberi jarak antar input */
+    margin-top: 25px;
+}
+
+.form-container input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: border 0.3s;
+}
+
+.form-container input:focus {
+    border-color: #007bff;
+}
+
 .form-container button {
-    padding: 10px 20px;
-    background-color: #007bff;
+    padding: 12px;
+    background: #007bff;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
+    font-weight: bold;
     cursor: pointer;
+    transition: background 0.3s;
 }
+
 .form-container button:hover {
-    background-color: #0056b3;
+    background: #0056b3;
 }
+
 .back-link {
     display: block;
     text-align: center;

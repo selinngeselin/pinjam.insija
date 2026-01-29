@@ -19,31 +19,47 @@
             <button type="submit">Login</button>
         </form>
         <p id="message"></p>
+        <p>Belum punya akun? <a href="register.html">Daftar</a></p>
     </div>
 
     <script>
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+            e.preventDefault(); // Menghentikan refresh otomatis halaman
+            
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const role = document.getElementById('role').value;
 
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password, role })
-            });
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password, role })
+                });
 
-            const data = await response.json();
-            if (data.success) {
-                localStorage.setItem('role', role);
-                if (role === 'admin') {
-                    window.location.href = 'admin.html';
+                const data = await response.json();
+
+                if (data.success) {
+                    // --- KODE NOMOR 3 (KEAMANAN) DI TARUH DI SINI ---
+                    // Kita menyimpan 'data.role' yang dikirim oleh server (database)
+                    // bukan sekadar 'role' dari pilihan dropdown form.
+                    localStorage.setItem('role', data.role); 
+                    localStorage.setItem('username', data.username);
+                    
+                    // Logika pengalihan halaman
+                    if (data.role === 'admin') {
+                        window.location.href = 'admin.html';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
                 } else {
-                    window.location.href = 'index.html';
+                    // Menampilkan pesan error dari server (contoh: "Login gagal!")
+                    document.getElementById('message').textContent = data.message;
+                    document.getElementById('message').style.color = "red";
                 }
-            } else {
-                document.getElementById('message').textContent = data.error;
+            } catch (error) {
+                console.error("Error:", error);
+                document.getElementById('message').textContent = "Terjadi kesalahan koneksi ke server.";
             }
         });
     </script>
