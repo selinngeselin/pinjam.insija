@@ -1,35 +1,42 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const fs = require('fs'); // <--- TAMBAHKAN INI
-const app = express();
+const fs = require('fs');
 const path = require('path');
-
-// Pastikan baris ini ada agar folder 'img' bisa diakses browser
-app.use('/img', express.static(path.join(__dirname, 'img')));
-app.use(express.static(__dirname)); 
+const app = express();
 
 app.use(express.json());
-app.use(express.static('./'));
+app.use(express.static('./')); 
+app.use('/img', express.static(path.join(__dirname, 'img')));
 
-// 1. KONEKSI KE MONGODB
-mongoose.connect('mongodb://localhost:27017/pinjamin_db')
+// Koneksi ke Database Baru (Pastikan nama ini unik untuk proyek SIJA)
+mongoose.connect('mongodb://localhost:27017/sija_pinjam_db')
   .then(() => {
-    console.log('Koneksi MongoDB Berhasil!');
-    seedDatabase(); // <--- PANGGIL FUNGSI SEEDING DI SINI
+    console.log('Koneksi MongoDB SIJA Berhasil!');
+    seedDatabase(); 
   })
   .catch(err => console.error('Koneksi Gagal:', err));
 
-// 2. SCHEMA
+// Perbarui Schema User agar bisa menampung NIS dan Email dari form
+const userSchema = new mongoose.Schema({
+    username: { type: String, unique: true, required: true },
+    password: { type: String, required: true },
+    nis: String,   // Tambahkan NIS
+    email: String, // Tambahkan Email
+    role: { type: String, enum: ['user', 'admin'], default: 'user' }
+});
+
+const User = mongoose.model('User', userSchema);
+
+// Schema Barang
 const itemSchema = new mongoose.Schema({
-  name: String,      // Sesuaikan dengan kunci di items.json ("name")
+  name: String,
   img: String,
   description: String,
   quantity: Number,
 });
-
 const Item = mongoose.model('Item', itemSchema);
 
-// Schema untuk menyimpan data peminjaman
+// Schema Peminjaman
 const loanSchema = new mongoose.Schema({
     itemName: String,
     borrowerName: String,
@@ -37,149 +44,65 @@ const loanSchema = new mongoose.Schema({
     quantity: Number,
     date: { type: Date, default: Date.now }
 });
-
 const Loan = mongoose.model('Loan', loanSchema);
 
-// 1. Definisikan Schema untuk User
-const userSchema = new mongoose.Schema({
-    username: { type: String, unique: true, required: true },
-    password: { type: String, required: true },
-    role: { type: String, enum: ['user', 'admin'], default: 'user' }
-});
-
-// 2. BUAT MODEL USER (Baris ini yang memperbaiki error "User is not defined")
-const User = mongoose.model('User', userSchema);
-
-// --- TAMBAHKAN FUNGSI OTOMATISASI DI SINI ---
+// Fungsi Seeding Otomatis
 async function seedDatabase() {
   try {
     const count = await Item.countDocuments();
     if (count === 0) {
-      // Membaca file items.json yang ada di folder proyekmu
       const data = fs.readFileSync('./items.json', 'utf-8');
       const items = JSON.parse(data);
-      
       await Item.insertMany(items);
-      console.log('Data awal dari items.json berhasil dimasukkan ke MongoDB!');
-    } else {
-      console.log('Database sudah terisi, melewati proses seeding.');
+      console.log('Database Berhasil Diisi dari items.json!');
     }
   } catch (err) {
-    console.error('Gagal memasukkan data awal:', err);
+    console.error('Gagal seeding:', err);
   }
 }
-// --------------------------------------------
 
-// 3. ROUTE UNTUK MENGAMBIL DATA
-app.get('/api/items/:name', async (req, res) => {
-    try {
-        const item = await Item.findOne({ name: req.params.name });
-        if (!item) return res.status(404).send('Item tidak ditemukan');
-        res.json(item);
-    } catch (err) {
-        res.status(500).send(err.message);
+// Fungsi Seeding Akun Admin Otomatis
+async function seedDatabase() {
+    // ... kode seeding barang yang sudah ada ...
+
+    // Tambahkan Akun Admin Otomatis
+    const adminExists = await User.findOne({ role: 'admin' });
+    if (!adminExists) {
+        await User.create({
+            username: 'adminlab',
+            password: 'password123', // Silakan ganti sesuai keinginan
+            role: 'admin'
+        });
+        console.log('Akun Admin berhasil dibuat: adminlab / password123');
     }
-});
+}
 
-// Endpoint tambahan untuk dashboard (mengambil semua barang)
-app.get('/api/all-items', async (req, res) => {
-    try {
-        const items = await Item.find();
-        res.json(items);
-    } catch (err) {
-        res.status(500).send(err.message);
-    }
-});
-
-// --- FITUR ADMIN: MENGAMBIL SEMUA DAFTAR PEMINJAMAN ---
-app.get('/api/loans', async (req, res) => {
-    try {
-        const loans = await Loan.find().sort({ date: -1 }); // Urutkan dari yang terbaru
-        res.json(loans);
-    } catch (err) {
-        res.status(500).json({ success: false, message: 'Gagal mengambil data peminjaman.' });
-    }
-});
-
-// --- FITUR ADMIN: MENANDAI BARANG SUDAH DIKEMBALIKAN & TAMBAH STOK ---
-app.put('/api/return-item/:loanId', async (req, res) => {
-    try {
-        const { itemName, quantity } = req.body; // Ambil itemName dan quantity dari body
-
-        // 1. Update status peminjaman menjadi 'Sudah Dikembalikan'
-        const updatedLoan = await Loan.findByIdAndUpdate(
-            req.params.loanId,
-            { status: 'Sudah Dikembalikan' },
-            { new: true }
-        );
-
-        if (!updatedLoan) {
-            return res.status(404).json({ success: false, message: 'Data peminjaman tidak ditemukan.' });
-        }
-
-        // 2. Tambahkan stok barang kembali ke koleksi 'items'
-        // Mencari barang berdasarkan 'name' dan menambahkan 'quantity'
-        await Item.findOneAndUpdate(
-            { name: itemName }, 
-            { $inc: { quantity: parseInt(quantity) } } // Menambah (+) stok
-        );
-
-        res.json({ success: true, message: 'Barang berhasil dikembalikan dan stok diperbarui.' });
-    } catch (err) {
-        console.error("Error returning item:", err);
-        res.status(500).json({ success: false, message: 'Gagal memproses pengembalian barang.' });
-    }
-});
-
-//FITUR: PROSES PEMINJAMAN BARANG (DENGAN VALIDASI STOK)
-
+// ENDPOINT: Proses Peminjaman (Kunci Utama)
 app.post('/api/borrow', async (req, res) => {
     try {
         const { item, nama, kelas, jumlah } = req.body;
-        const jumlahPinjam = parseInt(jumlah);
-
-        // 1. VALIDASI: JANGAN BOLEH PINJAM 0 ATAU NEGATIF
-        if (jumlahPinjam <= 0) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Jumlah pinjaman minimal adalah 1 unit!' 
-            });
-        }
-
-        // 2. CEK STOK TERLEBIH DAHULU
-        const dataBarang = await Item.findOne({ name: item });
-        if (!dataBarang) {
-            return res.status(404).json({ success: false, message: 'Barang tidak ditemukan' });
-        }
-
-        // 3. VALIDASI: JANGAN BOLEH PINJAM MELEBIHI STOK YANG ADA
-        if (jumlahPinjam > dataBarang.quantity) {
-            return res.status(400).json({ 
-                success: false, 
-                message: `Stok tidak mencukupi! Hanya tersedia ${dataBarang.quantity} unit.` 
-            });
-        }
-
-        // 4. SIMPAN RIWAYAT PEMINJAMAN
-        const newLoan = new Loan({
-            itemName: item,
-            borrowerName: nama,
-            className: kelas,
-            quantity: jumlahPinjam
+        
+        // Gunakan trim() untuk menghapus spasi tak sengaja dan regex untuk mengabaikan huruf besar/kecil
+        const dataBarang = await Item.findOne({ 
+            name: { $regex: new RegExp("^" + item.trim() + "$", "i") } 
         });
+
+        if (!dataBarang) {
+            return res.status(404).json({ success: false, message: 'Barang tidak ditemukan di database' });
+        }
+
+        if (dataBarang.quantity < jumlah) {
+            return res.status(400).json({ success: false, message: 'Stok tidak mencukupi' });
+        }
+
+        // Simpan Loan & Update Stok
+        const newLoan = new Loan({ itemName: dataBarang.name, borrowerName: nama, className: kelas, quantity: jumlah });
         await newLoan.save();
+        await Item.updateOne({ _id: dataBarang._id }, { $inc: { quantity: -jumlah } });
 
-        // 5. KURANGI STOK
-        await Item.findOneAndUpdate(
-            { name: item }, 
-            { $inc: { quantity: -jumlahPinjam } }
-        );
-
-        res.json({ success: true, message: 'Peminjaman berhasil!' });
-
+        res.json({ success: true, message: 'Peminjaman Berhasil!' });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, message: 'Error server: ' + err.message });
+        res.status(500).json({ success: false, message: err.message });
     }
 });
 
@@ -188,13 +111,12 @@ app.post('/api/register', async (req, res) => {
     try {
         const { username, password, role } = req.body;
         
-        // Cek apakah username sudah ada
         const existingUser = await User.findOne({ username });
         if (existingUser) {
             return res.status(400).json({ success: false, message: "Username sudah terdaftar!" });
         }
 
-        const newUser = new User({ username, password, role });
+        const newUser = new User({ username, password, role: role || 'user' });
         await newUser.save();
         res.json({ success: true, message: "Akun berhasil dibuat!" });
     } catch (err) {
@@ -205,25 +127,40 @@ app.post('/api/register', async (req, res) => {
 // --- FITUR LOGIN ---
 app.post('/api/login', async (req, res) => {
     try {
-        const { username, password, role } = req.body;
-        
-        // Cari user berdasarkan username, password, dan role
-        const user = await User.findOne({ username, password, role });
-        
+        const { username, password } = req.body;
+
+        // Mencari user yang username-nya cocok ATAU email-nya cocok
+        const user = await User.findOne({ 
+            $or: [{ username: username }, { email: username }], 
+            password: password 
+        });
+
         if (user) {
-            res.json({ 
-                success: true, 
-                username: user.username, 
-                role: user.role 
-            });
+            res.json({ success: true, role: user.role, username: user.username });
         } else {
-            res.status(401).json({ 
-                success: false, 
-                message: "Username, Password, atau Role salah!" 
-            });
+            res.status(401).json({ success: false, message: "Akun tidak ditemukan!" });
         }
     } catch (err) {
-        res.status(500).json({ success: false, message: "Internal Server Error" });
+        res.status(500).json({ success: false, message: "Error Server" });
     }
 });
-app.listen(3000, () => console.log('Server running on port 3000'));
+
+// Endpoint untuk melihat profil (Membaca data dari DB)
+app.get('/api/me/:username', async (req, res) => {
+    try {
+        const user = await User.findOne({ username: req.params.username });
+        if (!user) return res.status(404).json({ message: "User tidak ditemukan" });
+        
+        // Mengirimkan data user (kecuali password demi keamanan)
+        res.json({
+            username: user.username,
+            email: user.email,
+            role: user.role,
+            nis: user.nis
+        });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+app.listen(3000, () => console.log('Server running on http://localhost:3000'));

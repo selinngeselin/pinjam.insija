@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pinjam.in - Sistem Peminjaman SIJA</title>
+    <title>Daftar Barang - Pinjam.in</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,8 +12,8 @@
             <a href="index.html" class="logo">Pinjam.in</a>
         </div>
         <div class="nav-center">
-            <a href="index.html" class="active">Home</a>
-            <a href="daftar-barang.html">Daftar Barang</a>
+            <a href="index.html">Home</a>
+            <a href="daftar-barang.html" class="active">Daftar Barang</a>
             <a href="peminjaman.html">Peminjaman</a>
         </div>
         <div class="nav-right">
@@ -22,38 +22,28 @@
         </div>
     </nav>
 
-    <header class="hero">
-        <div class="hero-content">
-            <span class="badge">✨ Bebas Kesulitan</span>
-            <h1>Sistem Peminjaman Barang Jurusan <span>SIJA</span></h1>
-            <p>Pinjam alat dengan mudah, cepat, dan tercatat.</p>
-            <div class="hero-buttons">
-                <a href="daftar-barang.html" class="btn-primary">Lihat Barang</a>
-                <a href="peminjaman.html" class="btn-secondary">Ajukan Peminjaman</a>
-            </div>
-        </div>
-    </header>
-
     <div class="wrapper">
-            <div class="alert-box">
-                <span class="icon">⚠️</span>
-                <p><strong>Perhatian:</strong> Maksimal peminjaman 3 hari. Keterlambatan akan dicatat!</p>
-            </div>
-        
         <section class="items-section">
-            <h2>Barang Tersedia</h2>
-            <div class="items-grid" id="available-items">
-                <div class="item-card">
+            <div class="section-header">
+                <h2>Cari Peralatan SIJA</h2>
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Ketik nama barang (misal: Mikrotik)..." onkeyup="searchBarang()">
+                </div>
+            </div>
+
+            <div class="items-grid" id="itemsGrid">
+                <div class="item-card" data-name="Router Mikrotik">
                     <img src="assets/img/Mikrotik.jpg" alt="Mikrotik">
                     <div class="item-info">
-                        <h3>Mikrotik</h3>
+                        <h3>Router Mikrotik</h3>
                         <div class="item-footer">
                             <span class="status available">Tersedia</span>
                             <a href="peminjaman.html" class="btn-pinjam">Pinjam</a>
                         </div>
                     </div>
                 </div>
-                <div class="item-card">
+
+                <div class="item-card" data-name="Kabel HDMI">
                     <img src="assets/img/Kabel_HDMI.jpg" alt="Kabel HDMI">
                     <div class="item-info">
                         <h3>Kabel HDMI</h3>
@@ -63,30 +53,38 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-        <section class="items-section">
-            <h2>Barang yang Sering Dipinjam</h2>
-            <div class="items-grid">
-                <div class="item-card">
+
+                <div class="item-card" data-name="Laptop HP ProBook">
                     <div class="card-image-container">
                         <span class="badge-frequent">🔥 Sering Dipinjam</span>
-                        <img src="assets/img/laptop.jpg" alt="Laptop HP">
+                        <img src="assets/img/laptop.jpg" alt="Laptop">
                     </div>
                     <div class="item-info">
-                        <h3>Laptop</h3>
+                        <h3>Laptop HP ProBook</h3>
                         <div class="item-footer">
                             <span class="status available">Tersedia</span>
                             <a href="peminjaman.html" class="btn-pinjam">Pinjam</a>
                         </div>
                     </div>
                 </div>
-
-                </div>
+            </div>
         </section>
     </div>
-    <footer class="footer">
-        <p>&copy; 2025 Pinjam.in - Sistem Peminjaman SIJA</p>
-    </footer>
+
+    <script>
+        function searchBarang() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.getElementsByClassName('item-card');
+
+            for (let i = 0; i < cards.length; i++) {
+                let name = cards[i].getAttribute('data-name').toLowerCase();
+                if (name.includes(input)) {
+                    cards[i].style.display = "";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+    </script>
 </body>
 </html>

@@ -2,82 +2,80 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Akun - Pinjam.in</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .auth-box { 
-            max-width: 400px; 
-            margin: 50px auto; 
-            padding: 20px; 
-            background: white; 
-            border-radius: 8px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-            text-align: center; 
-        }
-
-        input, select, button { 
-            width: 100%; 
-            padding: 10px; 
-            margin: 10px 0; 
-            border-radius: 5px; 
-            border: 1px solid #ccc; 
-            box-sizing: border-box; 
-        }
-
-        button { 
-            background-color: #007bff; 
-            color: white; 
-            border: none; 
-            cursor: pointer; 
-            font-weight: bold; 
-        }
-
-        button:hover { 
-            background-color: #0056b3; 
-        }
-    </style>
 </head>
-<body>
-    <div class="auth-box">
-        <h1>Daftar Akun</h1>
-        <form id="registerForm">
-            <input type="text" id="regUsername" placeholder="Username Baru" required>
-            <input type="password" id="regPassword" placeholder="Password" required>
-            <select id="regRole">
-                <option value="user">User (Siswa)</option>
-                <option value="admin">Admin (Petugas)</option>
-            </select>
-            <button type="submit">Daftar Sekarang</button>
-        </form>
-        <p>Sudah punya akun? <a href="login.html">Login di sini</a></p>
-        <p id="regMessage"></p>
+<body class="login-page">
+    <div class="wrapper">
+        <section class="form-section">
+            <div class="form-container login-card">
+                <div class="form-header">
+                    <h2>Buat Akun Baru</h2>
+                    <p>Daftar sekarang untuk mulai meminjam alat praktik SIJA.</p>
+                </div>
+
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="reg-nama">Nama Lengkap</label>
+                        <input type="text" id="reg-nama" placeholder="Masukkan nama lengkap" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-nis">NIS (Nomor Induk Siswa)</label>
+                        <input type="number" id="reg-nis" placeholder="Masukkan NIS" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-email">Email</label>
+                        <input type="email" id="reg-email" placeholder="contoh@smail.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-password">Password</label>
+                        <input type="password" id="reg-password" placeholder="Buat password minimal 8 karakter" required>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Daftar Sekarang</button>
+                    
+                    <div class="form-footer">
+                        <p>Sudah punya akun? <a href="login.html">Login di sini</a></p>
+                        <a href="index.html" class="back-link">← Kembali ke Beranda</a>
+                    </div>
+                </form>
+            </div>
+        </section>
     </div>
 
     <script>
-        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const username = document.getElementById('regUsername').value;
-            const password = document.getElementById('regPassword').value;
-            const role = document.getElementById('regRole').value;
+
+            // Mengambil data dari input form
+            const dataUser = {
+                username: document.getElementById('reg-nama').value, // Menggunakan nama sebagai username
+                password: document.getElementById('reg-password').value,
+                role: 'user' // Memaksa role menjadi 'user' demi keamanan
+            };
 
             try {
-                const response = await fetch('/api/register', {
+                const response = await fetch('http://localhost:3000/api/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password, role })
+                    body: JSON.stringify(dataUser)
                 });
 
-                const data = await response.json();
-                if (data.success) {
-                    alert('Registrasi Berhasil! Silakan Login.');
-                    window.location.href = 'login.html';
+                const result = await response.json();
+
+                if (result.success) {
+                    alert("Akun berhasil dibuat! Silakan login.");
+                    window.location.href = 'login.html'; 
                 } else {
-                    document.getElementById('regMessage').textContent = data.message;
-                    document.getElementById('regMessage').style.color = "red";
+                    alert("Gagal mendaftar: " + result.message);
                 }
-            } catch (err) {
-                console.error(err);
-                alert('Gagal menghubungi server');
+            } catch (error) {
+                console.error('Error:', error);
+                alert("Terjadi kesalahan koneksi ke server.");
             }
         });
     </script>

@@ -3,224 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Pinjam.in</title>
+    <title>Dashboard Admin - Pinjam.in</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #f4f7f6; 
-            color: #333; 
-            margin: 0; 
-            padding: 0; 
-        }
-
-        .admin-container { 
-            max-width: 1200px; 
-            margin: 40px auto; 
-            padding: 30px; 
-            background-color: #ffffff; 
-            border-radius: 12px; 
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08); 
-        }
-
-        h1 { 
-            text-align: center; 
-            color: #2c3e50; 
-            margin-bottom: 30px; 
-            font-size: 2.2em; 
-        }
-
-        .dashboard-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 25px; 
-        }
-
-        .dashboard-header h2 { 
-            color: #34495e; 
-            font-size: 1.8em; 
-            margin: 0; 
-        }
-
-        .dashboard-header button { 
-            background-color: #e74c3c; 
-            color: white; 
-            padding: 10px 20px; 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-size: 1em; 
-            transition: background-color 0.3s ease; 
-        }
-
-        .dashboard-header button:hover { 
-            background-color: #c0392b; 
-        }
-        
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            margin-top: 20px; 
-        }
-
-        th, td { 
-            padding: 15px; 
-            text-align: left; 
-            border-bottom: 1px solid #ecf0f1; 
-        }
-
-        th { 
-            background-color: #3498db; 
-            color: white; 
-            font-weight: 600; 
-        }
-
-        tr:hover { 
-            background-color: #f8f8f8; 
-        }
-        
-        .status-badge { 
-            padding: 6px 10px; 
-            border-radius: 5px; 
-            font-weight: bold; 
-            font-size: 0.85em; 
-        }
-
-        .status-dikembalikan { 
-            background-color: #2ecc71; /* Hijau */
-            color: white; 
-        } 
-        
-        .status-belum { 
-            background-color: #e74c3c; /* Merah */
-            color: white; 
-        }    
-        
-        .return-button { 
-            background-color: #f39c12; 
-            color: white; 
-            padding: 8px 12px; 
-            border: none; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            font-size: 0.9em; 
-            transition: background-color 0.3s ease; 
-        }
-
-        .return-button:hover { 
-            background-color: #e67e22; 
-        }
-
-        .return-button:disabled { 
-            background-color: #bdc3c7; 
-            cursor: not-allowed; 
-        }
-    </style>
 </head>
-<body>
-    <div class="admin-container">
-        <h1>Admin Dashboard</h1>
-        
-        <div class="dashboard-header">
-            <h2>Daftar Peminjaman Barang</h2>
-            <button onclick="logout()">Logout</button>
+<body class="admin-page">
+    <nav class="navbar">
+        <div class="nav-left"><a href="#" class="logo">Pinjam.in Admin</a></div>
+        <div class="nav-right">
+            <span class="admin-name">Halo, Petugas Lab</span>
+            <a href="login.html" class="btn-logout">Keluar</a>
         </div>
+    </nav>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Barang</th>
-                    <th>Peminjam</th>
-                    <th>Kelas</th>
-                    <th>Jumlah</th>
-                    <th>Tanggal Pinjam</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody id="loansTableBody">
-                </tbody>
-        </table>
+    <div class="wrapper">
+        <section class="dashboard-section">
+            <div class="dashboard-header">
+                <h2>Daftar Pengajuan Peminjaman</h2>
+                <p>Kelola permintaan alat praktikum siswa di sini.</p>
+            </div>
+
+            <div class="table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Peminjam</th>
+                            <th>Barang</th>
+                            <th>Jumlah</th>
+                            <th>Tanggal</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loanTableBody">
+                        </tbody>
+                </table>
+            </div>
+        </section>
     </div>
 
     <script>
-        // CLIENT-SIDE GUARD: Proteksi halaman Admin
-        const userRole = localStorage.getItem('role');
-        if (!userRole || userRole !== 'admin') {
-            alert("Akses ditolak! Anda tidak memiliki izin Admin.");
-            window.location.href = 'login.html';
-        }
-
+        const role = localStorage.getItem('role');
+    if (role !== 'admin') {
+        alert("Akses Ditolak! Anda bukan Admin.");
+        window.location.href = 'login.html'; // Tendang balik ke login jika bukan admin
+    }
+        // Fungsi mengambil data dari endpoint /api/loans di server.js
         async function loadLoans() {
             try {
-                const response = await fetch('/api/loans'); // Memanggil API untuk semua peminjaman
+                const response = await fetch('http://localhost:3000/api/loans');
                 const loans = await response.json();
-                const tableBody = document.getElementById('loansTableBody');
-                tableBody.innerHTML = ''; // Kosongkan tabel sebelum mengisi ulang
+                const tableBody = document.getElementById('loanTableBody');
+                tableBody.innerHTML = ''; 
 
                 loans.forEach(loan => {
-                    const row = tableBody.insertRow();
-                    row.insertCell().textContent = loan.itemName;
-                    row.insertCell().textContent = loan.borrowerName;
-                    row.insertCell().textContent = loan.className;
-                    row.insertCell().textContent = loan.quantity;
-                    row.insertCell().textContent = new Date(loan.date).toLocaleDateString('id-ID'); // Format tanggal
-                    
-                    const statusCell = row.insertCell();
-                    const statusBadge = document.createElement('span');
-                    statusBadge.textContent = loan.status;
-                    statusBadge.className = `status-badge ${loan.status === 'Sudah Dikembalikan' ? 'status-dikembalikan' : 'status-belum'}`;
-                    statusCell.appendChild(statusBadge);
-
-                    const actionCell = row.insertCell();
-                    if (loan.status !== 'Sudah Dikembalikan') {
-                        const returnButton = document.createElement('button');
-                        returnButton.textContent = 'Tandai Kembali';
-                        returnButton.className = 'return-button';
-                        returnButton.onclick = () => returnItem(loan._id, loan.itemName, loan.quantity);
-                        actionCell.appendChild(returnButton);
-                    } else {
-                        actionCell.textContent = '—'; // Atau bisa juga tombol disabled
-                    }
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${loan.borrowerName}</td>
+                            <td>${loan.itemName}</td>
+                            <td>${loan.quantity} unit</td>
+                            <td>${new Date(loan.date).toLocaleDateString('id-ID')}</td>
+                            <td>
+                                <button onclick="confirmReturn('${loan._id}', '${loan.itemName}', ${loan.quantity})" class="btn-submit" style="padding: 5px 10px; font-size: 12px;">
+                                    Selesai
+                                </button>
+                            </td>
+                        </tr>
+                    `;
                 });
-
-            } catch (error) {
-                console.error("Error loading loans:", error);
-                alert("Gagal memuat daftar peminjaman.");
+            } catch (err) {
+                console.error("Gagal memuat data peminjaman:", err);
             }
         }
 
-        async function returnItem(loanId, itemName, quantity) {
-            if (confirm(`Anda yakin ingin menandai '${itemName}' sudah dikembalikan? Stok akan ditambahkan kembali.`)) {
-                try {
-                    const response = await fetch(`/api/return-item/${loanId}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ itemName, quantity }) // Kirim data barang untuk update stok
-                    });
-                    const data = await response.json();
-                    if (data.success) {
-                        alert('Barang berhasil ditandai sudah dikembalikan!');
-                        loadLoans(); // Muat ulang daftar peminjaman
-                    } else {
-                        alert('Gagal menandai barang kembali: ' + data.message);
-                    }
-                } catch (error) {
-                    console.error("Error returning item:", error);
-                    alert("Terjadi kesalahan saat mengembalikan barang.");
+        async function confirmReturn(id, itemName, quantity) {
+            if(confirm(`Konfirmasi pengembalian ${itemName}?`)) {
+                const res = await fetch(`http://localhost:3000/api/return-item/${id}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ itemName, quantity })
+                });
+                const result = await res.json();
+                if(result.success) {
+                    alert(result.message);
+                    loadLoans(); // Refresh tabel otomatis
                 }
             }
         }
 
-        function logout() {
-            localStorage.removeItem('username');
-            localStorage.removeItem('role');
-            window.location.href = 'login.html';
-        }
-
-        // Muat data peminjaman saat halaman dimuat
-        document.addEventListener('DOMContentLoaded', loadLoans);
+        loadLoans(); // Jalankan saat halaman dibuka
     </script>
 </body>
 </html>
