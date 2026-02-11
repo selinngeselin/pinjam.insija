@@ -145,6 +145,17 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
+// Endpoint untuk menyimpan pinjaman baru dari user
+app.post('/api/loans', async (req, res) => {
+    try {
+        const newLoan = new Loan(req.body);
+        await newLoan.save();
+        res.json({ success: true, message: "Peminjaman berhasil dicatat!" });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
+});
+
 // Endpoint untuk melihat profil (Membaca data dari DB)
 app.get('/api/me/:username', async (req, res) => {
     try {
@@ -158,6 +169,16 @@ app.get('/api/me/:username', async (req, res) => {
             role: user.role,
             nis: user.nis
         });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+// Endpoint ini yang WAJIB ada agar tabel Admin terisi
+app.get('/api/loans', async (req, res) => {
+    try {
+        const allLoans = await Loan.find(); // Loan adalah model untuk koleksi peminjaman
+        res.json(allLoans);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

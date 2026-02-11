@@ -52,7 +52,7 @@
                 const response = await fetch('http://localhost:3000/api/loans');
                 const loans = await response.json();
                 const tableBody = document.getElementById('loanTableBody');
-                tableBody.innerHTML = ''; 
+                tableBody.innerHTML = ''; // Bersihkan tabel agar tidak duplikat
 
                 loans.forEach(loan => {
                     tableBody.innerHTML += `
@@ -63,7 +63,7 @@
                             <td>${new Date(loan.date).toLocaleDateString('id-ID')}</td>
                             <td>
                                 <button onclick="confirmReturn('${loan._id}', '${loan.itemName}', ${loan.quantity})" class="btn-submit" style="padding: 5px 10px; font-size: 12px;">
-                                    Selesai
+                                    Selesai / Terima
                                 </button>
                             </td>
                         </tr>

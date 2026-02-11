@@ -99,7 +99,7 @@ body {
 .btn-primary { 
     background: #007bff; 
     color: white; 
-    padding: 12px 25px; 
+    padding: 12px 20px; 
     border-radius: 8px; 
     text-decoration: none; 
     font-weight: bold;
@@ -465,7 +465,7 @@ body {
 .dashboard-section { padding: 30px 0; }
 
 .table-container {
-    background: white;
+    background: #ffffff;
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
@@ -476,15 +476,20 @@ body {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    background: white;
 }
 
 .admin-table th, .admin-table td {
-    padding: 15px;
+    padding: 15px 20px; /* Memberikan ruang agar teks tidak rapat */
     text-align: left;
     border-bottom: 1px solid #eee;
 }
 
-.admin-table th { background-color: #fcfcfc; color: #555; }
+.admin-table th {
+    background-color: #f8f9fa;
+    color: #333;
+    font-weight: bold;
+}
 
 /* Status Badges */
 .badge {
@@ -635,4 +640,28 @@ body {
     background-color: #218838;
     transform: translateY(-3px); /* Efek melompat sesuai permintaan Anda sebelumnya */
     box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+}
+
+.btn-logout {
+    background: #dc3545 !important;
+    color: white !important;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-user {
+    background-color: #3498db; /* Biru */
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.btn-user:hover {
+    background-color: #2980b9;
 }

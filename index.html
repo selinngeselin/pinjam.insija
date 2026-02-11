@@ -16,7 +16,7 @@
             <a href="daftar-barang.html">Daftar Barang</a>
             <a href="peminjaman.html">Peminjaman</a>
         </div>
-        <div class="nav-right">
+        <div class="nav-right" id="auth-buttons">
             <a href="login.html" class="btn-login-nav">Login</a>
             <a href="register.html" class="btn-register-nav">Register</a>
         </div>
@@ -89,4 +89,35 @@
         <p>&copy; 2025 Pinjam.in - Sistem Peminjaman SIJA</p>
     </footer>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const username = localStorage.getItem('username');
+        const authContainer = document.getElementById('auth-buttons');
+
+        if (username) {
+            // Tambahkan tombol 'Akun Saya' di sebelah Logout
+            authContainer.innerHTML = `
+                <a href="user.html" class="btn-user" style="margin-right:10px;">Akun Saya</a>
+                <button onclick="logout()" class="btn-logout">Logout</button>
+            `;
+        }
+    });
+
+    function logout() {
+        localStorage.clear();
+        window.location.reload(); // Refresh halaman agar status kembali ke tamu
+    }
+
+    function handlePinjam() {
+    const username = localStorage.getItem('username');
+    
+    if (!username) {
+        alert("Maaf, Anda harus login terlebih dahulu untuk meminjam barang!");
+        window.location.href = 'login.html';
+    } else {
+        // Jika sudah login, arahkan ke halaman konfirmasi
+        window.location.href = 'konfirmasi.html';
+    }
+}
+</script>
 </html>
