@@ -665,3 +665,363 @@ body {
 .btn-user:hover {
     background-color: #2980b9;
 }
+
+/* Reset untuk menghindari konflik */
+.user-page {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.user-page * {
+    box-sizing: border-box;
+}
+
+/* Background gradient hanya untuk halaman user */
+body.user-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e5799 0%, #2989d8 50%, #207cca 100%) !important;
+    min-height: 100vh;
+}
+
+.user-container {
+    display: flex;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* Sidebar */
+.user-sidebar {
+    width: 280px;
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    min-height: 100vh;
+}
+
+.user-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+    padding: 10px;
+}
+
+.user-logo-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #1e88e5, #42a5f5);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.user-logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-brand {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1e88e5;
+}
+
+.user-brand span {
+    color: #333;
+}
+
+.user-tagline {
+    font-size: 11px;
+    color: #666;
+}
+
+.user-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #333;
+    text-decoration: none;
+}
+
+.user-menu-item:hover {
+    background-color: #f5f5f5;
+}
+
+.user-menu-item.active {
+    background-color: #1e88e5;
+    color: white;
+}
+
+.user-menu-item svg {
+    width: 24px;
+    height: 24px;
+}
+
+.user-menu-item span {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Main Content */
+.user-main-content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.user-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba(255,255,255,0.2);
+    padding: 8px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.user-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #1e88e5;
+    font-size: 14px;
+}
+
+.user-name {
+    color: white;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.user-dropdown-icon {
+    color: white;
+    font-size: 12px;
+}
+
+/* Form Card */
+.user-form-card {
+    background-color: white;
+    border-radius: 15px;
+    padding: 50px 60px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    max-width: 900px;
+}
+
+.user-form-group {
+    margin-bottom: 30px;
+}
+
+.user-form-group label {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: 400;
+}
+
+.user-form-group input {
+    width: 100%;
+    padding: 15px 20px;
+    border: 2px solid #333;
+    border-radius: 30px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    outline: none;
+    background-color: white;
+}
+
+.user-form-group input:focus {
+    border-color: #1e88e5;
+    box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1);
+}
+
+.user-button-group {
+    display: flex;
+    gap: 15px;
+    margin-top: 40px;
+}
+
+.user-btn {
+    padding: 15px 40px;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.user-btn-primary {
+    background-color: #1e88e5;
+    color: white;
+}
+
+.user-btn-primary:hover {
+    background-color: #1565c0;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(30, 136, 229, 0.3);
+}
+
+.user-btn-secondary {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.user-btn-secondary:hover {
+    background-color: #e0e0e0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .user-container {
+        flex-direction: column;
+    }
+
+    .user-sidebar {
+        width: 100%;
+        min-height: auto;
+    }
+
+    .user-main-content {
+        padding: 20px;
+    }
+
+    .user-form-card {
+        padding: 30px 25px;
+    }
+}
+
+/* CSS LAMA (yang sudah ada) */
+.user-page {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+body.user-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e5799 0%, #2989d8 50%, #207cca 100%) !important;
+    min-height: 100vh;
+}
+
+.user-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ... semua CSS yang sudah ada ... */
+
+.user-btn-secondary:hover {
+    background-color: #e0e0e0;
+}
+
+/* ============================================ */
+/* CSS BARU - TAMBAHKAN DI BAWAH INI */
+/* ============================================ */
+
+/* Info Card - Tampilan setelah simpan */
+.user-info-card {
+    background-color: white;
+    border-radius: 15px;
+    padding: 50px 60px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    max-width: 900px;
+}
+
+.info-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.info-item {
+    display: flex;
+    margin-bottom: 25px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.info-item:last-of-type {
+    border-bottom: none;
+}
+
+.info-label {
+    font-size: 18px;
+    font-weight: 500;
+    color: #666;
+    width: 250px;
+    flex-shrink: 0;
+}
+
+.info-value {
+    font-size: 18px;
+    color: #333;
+    font-weight: 400;
+}
+
+/* Update Responsive yang sudah ada */
+@media (max-width: 768px) {
+    .user-container {
+        flex-direction: column;
+    }
+
+    .user-sidebar {
+        width: 100%;
+        min-height: auto;
+    }
+
+    .user-main-content {
+        padding: 20px;
+    }
+
+    .user-form-card,
+    .user-info-card {  /* Tambahkan .user-info-card di sini */
+        padding: 30px 25px;
+    }
+
+    /* Tambahkan ini juga untuk responsive info section */
+    .info-item {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .info-label {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .info-value {
+        font-size: 16px;
+    }
+
+    .user-button-group {
+        flex-direction: column;
+    }
+
+    .user-btn {
+        width: 100%;
+    }
+}
