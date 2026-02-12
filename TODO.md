@@ -1,3 +1,0 @@
-- [x] Update index.html body background to sky blue (#ADD8E6)
-- [x] Update .item background to light blue (#E0F6FF)
-- [x] Update .item border to match borrow page (#87CEEB)
