@@ -3,91 +3,385 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Peminjaman - Pinjam.in</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Pinjam.inSIJA - Peminjaman</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #f4f7ff;
+            color: #1a1a2e;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 48px;
+            height: 68px;
+            background: white;
+            box-shadow: 0 2px 16px rgba(30,144,255,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 900;
+            color: #1e90ff;
+            text-decoration: none;
+        }
+
+        .logo span { color: #1a1a2e; }
+
+        .nav-center { display: flex; gap: 4px; }
+
+        .nav-center a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 8px 18px;
+            border-radius: 50px;
+            transition: all 0.2s;
+        }
+
+        .nav-center a:hover { background: #f0f8ff; color: #1e90ff; }
+        .nav-center a.active { background: #e8f4ff; color: #1e90ff; }
+
+        .nav-right { display: flex; gap: 10px; align-items: center; }
+
+        .btn-login-nav {
+            text-decoration: none;
+            color: #1e90ff;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 9px 22px;
+            border-radius: 50px;
+            border: 2px solid #1e90ff;
+            transition: all 0.2s;
+        }
+
+        .btn-login-nav:hover { background: #e8f4ff; }
+
+        .btn-register-nav {
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 9px 22px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            box-shadow: 0 4px 14px rgba(34,197,94,0.35);
+            transition: all 0.2s;
+        }
+
+        .btn-user {
+            text-decoration: none;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 9px 22px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #1e90ff, #4ab3ff);
+            box-shadow: 0 4px 14px rgba(30,144,255,0.35);
+            transition: all 0.2s;
+        }
+
+        .btn-logout {
+            color: #ef4444;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 9px 22px;
+            border-radius: 50px;
+            border: 2px solid #ef4444;
+            background: none;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .btn-logout:hover { background: #fff0f0; }
+
+        /* ===== MAIN ===== */
+        .wrapper {
+            max-width: 700px;
+            margin: 48px auto;
+            padding: 0 24px 64px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 44px 48px;
+            box-shadow: 0 8px 40px rgba(30,144,255,0.1);
+            border: 1.5px solid #eef2ff;
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 900;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        .card-subtitle {
+            font-size: 14px;
+            color: #888;
+            font-weight: 600;
+            margin-bottom: 36px;
+        }
+
+        .form-group { margin-bottom: 24px; }
+
+        .form-label {
+            display: block;
+            font-weight: 800;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e8ecf5;
+            border-radius: 12px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 15px;
+            color: #222;
+            background: #fafbff;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: #1e90ff;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(30,144,255,0.1);
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder { color: #c5cde0; }
+
+        .form-select { cursor: pointer; appearance: auto; }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 110px;
+        }
+
+        .form-input.error { border-color: #ef4444; }
+
+        /* Durasi info */
+        .durasi-info {
+            font-size: 12px;
+            color: #f59e0b;
+            font-weight: 700;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, #1e90ff, #4ab3ff);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 900;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: transform 0.15s, box-shadow 0.2s;
+            box-shadow: 0 4px 18px rgba(30,144,255,0.35);
+            letter-spacing: 0.3px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(30,144,255,0.45);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            background: #22c55e;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 14px;
+            box-shadow: 0 6px 24px rgba(34,197,94,0.45);
+            display: none;
+            align-items: center;
+            gap: 8px;
+            z-index: 999;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+    </style>
 </head>
 <body>
+
+    <!-- NAVBAR -->
     <nav class="navbar">
-        <div class="nav-left"><a href="index.html" class="logo">Pinjam.in</a></div>
+        <a href="index.html" class="logo">Pinjam.in<span>SIJA</span></a>
         <div class="nav-center">
             <a href="index.html">Home</a>
             <a href="daftar-barang.html">Daftar Barang</a>
             <a href="peminjaman.html" class="active">Peminjaman</a>
         </div>
-        <div class="nav-right">
+        <div class="nav-right" id="auth-buttons">
             <a href="login.html" class="btn-login-nav">Login</a>
             <a href="register.html" class="btn-register-nav">Register</a>
         </div>
     </nav>
 
+
+    <!-- FORM -->
     <div class="wrapper">
-        <section class="form-section">
-            <div class="form-container">
-                <h2>Form Pengajuan Peminjaman</h2>
-                <p>Silakan isi data di bawah ini dengan lengkap dan benar.</p>
+        <div class="card">
+            <div class="card-title">Form Pengajuan Peminjaman</div>
+            <div class="card-subtitle">Silakan isi data di bawah ini dengan lengkap dan benar.</div>
 
-                <form id="loanForm">
-                    <div class="form-group">
-                        <label for="nama">Nama Lengkap</label>
-                        <input type="text" id="nama" placeholder="Masukkan nama sesuai kartu pelajar" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="kelas">Kelas / Jurusan</label>
-                        <input type="text" id="kelas" placeholder="Contoh: XII SIJA 1" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="barang">Barang yang Dipinjam</label>
-                        <select id="barang" required>
-                            <option value="">-- Pilih Barang --</option>
-                            <option value="Laptop">Laptop</option>
-                            <option value="Kabel HDMI">Kabel HDMI</option>
-                            <option value="Mikrotik">Mikrotik</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="durasi">Durasi Peminjaman (Hari)</label>
-                        <input type="number" id="durasi" min="1" max="3" placeholder="Maksimal 3 hari" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="keperluan">Keperluan Peminjaman</label>
-                        <textarea id="keperluan" rows="4" placeholder="Contoh: Untuk Praktik Jaringan Dasar"></textarea>
-                    </div>
-
-                    <button type="submit" class="btn-submit">Ajukan Peminjaman</button>
-                </form>
+            <div class="form-group">
+                <label class="form-label">Nama Lengkap</label>
+                <input type="text" class="form-input" id="inpNama" placeholder="Masukkan nama sesuai kartu pelajar">
             </div>
-        </section>
+
+            <div class="form-group">
+                <label class="form-label">Kelas / Jurusan</label>
+                <input type="text" class="form-input" id="inpKelas" placeholder="Contoh: XII SIJA 1">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Barang yang Dipinjam</label>
+                <select class="form-select" id="inpBarang">
+                    <option value="">-- Pilih Barang --</option>
+                    <option value="Mikrotik">Mikrotik</option>
+                    <option value="Kabel HDMI">Kabel HDMI</option>
+                    <option value="Laptop">Laptop</option>
+                    <option value="Switch Hub">Switch Hub</option>
+                    <option value="Access Point">Access Point</option>
+                    <option value="Kabel LAN">Kabel LAN</option>
+                    <option value="Raspberry Pi">Raspberry Pi</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Durasi Peminjaman (Hari)</label>
+                <input type="number" class="form-input" id="inpDurasi" placeholder="Maksimal 3 hari" min="1" max="3">
+                <div class="durasi-info" id="durasiInfo">⚠️ Maksimal peminjaman adalah 3 hari!</div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Keperluan Peminjaman</label>
+                <textarea class="form-textarea" id="inpKeperluan" placeholder="Contoh: Untuk Praktik Jaringan Dasar"></textarea>
+            </div>
+
+            <button class="btn-submit" onclick="ajukan()">Ajukan Peminjaman</button>
+        </div>
     </div>
+
+    <div class="toast" id="toast">✅ Pengajuan berhasil dikirim!</div>
+
     <script>
-        document.getElementById('loanForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const dataPinjam = {
-                item: document.getElementById('barang').value, // Pastikan ID ini ada di <select>
-                nama: document.getElementById('nama').value,   // Pastikan ID ini ada di <input>
-                kelas: document.getElementById('kelas').value,
-                jumlah: 1
-            };
-
-            fetch('/api/borrow', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dataPinjam)
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = 'konfirmasi.html';
-                } else {
-                    alert("Gagal: " + data.message);
-                }
-            })
-            .catch(err => alert("Server mati! Nyalakan server.js"));
+        document.addEventListener('DOMContentLoaded', function () {
+            const username = localStorage.getItem('username');
+            const authContainer = document.getElementById('auth-buttons');
+            if (username) {
+                authContainer.innerHTML = `
+                    <a href="user.html" class="btn-user">👤 Akun Saya</a>
+                    <button onclick="logout()" class="btn-logout">Logout</button>
+                `;
+                // Auto-fill dari profil API
+                fetch(`/api/profil/${username}`)
+                    .then(r => r.json())
+                    .then(json => {
+                        if (json.success) {
+                            if (json.nama)     document.getElementById('inpNama').value  = json.nama;
+                            if (json.angkatan) document.getElementById('inpKelas').value = json.angkatan;
+                        }
+                    }).catch(() => {});
+            }
         });
+
+        function logout() {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        }
+
+        document.getElementById('inpDurasi').addEventListener('input', function () {
+            const info = document.getElementById('durasiInfo');
+            if (parseInt(this.value) > 3) {
+                this.value = 3;
+                info.style.display = 'block';
+                setTimeout(() => info.style.display = 'none', 2500);
+            }
+        });
+
+        async function ajukan() {
+            const nama      = document.getElementById('inpNama').value.trim();
+            const kelas     = document.getElementById('inpKelas').value.trim();
+            const barang    = document.getElementById('inpBarang').value;
+            const durasi    = document.getElementById('inpDurasi').value.trim();
+            const keperluan = document.getElementById('inpKeperluan').value.trim();
+            const username  = localStorage.getItem('username') || '';
+
+            // Validasi
+            const fields = [
+                { id: 'inpNama',      val: nama },
+                { id: 'inpKelas',     val: kelas },
+                { id: 'inpBarang',    val: barang },
+                { id: 'inpDurasi',    val: durasi },
+                { id: 'inpKeperluan', val: keperluan },
+            ];
+
+            let valid = true;
+            fields.forEach(f => {
+                const el = document.getElementById(f.id);
+                if (!f.val) {
+                    el.style.borderColor = '#ef4444';
+                    valid = false;
+                    setTimeout(() => el.style.borderColor = '', 2000);
+                }
+            });
+
+            if (!valid) { alert('Harap isi semua field terlebih dahulu!'); return; }
+
+            try {
+                const res  = await fetch('/api/loans', {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify({ nama, kelas, barang, durasi, keperluan, username })
+                });
+                const json = await res.json();
+
+                if (json.success) {
+                    const toast = document.getElementById('toast');
+                    toast.style.display = 'flex';
+                    setTimeout(() => {
+                        toast.style.display = 'none';
+                        window.location.href = 'konfirmasi.html';
+                    }, 1800);
+                } else {
+                    alert('Gagal mengajukan: ' + json.message);
+                }
+            } catch (err) {
+                alert('Error koneksi ke server!');
+            }
+        }
     </script>
 </body>
 </html>
