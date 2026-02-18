@@ -51,10 +51,19 @@
             try {
                 const response = await fetch('http://localhost:3000/api/loans');
                 const loans = await response.json();
+                
                 const tableBody = document.getElementById('loanTableBody');
-                tableBody.innerHTML = ''; // Bersihkan tabel agar tidak duplikat
+                tableBody.innerHTML = ''; 
 
-                loans.forEach(loan => {
+                // FILTER: Hanya tampilkan yang statusnya "Dipinjam"
+                const activeLoans = loans.filter(loan => loan.status === "Dipinjam");
+
+                if (activeLoans.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Tidak ada pengajuan aktif.</td></tr>';
+                    return;
+                }
+
+                activeLoans.forEach(loan => {
                     tableBody.innerHTML += `
                         <tr>
                             <td>${loan.borrowerName}</td>
@@ -62,15 +71,15 @@
                             <td>${loan.quantity} unit</td>
                             <td>${new Date(loan.date).toLocaleDateString('id-ID')}</td>
                             <td>
-                                <button onclick="confirmReturn('${loan._id}', '${loan.itemName}', ${loan.quantity})" class="btn-submit" style="padding: 5px 10px; font-size: 12px;">
-                                    Selesai / Terima
+                                <button onclick="confirmReturn('${loan._id}', '${loan.itemName}', ${loan.quantity})" class="btn-submit">
+                                    Selesai
                                 </button>
                             </td>
                         </tr>
                     `;
                 });
             } catch (err) {
-                console.error("Gagal memuat data peminjaman:", err);
+                console.error("Gagal memuat data admin:", err);
             }
         }
 

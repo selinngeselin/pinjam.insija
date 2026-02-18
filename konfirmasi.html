@@ -20,7 +20,7 @@
                 </div>
 
                 <div class="confirm-buttons">
-                    <a href="index.html" class="btn-primary">Kembali ke Home</a>
+                    <a href="Dashboard.html" class="btn-primary">Kembali ke Home</a>
                     <a href="daftar-barang.html" class="btn-secondary">Pinjam Lagi</a>
                 </div>
             </div>
@@ -48,7 +48,7 @@
             const result = await response.json();
             if (result.success) {
                 alert("Pengajuan berhasil dikirim! Menunggu konfirmasi admin.");
-                window.location.href = 'index.html';
+                window.location.href = 'Dashboard.html';
             }
         } catch (error) {
             console.error("Gagal mengirim pengajuan:", error);

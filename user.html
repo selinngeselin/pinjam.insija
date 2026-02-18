@@ -33,9 +33,9 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-left"><a href="index.html" class="logo">Pinjam.in</a></div>
+        <div class="nav-left"><a href="Dashboard.html" class="logo">Pinjam.in</a></div>
         <div class="nav-right">
-            <a href="index.html" class="btn-primary">Ke Dashboard</a>
+            <a href="Dashboard.html" class="btn-primary">Ke Dashboard</a>
             <button onclick="logout()" class="btn-logout">Logout</button>
         </div>
     </nav>
@@ -46,6 +46,21 @@
             <div id="profile-info">
                 <p>Memuat data...</p>
             </div>
+        </section>
+        <section class="history-container">
+            <h3>Riwayat Peminjaman Saya</h3>
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Nama Barang</th>
+                        <th>Jumlah</th>
+                        <th>Tanggal Pinjam</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="userHistoryBody">
+                    </tbody>
+            </table>
         </section>
     </div>
 
@@ -66,6 +81,42 @@
                 `;
             } catch (err) { console.error(err); }
         }
+
+        async function loadUserHistory() {
+            const username = localStorage.getItem('username');
+            try {
+                const response = await fetch(`http://localhost:3000/api/loans?username=${encodeURIComponent(username)}`);
+                const loans = await response.json();
+                
+                const historyBody = document.getElementById('userHistoryBody');
+                historyBody.innerHTML = '';
+
+                if (loans.length === 0) {
+                    historyBody.innerHTML = '<tr><td colspan="4">Belum ada riwayat peminjaman.</td></tr>';
+                    return;
+                }
+
+                // Di dalam fungsi loadUserHistory() pada user.html
+                loans.forEach(loan => {
+                    // Tentukan warna badge berdasarkan status
+                    const statusClass = loan.status === "Dipinjam" ? "badge-warning" : "badge-success";
+                    
+                    historyBody.innerHTML += `
+                        <tr>
+                            <td>${loan.itemName}</td>
+                            <td>${loan.quantity} unit</td>
+                            <td>${new Date(loan.date).toLocaleDateString('id-ID')}</td>
+                            <td><span class="status-badge ${statusClass}">${loan.status}</span></td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                console.error("Gagal memuat riwayat:", err);
+            }
+        }
+
+        // Panggil fungsi ini saat halaman dimuat
+        loadUserHistory();
 
         function logout() {
             localStorage.clear();

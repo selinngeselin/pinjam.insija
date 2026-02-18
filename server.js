@@ -5,7 +5,14 @@ const path = require('path');
 const app = express();
 
 app.use(express.json());
-app.use(express.static('./')); 
+
+// 1. Tentukan rute utama ke dashboard.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dashboard.html'));
+});
+
+// 2. Folder statis untuk file lainnya (CSS, JS, Gambar)
+app.use(express.static(path.join(__dirname, './'))); 
 app.use('/img', express.static(path.join(__dirname, 'img')));
 
 // Koneksi ke Database Baru (Pastikan nama ini unik untuk proyek SIJA)
@@ -42,7 +49,8 @@ const loanSchema = new mongoose.Schema({
     borrowerName: String,
     className: String,
     quantity: Number,
-    date: { type: Date, default: Date.now }
+    date: { type: Date, default: Date.now },
+    status: { type: String, default: 'dipinjam' } // status peminjaman
 });
 const Loan = mongoose.model('Loan', loanSchema);
 
@@ -177,10 +185,38 @@ app.get('/api/me/:username', async (req, res) => {
 // Endpoint ini yang WAJIB ada agar tabel Admin terisi
 app.get('/api/loans', async (req, res) => {
     try {
-        const allLoans = await Loan.find(); // Loan adalah model untuk koleksi peminjaman
-        res.json(allLoans);
+        const { username } = req.query;
+        let query = {};
+        
+        // Jika ada parameter username, filter datanya
+        if (username) {
+            query = { borrowerName: username };
+        }
+        
+        const loans = await Loan.find(query).sort({ date: -1 });
+        res.json(loans);
     } catch (err) {
         res.status(500).json({ message: err.message });
+    }
+});
+
+app.put('/api/return-item/:id', async (req, res) => {
+    try {
+        const { itemName, quantity } = req.body;
+        
+        // 1. Tambahkan kembali stok barang
+        const item = await Item.findOne({ name: itemName });
+        if (item) {
+            item.quantity += parseInt(quantity);
+            await item.save();
+        }
+
+        // 2. Update status peminjaman, JANGAN dihapus (findByIdAndDelete)
+        await Loan.findByIdAndUpdate(req.params.id, { status: "Sudah Kembali" });
+
+        res.json({ success: true, message: "Barang dikembalikan & status diperbarui!" });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
     }
 });
 
