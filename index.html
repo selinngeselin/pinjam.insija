@@ -206,15 +206,23 @@
             window.location.reload();
         }
 
-        function handlePinjam() {
-            const username = localStorage.getItem('username');
-            if (!username) {
-                alert("Maaf, Anda harus login terlebih dahulu untuk meminjam barang!");
-                window.location.href = 'login.html';
-            } else {
-                window.location.href = 'konfirmasi.html';
-            }
-        }
-    </script>
-</body>
+    function logout() {
+        localStorage.clear();
+        window.location.reload(); // Refresh halaman agar status kembali ke tamu
+    }
+</script>
+
+<script>
+    function handlePinjam() {
+    const username = localStorage.getItem('username');
+    
+    if (!username) {
+        alert("Maaf, Anda harus login terlebih dahulu untuk meminjam barang!");
+        window.location.href = 'login.html';
+    } else {
+        // Jika sudah login, arahkan ke halaman konfirmasi
+        window.location.href = 'konfirmasi.html';
+    }
+}
+</script>
 </html>

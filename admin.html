@@ -3,102 +3,524 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - Pinjam.in</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Pinjam.in Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #f0f4f8;
+            color: #1a1a2e;
+            min-height: 100vh;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 48px;
+            height: 64px;
+            background: white;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 900;
+            color: #1e90ff;
+            text-decoration: none;
+        }
+
+        .logo span { color: #ef4444; }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .nav-greeting {
+            font-size: 14px;
+            font-weight: 700;
+            color: #555;
+        }
+
+        .btn-keluar {
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 9px 22px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .btn-keluar:hover { background: #dc2626; transform: translateY(-1px); }
+
+        /* ===== WRAPPER ===== */
+        .wrapper {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 32px 64px;
+        }
+
+        .page-header { margin-bottom: 28px; }
+
+        .page-title {
+            font-size: 26px;
+            font-weight: 900;
+            color: #1a1a2e;
+            margin-bottom: 6px;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: #888;
+            font-weight: 600;
+        }
+
+        /* ===== SUMMARY CARDS ===== */
+        .summary-bar {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 16px;
+            padding: 18px 28px;
+            flex: 1;
+            min-width: 140px;
+            border-left: 4px solid #1e90ff;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .summary-card.yellow { border-color: #f59e0b; }
+        .summary-card.green  { border-color: #22c55e; }
+        .summary-card.red    { border-color: #ef4444; }
+
+        .summary-num {
+            font-size: 30px;
+            font-weight: 900;
+            color: #1e90ff;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .summary-card.yellow .summary-num { color: #f59e0b; }
+        .summary-card.green  .summary-num { color: #22c55e; }
+        .summary-card.red    .summary-num { color: #ef4444; }
+
+        .summary-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== TABLE CARD ===== */
+        .table-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+            overflow: hidden;
+        }
+
+        .table-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 28px;
+            border-bottom: 1px solid #f0f4ff;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .table-toolbar-title {
+            font-size: 16px;
+            font-weight: 900;
+            color: #1a1a2e;
+        }
+
+        .btn-refresh {
+            background: #f0f8ff;
+            color: #1e90ff;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-refresh:hover { background: #dbeeff; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr {
+            background: #f8faff;
+            border-bottom: 2px solid #eef2ff;
+        }
+
+        thead th {
+            padding: 14px 24px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 900;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #f5f7ff;
+            transition: background 0.15s;
+        }
+
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: #fafbff; }
+
+        tbody td {
+            padding: 16px 24px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #333;
+            vertical-align: middle;
+        }
+
+        .td-nama { font-weight: 800; color: #1a1a2e; }
+
+        .td-barang {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .barang-icon {
+            width: 34px; height: 34px;
+            background: #e8f4ff;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .status-badge {
+            font-size: 11px;
+            font-weight: 800;
+            padding: 5px 14px;
+            border-radius: 50px;
+            white-space: nowrap;
+        }
+
+        .status-diproses     { background: #fef9c3; color: #b45309; }
+        .status-disetujui    { background: #dcfce7; color: #16a34a; }
+        .status-ditolak      { background: #fee2e2; color: #dc2626; }
+        .status-dikembalikan { background: #e0f2fe; color: #0369a1; }
+
+        /* Aksi buttons */
+        .aksi-group { display: flex; gap: 8px; flex-wrap: wrap; }
+
+        .btn-terima {
+            background: linear-gradient(135deg, #1e90ff, #4ab3ff);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 18px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 10px rgba(30,144,255,0.3);
+            white-space: nowrap;
+        }
+
+        .btn-terima:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(30,144,255,0.4); }
+
+        .btn-tolak {
+            background: white;
+            color: #ef4444;
+            border: 2px solid #ef4444;
+            border-radius: 8px;
+            padding: 8px 18px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-tolak:hover { background: #fff0f0; }
+
+        .btn-selesai {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 18px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 10px rgba(34,197,94,0.3);
+            white-space: nowrap;
+        }
+
+        .btn-selesai:hover { transform: translateY(-1px); }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 56px 32px;
+        }
+
+        .empty-icon  { font-size: 48px; margin-bottom: 14px; }
+        .empty-title { font-size: 17px; font-weight: 800; color: #555; margin-bottom: 6px; }
+        .empty-desc  { font-size: 13px; color: #aaa; font-weight: 600; }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 28px; right: 28px;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 14px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            z-index: 999;
+            animation: slideUp 0.3s ease;
+        }
+
+        .toast.green { background: #22c55e; box-shadow: 0 6px 24px rgba(34,197,94,0.45); }
+        .toast.red   { background: #ef4444; box-shadow: 0 6px 24px rgba(239,68,68,0.45); }
+        .toast.blue  { background: #1e90ff; box-shadow: 0 6px 24px rgba(30,144,255,0.45); }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+    </style>
 </head>
-<body class="admin-page">
+<body>
+
+    <!-- NAVBAR -->
     <nav class="navbar">
-        <div class="nav-left"><a href="#" class="logo">Pinjam.in Admin</a></div>
+        <a href="#" class="logo">Pinjam.in <span>Admin</span></a>
         <div class="nav-right">
-            <span class="admin-name">Halo, Petugas Lab</span>
-            <a href="login.html" class="btn-logout">Keluar</a>
+            <span class="nav-greeting">Halo, <strong>Petugas Lab</strong></span>
+            <button class="btn-keluar" onclick="keluar()">Keluar</button>
         </div>
     </nav>
 
+    <!-- CONTENT -->
     <div class="wrapper">
-        <section class="dashboard-section">
-            <div class="dashboard-header">
-                <h2>Daftar Pengajuan Peminjaman</h2>
-                <p>Kelola permintaan alat praktikum siswa di sini.</p>
+
+        <div class="page-header">
+            <div class="page-title">Daftar Pengajuan Peminjaman</div>
+            <div class="page-subtitle">Kelola permintaan alat praktikum siswa di sini.</div>
+        </div>
+
+        <!-- Summary -->
+        <div class="summary-bar">
+            <div class="summary-card">
+                <div class="summary-num" id="sumTotal">0</div>
+                <div class="summary-label">Total Pengajuan</div>
+            </div>
+            <div class="summary-card yellow">
+                <div class="summary-num" id="sumDiproses">0</div>
+                <div class="summary-label">Menunggu</div>
+            </div>
+            <div class="summary-card green">
+                <div class="summary-num" id="sumDisetujui">0</div>
+                <div class="summary-label">Disetujui</div>
+            </div>
+            <div class="summary-card red">
+                <div class="summary-num" id="sumDitolak">0</div>
+                <div class="summary-label">Ditolak</div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-card">
+            <div class="table-toolbar">
+                <div class="table-toolbar-title">📋 Semua Pengajuan</div>
+                <button class="btn-refresh" onclick="renderTable()">🔄 Refresh</button>
             </div>
 
-            <div class="table-container">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>Peminjam</th>
-                            <th>Barang</th>
-                            <th>Jumlah</th>
-                            <th>Tanggal</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="loanTableBody">
-                        </tbody>
-                </table>
-            </div>
-        </section>
+            <div id="tableContainer"></div>
+        </div>
+
     </div>
 
+    <div class="toast" id="toast"></div>
+
     <script>
-        const role = localStorage.getItem('role');
-    if (role !== 'admin') {
-        alert("Akses Ditolak! Anda bukan Admin.");
-        window.location.href = 'login.html'; // Tendang balik ke login jika bukan admin
-    }
-        // Fungsi mengambil data dari endpoint /api/loans di server.js
-        async function loadLoans() {
+        function getIcon(barang) {
+            const icons = {
+                'Mikrotik': '🌐', 'Kabel HDMI': '🔌', 'Laptop': '💻',
+                'Switch Hub': '🔀', 'Access Point': '📡',
+                'Kabel LAN': '🔗', 'Raspberry Pi': '🖥️',
+            };
+            return icons[barang] || '📦';
+        }
+
+        function getStatusClass(status) {
+            const map = {
+                'Diproses': 'status-diproses', 'Disetujui': 'status-disetujui',
+                'Ditolak': 'status-ditolak',   'Dikembalikan': 'status-dikembalikan',
+            };
+            return map[status] || 'status-diproses';
+        }
+
+        function formatTanggal(dateStr) {
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' })
+                + '<br><small style="color:#aaa;font-weight:600;">'
+                + d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + '</small>';
+        }
+
+        async function renderTable() {
+            const container = document.getElementById('tableContainer');
+            container.innerHTML = `<div style="text-align:center;padding:40px;color:#aaa;font-weight:700;">⏳ Memuat data...</div>`;
+
             try {
-                const response = await fetch('http://localhost:3000/api/loans');
-                const loans = await response.json();
-                
-                const tableBody = document.getElementById('loanTableBody');
-                tableBody.innerHTML = ''; 
+                const res  = await fetch('/api/loans');
+                const json = await res.json();
 
-                // FILTER: Hanya tampilkan yang statusnya "Dipinjam"
-                const activeLoans = loans.filter(loan => loan.status === "Dipinjam");
+                // Update summary
+                const data = json.success ? json.data : [];
+                document.getElementById('sumTotal').textContent     = data.length;
+                document.getElementById('sumDiproses').textContent  = data.filter(d => d.status === 'Diproses').length;
+                document.getElementById('sumDisetujui').textContent = data.filter(d => d.status === 'Disetujui').length;
+                document.getElementById('sumDitolak').textContent   = data.filter(d => d.status === 'Ditolak').length;
 
-                if (activeLoans.length === 0) {
-                    tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Tidak ada pengajuan aktif.</td></tr>';
+                if (data.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">📭</div>
+                            <div class="empty-title">Belum ada pengajuan masuk</div>
+                            <div class="empty-desc">Data akan muncul otomatis saat siswa mengajukan peminjaman</div>
+                        </div>`;
                     return;
                 }
 
-                activeLoans.forEach(loan => {
-                    tableBody.innerHTML += `
-                        <tr>
-                            <td>${loan.borrowerName}</td>
-                            <td>${loan.itemName}</td>
-                            <td>${loan.quantity} unit</td>
-                            <td>${new Date(loan.date).toLocaleDateString('id-ID')}</td>
-                            <td>
-                                <button onclick="confirmReturn('${loan._id}', '${loan.itemName}', ${loan.quantity})" class="btn-submit">
-                                    Selesai
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                });
+                container.innerHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Peminjam</th>
+                                <th>Kelas</th>
+                                <th>Barang</th>
+                                <th>Durasi</th>
+                                <th>Tanggal</th>
+                                <th>Keperluan</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.map((d, i) => `
+                                <tr id="row-${d._id}">
+                                    <td>${i + 1}</td>
+                                    <td class="td-nama">${d.nama}</td>
+                                    <td>${d.kelas}</td>
+                                    <td>
+                                        <div class="td-barang">
+                                            <div class="barang-icon">${getIcon(d.barang)}</div>
+                                            ${d.barang}
+                                        </div>
+                                    </td>
+                                    <td>${d.durasi} Hari</td>
+                                    <td>${formatTanggal(d.createdAt)}</td>
+                                    <td style="max-width:180px;color:#666;">${d.keperluan}</td>
+                                    <td><span class="status-badge ${getStatusClass(d.status)}">${d.status}</span></td>
+                                    <td>
+                                        <div class="aksi-group">
+                                            ${d.status === 'Diproses' ? `
+                                                <button class="btn-terima" onclick="ubahStatus('${d._id}', 'Disetujui')">✅ Terima</button>
+                                                <button class="btn-tolak"  onclick="ubahStatus('${d._id}', 'Ditolak')">✕ Tolak</button>
+                                            ` : d.status === 'Disetujui' ? `
+                                                <button class="btn-selesai" onclick="ubahStatus('${d._id}', 'Dikembalikan')">📦 Selesai / Terima</button>
+                                            ` : `
+                                                <span style="color:#ccc;font-size:13px;font-weight:700;">—</span>
+                                            `}
+                                        </div>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>`;
+
             } catch (err) {
-                console.error("Gagal memuat data admin:", err);
+                container.innerHTML = `<div style="text-align:center;padding:40px;color:#ef4444;font-weight:700;">❌ Gagal memuat data. Pastikan server berjalan.</div>`;
             }
         }
 
-        async function confirmReturn(id, itemName, quantity) {
-            if(confirm(`Konfirmasi pengembalian ${itemName}?`)) {
-                const res = await fetch(`http://localhost:3000/api/return-item/${id}`, {
-                    method: 'PUT',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ itemName, quantity })
+        async function ubahStatus(id, statusBaru) {
+            try {
+                const res  = await fetch(`/api/loans/${id}`, {
+                    method:  'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify({ status: statusBaru })
                 });
-                const result = await res.json();
-                if(result.success) {
-                    alert(result.message);
-                    loadLoans(); // Refresh tabel otomatis
+                const json = await res.json();
+
+                if (json.success) {
+                    const pesan = {
+                        'Disetujui':    { teks: '✅ Pengajuan berhasil diterima!', kelas: 'green' },
+                        'Ditolak':      { teks: '❌ Pengajuan ditolak.',            kelas: 'red'   },
+                        'Dikembalikan': { teks: '📦 Barang telah dikembalikan.',    kelas: 'blue'  },
+                    };
+                    showToast(pesan[statusBaru].teks, pesan[statusBaru].kelas);
+                    renderTable();
+                } else {
+                    alert('Gagal update: ' + json.message);
                 }
+            } catch (err) {
+                alert('Error koneksi ke server!');
             }
         }
 
-        loadLoans(); // Jalankan saat halaman dibuka
+        function showToast(teks, kelas) {
+            const toast = document.getElementById('toast');
+            toast.textContent = teks;
+            toast.className = `toast ${kelas}`;
+            toast.style.display = 'flex';
+            setTimeout(() => toast.style.display = 'none', 2500);
+        }
+
+        function keluar() {
+            if (confirm('Yakin ingin keluar dari halaman admin?')) {
+                localStorage.clear();
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Init
+        renderTable();
     </script>
 </body>
 </html>

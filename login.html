@@ -50,14 +50,14 @@
             return;
         }
 
-        const email = usernameInput.value; // Nilai ini akan dikirim ke backend
+        const username = usernameInput.value.trim();// Nilai ini akan dikirim ke backend
         const password = passwordInput.value;
 
             try {
-                const response = await fetch('http://localhost:3000/api/login', {
+                const response = await fetch('/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({ username, password })
                 });
 
                 const result = await response.json();

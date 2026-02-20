@@ -4,5 +4,10 @@
     "express": "^5.2.1",
     "fs": "^0.0.1-security",
     "mongoose": "^9.1.6"
+  },
+  "scripts": {
+    "dev": "nodemon server.js"
   }
 }
+
+
