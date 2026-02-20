@@ -174,7 +174,19 @@
             min-height: 110px;
         }
 
-        .form-input.error { border-color: #ef4444; }
+        /* Stok info di bawah dropdown barang */
+        .stok-badge {
+            display: none;
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 50px;
+            width: fit-content;
+        }
+        .stok-badge.ok    { background: #ecfdf5; color: #16a34a; }
+        .stok-badge.low   { background: #fffbeb; color: #d97706; }
+        .stok-badge.habis { background: #fef2f2; color: #dc2626; }
 
         /* Durasi info */
         .durasi-info {
@@ -207,24 +219,31 @@
             box-shadow: 0 8px 24px rgba(30,144,255,0.45);
         }
 
+        .btn-submit:disabled {
+            background: #aaa;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
         /* Toast */
         .toast {
             position: fixed;
             bottom: 28px;
             right: 28px;
-            background: #22c55e;
             color: white;
             padding: 14px 28px;
             border-radius: 50px;
             font-weight: 800;
             font-size: 14px;
-            box-shadow: 0 6px 24px rgba(34,197,94,0.45);
             display: none;
             align-items: center;
             gap: 8px;
             z-index: 999;
             animation: slideUp 0.3s ease;
         }
+        .toast.success { background: #22c55e; box-shadow: 0 6px 24px rgba(34,197,94,0.45); }
+        .toast.error   { background: #ef4444; box-shadow: 0 6px 24px rgba(239,68,68,0.45); }
 
         @keyframes slideUp {
             from { transform: translateY(20px); opacity: 0; }
@@ -248,7 +267,6 @@
         </div>
     </nav>
 
-
     <!-- FORM -->
     <div class="wrapper">
         <div class="card">
@@ -267,7 +285,7 @@
 
             <div class="form-group">
                 <label class="form-label">Barang yang Dipinjam</label>
-                <select class="form-select" id="inpBarang">
+                <select class="form-select" id="inpBarang" onchange="cekStokBarang()">
                     <option value="">-- Pilih Barang --</option>
                     <option value="Mikrotik">Mikrotik</option>
                     <option value="Kabel HDMI">Kabel HDMI</option>
@@ -277,6 +295,8 @@
                     <option value="Kabel LAN">Kabel LAN</option>
                     <option value="Raspberry Pi">Raspberry Pi</option>
                 </select>
+                <!-- Badge stok real-time -->
+                <div class="stok-badge" id="stokBadge"></div>
             </div>
 
             <div class="form-group">
@@ -290,16 +310,82 @@
                 <textarea class="form-textarea" id="inpKeperluan" placeholder="Contoh: Untuk Praktik Jaringan Dasar"></textarea>
             </div>
 
-            <button class="btn-submit" onclick="ajukan()">Ajukan Peminjaman</button>
+            <button class="btn-submit" id="btnSubmit" onclick="ajukan()">Ajukan Peminjaman</button>
         </div>
     </div>
 
-    <div class="toast" id="toast">✅ Pengajuan berhasil dikirim!</div>
+    <div class="toast" id="toast"></div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const username = localStorage.getItem('username');
+        // Cache data stok dari API
+        let stokData = [];
+
+        // ============================================================
+        // Load semua stok barang dari API saat halaman dibuka
+        // ============================================================
+        async function loadStok() {
+            try {
+                const res  = await fetch('/api/items');
+                const json = await res.json();
+                if (json.success) stokData = json.data;
+            } catch (err) {
+                console.warn('Gagal load stok:', err);
+            }
+        }
+
+        // ============================================================
+        // Cek stok barang yang dipilih di dropdown
+        // ============================================================
+        function cekStokBarang() {
+            const namaBarang = document.getElementById('inpBarang').value;
+            const badge      = document.getElementById('stokBadge');
+            const btnSubmit  = document.getElementById('btnSubmit');
+
+            if (!namaBarang) {
+                badge.style.display = 'none';
+                btnSubmit.disabled  = false;
+                return;
+            }
+
+            // Cari di data stok
+            const item = stokData.find(i =>
+                i.name.toLowerCase().includes(namaBarang.toLowerCase()) ||
+                namaBarang.toLowerCase().includes(i.name.toLowerCase().split(' ')[0])
+            );
+
+            if (item) {
+                const stok = item.quantity;
+                badge.style.display = 'block';
+
+                if (stok <= 0) {
+                    badge.className    = 'stok-badge habis';
+                    badge.textContent  = '⛔ Stok Habis — Tidak bisa dipinjam';
+                    btnSubmit.disabled = true;
+                } else if (stok <= 3) {
+                    badge.className    = 'stok-badge low';
+                    badge.textContent  = `⚠️ Stok tersisa: ${stok}`;
+                    btnSubmit.disabled = false;
+                } else {
+                    badge.className    = 'stok-badge ok';
+                    badge.textContent  = `✅ Stok tersedia: ${stok}`;
+                    btnSubmit.disabled = false;
+                }
+            } else {
+                badge.style.display = 'none';
+                btnSubmit.disabled  = false;
+            }
+        }
+
+        // ============================================================
+        // DOMContentLoaded — setup navbar & auto-fill
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', async function () {
+            // Load stok terlebih dahulu
+            await loadStok();
+
+            const username      = localStorage.getItem('username');
             const authContainer = document.getElementById('auth-buttons');
+
             if (username) {
                 authContainer.innerHTML = `
                     <a href="user.html" class="btn-user">👤 Akun Saya</a>
@@ -314,6 +400,27 @@
                             if (json.angkatan) document.getElementById('inpKelas').value = json.angkatan;
                         }
                     }).catch(() => {});
+            }
+
+            // Auto-pilih barang dari URL parameter (?barang=NamaBarang)
+            const urlParams     = new URLSearchParams(window.location.search);
+            const barangDipilih = urlParams.get('barang');
+            if (barangDipilih) {
+                const select = document.getElementById('inpBarang');
+                for (let option of select.options) {
+                    if (option.value.toLowerCase() === barangDipilih.toLowerCase()) {
+                        option.selected = true;
+                        select.style.borderColor = '#1e90ff';
+                        select.style.boxShadow   = '0 0 0 4px rgba(30,144,255,0.15)';
+                        setTimeout(() => {
+                            select.style.borderColor = '';
+                            select.style.boxShadow   = '';
+                        }, 2000);
+                        break;
+                    }
+                }
+                // Langsung cek stok barang yang dipilih dari URL
+                cekStokBarang();
             }
         });
 
@@ -331,6 +438,20 @@
             }
         });
 
+        // ============================================================
+        // Tampilkan toast notifikasi
+        // ============================================================
+        function showToast(msg, type = 'success') {
+            const toast     = document.getElementById('toast');
+            toast.textContent  = msg;
+            toast.className    = `toast ${type}`;
+            toast.style.display = 'flex';
+            setTimeout(() => toast.style.display = 'none', 2500);
+        }
+
+        // ============================================================
+        // Submit form — simpan peminjaman + kurangi stok di MongoDB
+        // ============================================================
         async function ajukan() {
             const nama      = document.getElementById('inpNama').value.trim();
             const kelas     = document.getElementById('inpKelas').value.trim();
@@ -339,7 +460,7 @@
             const keperluan = document.getElementById('inpKeperluan').value.trim();
             const username  = localStorage.getItem('username') || '';
 
-            // Validasi
+            // Validasi field kosong
             const fields = [
                 { id: 'inpNama',      val: nama },
                 { id: 'inpKelas',     val: kelas },
@@ -358,28 +479,68 @@
                 }
             });
 
-            if (!valid) { alert('Harap isi semua field terlebih dahulu!'); return; }
+            if (!valid) {
+                showToast('⚠️ Harap isi semua field terlebih dahulu!', 'error');
+                return;
+            }
+
+            // Cek stok sekali lagi sebelum submit (validasi sisi klien)
+            const item = stokData.find(i =>
+                i.name.toLowerCase().includes(barang.toLowerCase()) ||
+                barang.toLowerCase().includes(i.name.toLowerCase().split(' ')[0])
+            );
+            if (item && item.quantity <= 0) {
+                showToast('⛔ Stok barang ini sudah habis!', 'error');
+                return;
+            }
+
+            const btnSubmit = document.getElementById('btnSubmit');
+            btnSubmit.disabled    = true;
+            btnSubmit.textContent = 'Memproses...';
 
             try {
-                const res  = await fetch('/api/loans', {
+                // STEP 1: Simpan data peminjaman ke database
+                const resLoan  = await fetch('/api/loans', {
                     method:  'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body:    JSON.stringify({ nama, kelas, barang, durasi, keperluan, username })
                 });
-                const json = await res.json();
+                const jsonLoan = await resLoan.json();
 
-                if (json.success) {
-                    const toast = document.getElementById('toast');
-                    toast.style.display = 'flex';
-                    setTimeout(() => {
-                        toast.style.display = 'none';
-                        window.location.href = 'konfirmasi.html';
-                    }, 1800);
-                } else {
-                    alert('Gagal mengajukan: ' + json.message);
+                if (!jsonLoan.success) {
+                    showToast('❌ Gagal mengajukan: ' + jsonLoan.message, 'error');
+                    btnSubmit.disabled    = false;
+                    btnSubmit.textContent = 'Ajukan Peminjaman';
+                    return;
                 }
+
+                // STEP 2: Kurangi stok barang di MongoDB via /api/borrow
+                const resBorrow  = await fetch('/api/borrow', {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify({ item: barang, jumlah: 1, nama, kelas })
+                });
+                const jsonBorrow = await resBorrow.json();
+
+                if (!jsonBorrow.success) {
+                    // Peminjaman sudah tersimpan, tapi stok gagal dikurangi
+                    // Tetap lanjutkan tapi beri peringatan di console
+                    console.warn('Stok gagal dikurangi:', jsonBorrow.message);
+                }
+
+                // Update cache stok lokal
+                await loadStok();
+
+                // Sukses — tampilkan toast dan redirect
+                showToast('✅ Pengajuan berhasil dikirim!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'konfirmasi.html';
+                }, 1800);
+
             } catch (err) {
-                alert('Error koneksi ke server!');
+                showToast('❌ Error koneksi ke server!', 'error');
+                btnSubmit.disabled    = false;
+                btnSubmit.textContent = 'Ajukan Peminjaman';
             }
         }
     </script>

@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
+const cron = require('node-cron'); // ✅ BARU: npm install node-cron
 const app = express();
 
 app.use(express.json());
@@ -13,6 +14,7 @@ mongoose.connect('mongodb://localhost:27017/sija_pinjam_db')
   .then(() => {
     console.log('Koneksi MongoDB SIJA Berhasil!');
     seedDatabase();
+    startCronJob(); // ✅ BARU: jalankan cron setelah koneksi berhasil
   })
   .catch(err => console.error('Koneksi Gagal:', err));
 
@@ -21,12 +23,10 @@ mongoose.connect('mongodb://localhost:27017/sija_pinjam_db')
 // ===== SCHEMA & MODEL
 // ============================================================
 
-// Schema User (ditambah field profil lengkap)
 const userSchema = new mongoose.Schema({
     username:  { type: String, unique: true, required: true },
     password:  { type: String, required: true },
     role:      { type: String, enum: ['user', 'admin'], default: 'user' },
-    // Data profil
     nama:      { type: String, default: '' },
     nis:       { type: String, default: '' },
     telepon:   { type: String, default: '' },
@@ -36,7 +36,6 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-// Schema Barang
 const itemSchema = new mongoose.Schema({
     name:        String,
     img:         String,
@@ -45,15 +44,16 @@ const itemSchema = new mongoose.Schema({
 });
 const Item = mongoose.model('Item', itemSchema);
 
-// Schema Peminjaman (dilengkapi field dari form)
+// ✅ Ditambah status 'Pengajuan Kembali' + field deadlineAt (BARU)
 const loanSchema = new mongoose.Schema({
     nama:       { type: String, required: true },
     kelas:      { type: String, required: true },
     barang:     { type: String, required: true },
     durasi:     { type: String, required: true },
     keperluan:  { type: String, required: true },
-    status:     { type: String, enum: ['Diproses', 'Disetujui', 'Ditolak', 'Dikembalikan'], default: 'Diproses' },
-    username:   { type: String, default: '' }, // untuk filter per user
+    status:     { type: String, enum: ['Diproses', 'Disetujui', 'Ditolak', 'Dikembalikan', 'Pengajuan Kembali'], default: 'Diproses' },
+    username:   { type: String, default: '' },
+    deadlineAt: { type: Date, default: null }, // ✅ BARU: batas waktu pengembalian
 }, { timestamps: true });
 
 const Loan = mongoose.model('Loan', loanSchema);
@@ -65,7 +65,6 @@ const Loan = mongoose.model('Loan', loanSchema);
 
 async function seedDatabase() {
     try {
-        // Seed barang dari items.json
         const itemCount = await Item.countDocuments();
         if (itemCount === 0) {
             if (fs.existsSync('./items.json')) {
@@ -76,7 +75,6 @@ async function seedDatabase() {
             }
         }
 
-        // Seed akun admin otomatis
         const adminExists = await User.findOne({ role: 'admin' });
         if (!adminExists) {
             await User.create({
@@ -94,10 +92,49 @@ async function seedDatabase() {
 
 
 // ============================================================
+// ===== ✅ BARU: CRON JOB — Cek deadline setiap menit
+// ============================================================
+
+function startCronJob() {
+    cron.schedule('* * * * *', async () => {
+        try {
+            const sekarang = new Date();
+
+            // Cari peminjaman Disetujui yang sudah melewati deadline
+            const kadaluarsa = await Loan.find({
+                status:     'Disetujui',
+                deadlineAt: { $lte: sekarang, $ne: null }
+            });
+
+            if (kadaluarsa.length === 0) return;
+
+            console.log(`[CRON] ${kadaluarsa.length} peminjaman kadaluarsa, memproses...`);
+
+            for (const loan of kadaluarsa) {
+                // Ubah status jadi Dikembalikan
+                await Loan.findByIdAndUpdate(loan._id, { status: 'Dikembalikan', deadlineAt: null });
+
+                // Tambah stok barang otomatis
+                await Item.updateOne(
+                    { name: { $regex: new RegExp('^' + loan.barang.trim() + '$', 'i') } },
+                    { $inc: { quantity: 1 } }
+                );
+
+                console.log(`[CRON] "${loan.barang}" oleh ${loan.nama} — otomatis dikembalikan, stok +1`);
+            }
+        } catch (err) {
+            console.error('[CRON] Error:', err.message);
+        }
+    });
+
+    console.log('✅ Cron job aktif — pengecekan deadline setiap menit');
+}
+
+
+// ============================================================
 // ===== AUTH ENDPOINTS
 // ============================================================
 
-// REGISTER
 app.post('/api/register', async (req, res) => {
     try {
         const { username, password, role } = req.body;
@@ -115,13 +152,11 @@ app.post('/api/register', async (req, res) => {
     }
 });
 
-// LOGIN
 app.post('/api/login', async (req, res) => {
     try {
         const { username, password } = req.body;
         const usernameRegex = new RegExp('^' + username.trim() + '$', 'i');
 
-        // Case-insensitive: cocokkan username atau email
         const user = await User.findOne({
             $or: [
                 { username: { $regex: usernameRegex } },
@@ -139,7 +174,6 @@ app.post('/api/login', async (req, res) => {
             });
         }
 
-        // Cek apakah username ada tapi password salah
         const userExists = await User.findOne({
             $or: [
                 { username: { $regex: usernameRegex } },
@@ -162,7 +196,6 @@ app.post('/api/login', async (req, res) => {
 // ===== PROFIL USER ENDPOINTS
 // ============================================================
 
-// GET profil user
 app.get('/api/profil/:username', async (req, res) => {
     try {
         const user = await User.findOne({ username: req.params.username });
@@ -183,7 +216,6 @@ app.get('/api/profil/:username', async (req, res) => {
     }
 });
 
-// UPDATE profil user
 app.put('/api/profil/:username', async (req, res) => {
     try {
         const { nama, nis, telepon, email, angkatan } = req.body;
@@ -207,7 +239,6 @@ app.put('/api/profil/:username', async (req, res) => {
 // ===== PEMINJAMAN ENDPOINTS
 // ============================================================
 
-// POST - Ajukan peminjaman baru (dari form peminjaman.html)
 app.post('/api/loans', async (req, res) => {
     try {
         const { nama, kelas, barang, durasi, keperluan, username } = req.body;
@@ -225,7 +256,6 @@ app.post('/api/loans', async (req, res) => {
     }
 });
 
-// GET - Semua peminjaman (untuk admin.html)
 app.get('/api/loans', async (req, res) => {
     try {
         const loans = await Loan.find().sort({ createdAt: -1 });
@@ -235,7 +265,6 @@ app.get('/api/loans', async (req, res) => {
     }
 });
 
-// GET - Peminjaman per user (untuk riwayat.html)
 app.get('/api/loans/user/:username', async (req, res) => {
     try {
         const loans = await Loan.find({ username: req.params.username }).sort({ createdAt: -1 });
@@ -245,19 +274,38 @@ app.get('/api/loans/user/:username', async (req, res) => {
     }
 });
 
-// PUT - Update status peminjaman (dari admin.html)
+// ✅ Ditambah 'Pengajuan Kembali' ke validStatus
+// ✅ BARU: Set deadlineAt otomatis saat status diubah ke Disetujui
 app.put('/api/loans/:id', async (req, res) => {
     try {
         const { status } = req.body;
-        const validStatus = ['Diproses', 'Disetujui', 'Ditolak', 'Dikembalikan'];
+        const validStatus = ['Diproses', 'Disetujui', 'Ditolak', 'Dikembalikan', 'Pengajuan Kembali'];
 
         if (!validStatus.includes(status)) {
             return res.status(400).json({ success: false, message: 'Status tidak valid!' });
         }
 
+        let updateData = { status };
+
+        // ✅ BARU: Set deadlineAt berdasarkan durasi (hari) saat disetujui
+        if (status === 'Disetujui') {
+            const loan = await Loan.findById(req.params.id);
+            if (loan) {
+                const durasiHari      = parseInt(loan.durasi) || 1;
+                const deadline        = new Date();
+                deadline.setDate(deadline.getDate() + durasiHari);
+                updateData.deadlineAt = deadline;
+            }
+        }
+
+        // ✅ BARU: Hapus deadline saat dikembalikan atau ditolak
+        if (status === 'Dikembalikan' || status === 'Ditolak') {
+            updateData.deadlineAt = null;
+        }
+
         const loan = await Loan.findByIdAndUpdate(
             req.params.id,
-            { status },
+            updateData,
             { new: true }
         );
 
@@ -269,7 +317,6 @@ app.put('/api/loans/:id', async (req, res) => {
     }
 });
 
-// DELETE - Hapus data peminjaman
 app.delete('/api/loans/:id', async (req, res) => {
     try {
         await Loan.findByIdAndDelete(req.params.id);
@@ -284,7 +331,6 @@ app.delete('/api/loans/:id', async (req, res) => {
 // ===== BARANG ENDPOINTS
 // ============================================================
 
-// GET semua barang
 app.get('/api/items', async (req, res) => {
     try {
         const items = await Item.find();
@@ -294,10 +340,10 @@ app.get('/api/items', async (req, res) => {
     }
 });
 
-// POST peminjaman barang (kurangi stok)
+// Kurangi stok saat peminjaman
 app.post('/api/borrow', async (req, res) => {
     try {
-        const { item, nama, kelas, jumlah } = req.body;
+        const { item, jumlah } = req.body;
 
         const dataBarang = await Item.findOne({
             name: { $regex: new RegExp('^' + item.trim() + '$', 'i') }
@@ -313,7 +359,28 @@ app.post('/api/borrow', async (req, res) => {
 
         await Item.updateOne({ _id: dataBarang._id }, { $inc: { quantity: -jumlah } });
 
-        res.json({ success: true, message: 'Stok berhasil diupdate!' });
+        res.json({ success: true, message: 'Stok berhasil dikurangi!' });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
+});
+
+// ✅ BARU: Tambah stok saat barang dikembalikan (dikonfirmasi admin)
+app.post('/api/return', async (req, res) => {
+    try {
+        const { item, jumlah } = req.body;
+
+        const dataBarang = await Item.findOne({
+            name: { $regex: new RegExp('^' + item.trim() + '$', 'i') }
+        });
+
+        if (!dataBarang) {
+            return res.status(404).json({ success: false, message: 'Barang tidak ditemukan' });
+        }
+
+        await Item.updateOne({ _id: dataBarang._id }, { $inc: { quantity: jumlah } });
+
+        res.json({ success: true, message: 'Stok berhasil ditambah!' });
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });
     }

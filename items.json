@@ -1,19 +1,19 @@
 [
   {
     "name": "Laptop",
-    "img": "img/laptop.jpg",
+    "img": "/assets/img/laptop.jpg",
     "description": "Laptop untuk keperluan komputasi dan presentasi.",
-    "quantity": 5
+    "quantity": 10
   },
   {
     "name": "Proyektor",
     "img": "img/proyektor.jpg",
     "description": "Proyektor untuk presentasi dan tayangan video.",
-    "quantity": 3
+    "quantity": 10
   },
   {
     "name": "Kabel HDMI",
-    "img": "img/kabel_hdmi.jpg",
+    "img": "/assets/img/kabel_hdmi.jpg",
     "description": "Kabel HDMI untuk menghubungkan perangkat audio-visual.",
     "quantity": 10
   },
@@ -21,30 +21,30 @@
     "name": "Mouse",
     "img": "img/mouse.jpg",
     "description": "Mouse wireless untuk navigasi komputer.",
-    "quantity": 8
+    "quantity": 10
   },
   {
     "name": "Keyboard",
     "img": "img/keyboard.jpg",
     "description": "Keyboard mekanik untuk mengetik.",
-    "quantity": 6
+    "quantity": 10
   },
   {
     "name": "Mikrotik",
-    "img": "img/mikrotik.jpg",
+    "img": "/assets/img/mikrotik.jpg",
     "description": "Mikrotik untuk melakukan tugas jaringan",
-    "quantity": 4
+    "quantity": 10
   },
   {
     "name": "Nodemcu",
     "img": "img/nodemcu.jpg",
     "description": "Nodemcu untuk membantu tugas IoT",
-    "quantity": 7
+    "quantity": 10
   },
   {
     "name": "Arduino",
     "img": "img/arduino.jpg",
     "description": "Arduino untuk membantu tugas mikrokontroller",
-    "quantity": 5
+    "quantity": 10
   }
 ]

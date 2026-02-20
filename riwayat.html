@@ -14,7 +14,6 @@
             color: #1a1a2e;
         }
 
-        /* ===== NAVBAR ===== */
         .navbar {
             display: flex;
             align-items: center;
@@ -28,152 +27,71 @@
             z-index: 100;
         }
 
-        .logo {
-            font-size: 22px;
-            font-weight: 900;
-            color: #1e90ff;
-            text-decoration: none;
-        }
-
+        .logo { font-size: 22px; font-weight: 900; color: #1e90ff; text-decoration: none; }
         .logo span { color: #1a1a2e; }
-
         .nav-center { display: flex; gap: 4px; }
-
         .nav-center a {
-            text-decoration: none;
-            color: #666;
-            font-weight: 700;
-            font-size: 14px;
-            padding: 8px 18px;
-            border-radius: 50px;
-            transition: all 0.2s;
+            text-decoration: none; color: #666; font-weight: 700; font-size: 14px;
+            padding: 8px 18px; border-radius: 50px; transition: all 0.2s;
         }
-
         .nav-center a:hover { background: #f0f8ff; color: #1e90ff; }
         .nav-center a.active { background: #e8f4ff; color: #1e90ff; }
-
         .nav-right { display: flex; gap: 10px; align-items: center; }
-
         .btn-login-nav {
-            text-decoration: none;
-            color: #1e90ff;
-            font-weight: 700;
-            font-size: 14px;
-            padding: 9px 22px;
-            border-radius: 50px;
-            border: 2px solid #1e90ff;
-            transition: all 0.2s;
+            text-decoration: none; color: #1e90ff; font-weight: 700; font-size: 14px;
+            padding: 9px 22px; border-radius: 50px; border: 2px solid #1e90ff; transition: all 0.2s;
         }
-
         .btn-register-nav {
-            text-decoration: none;
-            color: white;
-            font-weight: 700;
-            font-size: 14px;
-            padding: 9px 22px;
-            border-radius: 50px;
+            text-decoration: none; color: white; font-weight: 700; font-size: 14px;
+            padding: 9px 22px; border-radius: 50px;
             background: linear-gradient(135deg, #22c55e, #16a34a);
         }
-
         .btn-user {
-            text-decoration: none;
-            color: white;
-            font-weight: 700;
-            font-size: 14px;
-            padding: 9px 22px;
-            border-radius: 50px;
+            text-decoration: none; color: white; font-weight: 700; font-size: 14px;
+            padding: 9px 22px; border-radius: 50px;
             background: linear-gradient(135deg, #1e90ff, #4ab3ff);
             box-shadow: 0 4px 14px rgba(30,144,255,0.35);
         }
-
         .btn-logout {
-            color: #ef4444;
-            font-weight: 700;
-            font-size: 14px;
-            padding: 9px 22px;
-            border-radius: 50px;
-            border: 2px solid #ef4444;
-            background: none;
-            cursor: pointer;
-            font-family: 'Nunito', sans-serif;
+            color: #ef4444; font-weight: 700; font-size: 14px; padding: 9px 22px;
+            border-radius: 50px; border: 2px solid #ef4444; background: none;
+            cursor: pointer; font-family: 'Nunito', sans-serif;
         }
 
-        /* ===== WRAPPER ===== */
-        .wrapper {
-            max-width: 900px;
-            margin: 48px auto;
-            padding: 0 24px 64px;
-        }
+        .wrapper { max-width: 900px; margin: 48px auto; padding: 0 24px 64px; }
 
-        /* Header row */
         .page-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 28px;
-            flex-wrap: wrap;
-            gap: 12px;
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 28px; flex-wrap: wrap; gap: 12px;
         }
-
-        .page-title {
-            font-size: 24px;
-            font-weight: 900;
-            color: #1a1a2e;
-        }
-
-        .page-subtitle {
-            font-size: 13px;
-            color: #999;
-            font-weight: 600;
-            margin-top: 4px;
-        }
+        .page-title { font-size: 24px; font-weight: 900; color: #1a1a2e; }
+        .page-subtitle { font-size: 13px; color: #999; font-weight: 600; margin-top: 4px; }
 
         .btn-ajukan {
             text-decoration: none;
             background: linear-gradient(135deg, #1e90ff, #4ab3ff);
-            color: white;
-            font-weight: 800;
-            font-size: 14px;
-            padding: 12px 28px;
-            border-radius: 50px;
-            box-shadow: 0 4px 16px rgba(30,144,255,0.35);
-            transition: all 0.2s;
-            white-space: nowrap;
+            color: white; font-weight: 800; font-size: 14px;
+            padding: 12px 28px; border-radius: 50px;
+            box-shadow: 0 4px 16px rgba(30,144,255,0.35); transition: all 0.2s; white-space: nowrap;
         }
-
         .btn-ajukan:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(30,144,255,0.45); }
 
-        /* Empty state */
         .empty-state {
-            background: white;
-            border-radius: 20px;
-            padding: 64px 32px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(30,144,255,0.08);
-            border: 1.5px solid #eef2ff;
+            background: white; border-radius: 20px; padding: 64px 32px; text-align: center;
+            box-shadow: 0 4px 20px rgba(30,144,255,0.08); border: 1.5px solid #eef2ff;
         }
-
         .empty-icon { font-size: 52px; margin-bottom: 16px; }
         .empty-title { font-size: 18px; font-weight: 800; color: #444; margin-bottom: 8px; }
         .empty-desc  { font-size: 14px; color: #aaa; font-weight: 600; }
 
-        /* Cards */
         .riwayat-list { display: flex; flex-direction: column; gap: 16px; }
 
         .riwayat-card {
-            background: white;
-            border-radius: 20px;
-            padding: 24px 28px;
-            box-shadow: 0 4px 20px rgba(30,144,255,0.08);
-            border: 1.5px solid #eef2ff;
-            transition: transform 0.2s, box-shadow 0.2s;
-            animation: fadeIn 0.4s ease;
+            background: white; border-radius: 20px; padding: 24px 28px;
+            box-shadow: 0 4px 20px rgba(30,144,255,0.08); border: 1.5px solid #eef2ff;
+            transition: transform 0.2s, box-shadow 0.2s; animation: fadeIn 0.4s ease;
         }
-
-        .riwayat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 28px rgba(30,144,255,0.14);
-        }
+        .riwayat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(30,144,255,0.14); }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(12px); }
@@ -181,126 +99,112 @@
         }
 
         .card-top {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            margin-bottom: 16px;
-            gap: 12px;
-            flex-wrap: wrap;
+            display: flex; align-items: flex-start; justify-content: space-between;
+            margin-bottom: 16px; gap: 12px; flex-wrap: wrap;
         }
 
         .barang-name {
-            font-size: 18px;
-            font-weight: 900;
-            color: #1a1a2e;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 18px; font-weight: 900; color: #1a1a2e;
+            display: flex; align-items: center; gap: 10px;
         }
 
         .barang-icon {
-            width: 40px; height: 40px;
-            background: #e8f4ff;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            flex-shrink: 0;
+            width: 40px; height: 40px; background: #e8f4ff; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
         }
+
+        .badge-area { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
         .status-badge {
-            font-size: 12px;
-            font-weight: 800;
-            padding: 6px 16px;
-            border-radius: 50px;
-            white-space: nowrap;
+            font-size: 12px; font-weight: 800; padding: 6px 16px;
+            border-radius: 50px; white-space: nowrap;
         }
-
-        .status-diproses  { background: #fef9c3; color: #b45309; }
-        .status-disetujui { background: #dcfce7; color: #16a34a; }
-        .status-ditolak   { background: #fee2e2; color: #dc2626; }
-        .status-dikembalikan { background: #e0f2fe; color: #0369a1; }
+        .status-diproses         { background: #fef9c3; color: #b45309; }
+        .status-disetujui        { background: #dcfce7; color: #16a34a; }
+        .status-ditolak          { background: #fee2e2; color: #dc2626; }
+        .status-dikembalikan     { background: #e0f2fe; color: #0369a1; }
+        .status-pengajuan-kembali { background: #fce7f3; color: #be185d; }
 
         .card-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 12px;
-            padding-top: 16px;
-            border-top: 1px solid #f0f4ff;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px; padding-top: 16px; border-top: 1px solid #f0f4ff;
         }
-
-        .detail-item { }
-
         .detail-label {
-            font-size: 11px;
-            font-weight: 800;
-            color: #bbb;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 4px;
+            font-size: 11px; font-weight: 800; color: #bbb;
+            text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;
         }
+        .detail-value { font-size: 14px; font-weight: 700; color: #333; }
 
-        .detail-value {
-            font-size: 14px;
-            font-weight: 700;
-            color: #333;
+        /* Tombol aksi bawah card */
+        .card-actions { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .btn-kembalikan {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white; border: none; border-radius: 10px;
+            padding: 10px 22px; font-family: 'Nunito', sans-serif;
+            font-weight: 800; font-size: 13px; cursor: pointer;
+            box-shadow: 0 3px 12px rgba(245,158,11,0.35); transition: all 0.2s;
         }
+        .btn-kembalikan:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(245,158,11,0.45); }
 
-        /* Hapus btn */
         .btn-hapus {
-            background: none;
-            border: none;
-            color: #ccc;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 8px;
-            transition: all 0.2s;
-            font-family: 'Nunito', sans-serif;
+            background: none; border: none; color: #ccc; font-size: 18px; cursor: pointer;
+            padding: 4px 8px; border-radius: 8px; transition: all 0.2s; font-family: 'Nunito', sans-serif;
         }
-
         .btn-hapus:hover { background: #fee2e2; color: #ef4444; }
 
-        /* Summary bar */
-        .summary-bar {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 28px;
-            flex-wrap: wrap;
-        }
-
+        .summary-bar { display: flex; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
         .summary-item {
-            background: white;
-            border-radius: 16px;
-            padding: 16px 24px;
-            flex: 1;
-            min-width: 140px;
-            text-align: center;
-            box-shadow: 0 2px 12px rgba(30,144,255,0.08);
-            border: 1.5px solid #eef2ff;
+            background: white; border-radius: 16px; padding: 16px 24px; flex: 1;
+            min-width: 140px; text-align: center;
+            box-shadow: 0 2px 12px rgba(30,144,255,0.08); border: 1.5px solid #eef2ff;
         }
+        .summary-num { font-size: 28px; font-weight: 900; color: #1e90ff; line-height: 1; margin-bottom: 6px; }
+        .summary-label { font-size: 12px; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .summary-num {
-            font-size: 28px;
-            font-weight: 900;
-            color: #1e90ff;
-            line-height: 1;
-            margin-bottom: 6px;
+        /* ✅ BARU: Countdown timer */
+        .countdown-box {
+            margin-top: 14px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            background: #f0fdf4;
+            border: 1.5px solid #bbf7d0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
+        .countdown-box.warning { background: #fffbeb; border-color: #fde68a; }
+        .countdown-box.danger  { background: #fef2f2; border-color: #fecaca; }
+        .countdown-label {
+            font-size: 11px; font-weight: 800; color: #666;
+            text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;
+        }
+        .countdown-timer {
+            font-size: 20px; font-weight: 900; color: #16a34a;
+            font-variant-numeric: tabular-nums; letter-spacing: 1px;
+        }
+        .countdown-box.warning .countdown-timer { color: #d97706; }
+        .countdown-box.danger  .countdown-timer { color: #dc2626; }
 
-        .summary-label {
-            font-size: 12px;
-            font-weight: 700;
-            color: #aaa;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 28px; right: 28px;
+            color: white; padding: 14px 28px; border-radius: 50px;
+            font-weight: 800; font-size: 14px; display: none;
+            align-items: center; gap: 8px; z-index: 999; animation: slideUp 0.3s ease;
+        }
+        .toast.success { background: #22c55e; box-shadow: 0 6px 24px rgba(34,197,94,0.45); }
+        .toast.error   { background: #ef4444; box-shadow: 0 6px 24px rgba(239,68,68,0.45); }
+        .toast.warning { background: #f59e0b; box-shadow: 0 6px 24px rgba(245,158,11,0.45); }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
         }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR -->
     <nav class="navbar">
         <a href="index.html" class="logo">Pinjam.in<span>SIJA</span></a>
         <div class="nav-center">
@@ -314,9 +218,7 @@
         </div>
     </nav>
 
-    <!-- CONTENT -->
     <div class="wrapper">
-
         <div class="page-header">
             <div>
                 <div class="page-title">📋 Riwayat Peminjaman</div>
@@ -325,7 +227,6 @@
             <a href="peminjaman.html" class="btn-ajukan">+ Ajukan Peminjaman</a>
         </div>
 
-        <!-- Summary -->
         <div class="summary-bar" id="summaryBar" style="display:none;">
             <div class="summary-item">
                 <div class="summary-num" id="sumTotal">0</div>
@@ -341,12 +242,15 @@
             </div>
         </div>
 
-        <!-- List -->
         <div class="riwayat-list" id="riwayatList"></div>
-
     </div>
 
+    <div class="toast" id="toast"></div>
+
     <script>
+        // ✅ BARU: simpan interval countdown agar bisa di-clear
+        const countdownIntervals = {};
+
         document.addEventListener('DOMContentLoaded', function () {
             const username = localStorage.getItem('username');
             const authContainer = document.getElementById('auth-buttons');
@@ -359,10 +263,7 @@
             renderRiwayat();
         });
 
-        function logout() {
-            localStorage.clear();
-            window.location.href = 'index.html';
-        }
+        function logout() { localStorage.clear(); window.location.href = 'index.html'; }
 
         function getIcon(barang) {
             const icons = {
@@ -374,8 +275,11 @@
 
         function getStatusClass(status) {
             const map = {
-                'Diproses': 'status-diproses', 'Disetujui': 'status-disetujui',
-                'Ditolak': 'status-ditolak',   'Dikembalikan': 'status-dikembalikan',
+                'Diproses':          'status-diproses',
+                'Disetujui':         'status-disetujui',
+                'Ditolak':           'status-ditolak',
+                'Dikembalikan':      'status-dikembalikan',
+                'Pengajuan Kembali': 'status-pengajuan-kembali',
             };
             return map[status] || 'status-diproses';
         }
@@ -386,10 +290,92 @@
                 + ', ' + d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
         }
 
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent   = msg;
+            toast.className     = `toast ${type}`;
+            toast.style.display = 'flex';
+            setTimeout(() => toast.style.display = 'none', 2800);
+        }
+
+        // ✅ BARU: fungsi countdown
+        function startCountdown(loanId, deadlineAt) {
+            if (countdownIntervals[loanId]) clearInterval(countdownIntervals[loanId]);
+            const deadline = new Date(deadlineAt).getTime();
+
+            function tick() {
+                const box   = document.getElementById('countdown-box-' + loanId);
+                const timer = document.getElementById('countdown-' + loanId);
+                if (!box || !timer) { clearInterval(countdownIntervals[loanId]); return; }
+
+                const sisa = deadline - new Date().getTime();
+
+                if (sisa <= 0) {
+                    clearInterval(countdownIntervals[loanId]);
+                    box.className     = 'countdown-box danger';
+                    timer.textContent = '⏰ Waktu Habis!';
+                    return;
+                }
+
+                const hari  = Math.floor(sisa / (1000 * 60 * 60 * 24));
+                const jam   = Math.floor((sisa % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const menit = Math.floor((sisa % (1000 * 60 * 60)) / (1000 * 60));
+                const detik = Math.floor((sisa % (1000 * 60)) / 1000);
+
+                box.className = 'countdown-box';
+                if (sisa < 3600000)       box.classList.add('danger');
+                else if (sisa < 86400000) box.classList.add('warning');
+
+                timer.textContent = hari > 0
+                    ? `${hari}h ${String(jam).padStart(2,'0')}j ${String(menit).padStart(2,'0')}m ${String(detik).padStart(2,'0')}d`
+                    : `${String(jam).padStart(2,'0')}:${String(menit).padStart(2,'0')}:${String(detik).padStart(2,'0')}`;
+            }
+
+            tick();
+            countdownIntervals[loanId] = setInterval(tick, 1000);
+        }
+
+        // Tombol kembalikan — ubah status jadi "Pengajuan Kembali"
+        async function ajukanKembali(id, barang) {
+            if (!confirm(`Ajukan pengembalian untuk "${barang}"?\nAdmin akan mengkonfirmasi dan stok akan otomatis bertambah.`)) return;
+
+            try {
+                const res  = await fetch(`/api/loans/${id}`, {
+                    method:  'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify({ status: 'Pengajuan Kembali' })
+                });
+                const json = await res.json();
+
+                if (json.success) {
+                    showToast('📦 Pengajuan pengembalian terkirim! Menunggu konfirmasi admin.', 'warning');
+                    renderRiwayat();
+                } else {
+                    showToast('❌ Gagal: ' + json.message, 'error');
+                }
+            } catch (err) {
+                showToast('❌ Error koneksi ke server!', 'error');
+            }
+        }
+
+        async function hapus(id) {
+            if (!confirm('Hapus riwayat ini?')) return;
+            try {
+                const res  = await fetch(`/api/loans/${id}`, { method: 'DELETE' });
+                const json = await res.json();
+                if (json.success) renderRiwayat();
+                else showToast('Gagal menghapus: ' + json.message, 'error');
+            } catch (err) {
+                showToast('Error koneksi ke server!', 'error');
+            }
+        }
+
         async function renderRiwayat() {
+            // ✅ BARU: clear semua countdown lama sebelum render ulang
+            Object.values(countdownIntervals).forEach(id => clearInterval(id));
+
             const username  = localStorage.getItem('username');
             const container = document.getElementById('riwayatList');
-
             container.innerHTML = `<div style="text-align:center;padding:40px;color:#aaa;font-weight:700;">⏳ Memuat data...</div>`;
 
             try {
@@ -409,63 +395,87 @@
 
                 const data = json.data;
 
-                // Summary
                 document.getElementById('summaryBar').style.display = 'flex';
                 document.getElementById('sumTotal').textContent     = data.length;
                 document.getElementById('sumDiproses').textContent  = data.filter(r => r.status === 'Diproses').length;
                 document.getElementById('sumDisetujui').textContent = data.filter(r => r.status === 'Disetujui').length;
 
-                container.innerHTML = data.map(r => `
-                    <div class="riwayat-card" id="card-${r._id}">
-                        <div class="card-top">
-                            <div class="barang-name">
-                                <div class="barang-icon">${getIcon(r.barang)}</div>
-                                ${r.barang}
+                container.innerHTML = data.map(r => {
+                    // Tombol aksi sesuai status (tidak berubah)
+                    let aksiHtml = '';
+                    if (r.status === 'Disetujui') {
+                        aksiHtml = `
+                            <div class="card-actions">
+                                <button class="btn-kembalikan" onclick="ajukanKembali('${r._id}', '${r.barang}')">
+                                    📦 Kembalikan Barang
+                                </button>
+                            </div>`;
+                    } else if (r.status === 'Pengajuan Kembali') {
+                        aksiHtml = `
+                            <div class="card-actions">
+                                <span style="font-size:13px;font-weight:700;color:#be185d;">
+                                    ⏳ Menunggu konfirmasi admin...
+                                </span>
+                            </div>`;
+                    }
+
+                    // ✅ BARU: countdown hanya muncul jika Disetujui dan ada deadlineAt
+                    const countdownHtml = (r.status === 'Disetujui' && r.deadlineAt) ? `
+                        <div class="countdown-box" id="countdown-box-${r._id}">
+                            <div>
+                                <div class="countdown-label">⏱ Sisa Waktu Peminjaman</div>
+                                <div class="countdown-timer" id="countdown-${r._id}">Menghitung...</div>
                             </div>
-                            <div style="display:flex;align-items:center;gap:8px;">
-                                <span class="status-badge ${getStatusClass(r.status)}">${r.status}</span>
-                                <button class="btn-hapus" onclick="hapus('${r._id}')" title="Hapus">🗑️</button>
+                        </div>` : '';
+
+                    return `
+                        <div class="riwayat-card" id="card-${r._id}">
+                            <div class="card-top">
+                                <div class="barang-name">
+                                    <div class="barang-icon">${getIcon(r.barang)}</div>
+                                    ${r.barang}
+                                </div>
+                                <div class="badge-area">
+                                    <span class="status-badge ${getStatusClass(r.status)}">${r.status}</span>
+                                    <button class="btn-hapus" onclick="hapus('${r._id}')" title="Hapus">🗑️</button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-details">
-                            <div class="detail-item">
-                                <div class="detail-label">Nama</div>
-                                <div class="detail-value">${r.nama}</div>
+                            <div class="card-details">
+                                <div class="detail-item">
+                                    <div class="detail-label">Nama</div>
+                                    <div class="detail-value">${r.nama}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Kelas / Jurusan</div>
+                                    <div class="detail-value">${r.kelas}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Durasi</div>
+                                    <div class="detail-value">${r.durasi} Hari</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Tanggal Pengajuan</div>
+                                    <div class="detail-value">${formatTanggal(r.createdAt)}</div>
+                                </div>
+                                <div class="detail-item" style="grid-column: 1 / -1;">
+                                    <div class="detail-label">Keperluan</div>
+                                    <div class="detail-value">${r.keperluan}</div>
+                                </div>
                             </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Kelas / Jurusan</div>
-                                <div class="detail-value">${r.kelas}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Durasi</div>
-                                <div class="detail-value">${r.durasi} Hari</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Tanggal Pengajuan</div>
-                                <div class="detail-value">${formatTanggal(r.createdAt)}</div>
-                            </div>
-                            <div class="detail-item" style="grid-column: 1 / -1;">
-                                <div class="detail-label">Keperluan</div>
-                                <div class="detail-value">${r.keperluan}</div>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
+                            ${countdownHtml}
+                            ${aksiHtml}
+                        </div>`;
+                }).join('');
+
+                // ✅ BARU: jalankan countdown untuk yang punya deadlineAt
+                data.forEach(r => {
+                    if (r.status === 'Disetujui' && r.deadlineAt) {
+                        startCountdown(r._id, r.deadlineAt);
+                    }
+                });
 
             } catch (err) {
                 container.innerHTML = `<div style="text-align:center;padding:40px;color:#ef4444;font-weight:700;">❌ Gagal memuat data. Pastikan server berjalan.</div>`;
-            }
-        }
-
-        async function hapus(id) {
-            if (!confirm('Hapus riwayat ini?')) return;
-            try {
-                const res  = await fetch(`/api/loans/${id}`, { method: 'DELETE' });
-                const json = await res.json();
-                if (json.success) renderRiwayat();
-                else alert('Gagal menghapus: ' + json.message);
-            } catch (err) {
-                alert('Error koneksi ke server!');
             }
         }
     </script>
