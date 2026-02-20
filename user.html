@@ -73,6 +73,38 @@
   .nav-item.active { background: #e8f4ff; color: #1e90ff; }
   .nav-item .nav-icon { font-size: 19px; }
 
+  /* ===== LOGOUT SIDEBAR ===== */
+  .sidebar-footer {
+    position: absolute;
+    bottom: 24px;
+    left: 0; right: 0;
+    padding: 0 20px;
+  }
+
+  .btn-logout-sidebar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 13px 20px;
+    background: #fff0f0;
+    color: #ef4444;
+    border: none;
+    border-radius: 16px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 14.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-logout-sidebar:hover {
+    background: #ef4444;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(239,68,68,0.35);
+  }
+
   /* ===== MAIN ===== */
   .main {
     flex: 1;
@@ -383,6 +415,13 @@
   <div class="nav-item" id="nav-riwayat" onclick="window.location.href='riwayat.html'">
     <span class="nav-icon">📋</span> Riwayat
   </div>
+
+  <!-- TOMBOL LOGOUT POJOK KIRI BAWAH -->
+  <div class="sidebar-footer">
+    <button class="btn-logout-sidebar" onclick="logout()">
+      <span style="font-size:18px;">🚪</span> Logout
+    </button>
+  </div>
 </div>
 
 <!-- MAIN -->
@@ -536,10 +575,10 @@
     const initials = getInitials(d.nama);
     const isEmpty  = !d.nama && !d.nis && !d.telepon && !d.email && !d.angkatan;
 
-    document.getElementById('avatarLg').textContent  = initials;
-    document.getElementById('topAvatar').textContent = initials;
-    document.getElementById('topName').textContent   = d.nama || username;
-    document.getElementById('dispNama').textContent  = d.nama || '—';
+    document.getElementById('avatarLg').textContent     = initials;
+    document.getElementById('topAvatar').textContent    = initials;
+    document.getElementById('topName').textContent      = d.nama || username;
+    document.getElementById('dispNama').textContent     = d.nama || '—';
     document.getElementById('dispAngkatan').textContent = d.angkatan || '—';
     document.getElementById('emptyHint').style.display  = isEmpty ? 'block' : 'none';
 
@@ -610,6 +649,12 @@
     } catch (err) {
       alert('Error koneksi ke server!');
     }
+  }
+
+  // ===== LOGOUT =====
+  function logout() {
+    localStorage.clear();
+    window.location.href = 'index.html';
   }
 
   // ===== INIT =====
