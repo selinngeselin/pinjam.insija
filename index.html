@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinjam.in - Sistem Peminjaman SIJA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html" class="logo">
+                <img src="assets/img/logo_kelompok12.png" alt="Logo Pinjam.in" class="logo-img">
+                <span class="logo-text">Pinjam<span>.in</span></span>
+            </a>
+        </div>
+        <div class="nav-center">
+            <a href="index.html" class="active">Home</a>
+            <a href="daftar-barang.html">Daftar Barang</a>
+            <a href="peminjaman.html">Peminjaman</a>
+        </div>
+        <div class="nav-right" id="auth-buttons">
+            <a href="login.html" class="btn-login-nav">Login</a>
+            <a href="register.html" class="btn-register-nav">Register</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <span class="badge">✨ Bebas Kesulitan</span>
+            <h1>Sistem Peminjaman Barang Jurusan <span>SIJA</span></h1>
+            <p>Pinjam alat dengan mudah, cepat, dan tercatat.</p>
+            <div class="hero-buttons">
+                <a href="daftar-barang.html" class="btn-primary">Lihat Barang</a>
+                <a href="peminjaman.html" class="btn-secondary">Ajukan Peminjaman</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="wrapper">
+        <div class="alert-box">
+            <span class="icon">⚠️</span>
+            <p><strong>Perhatian:</strong> Maksimal peminjaman 3 hari. Keterlambatan akan dicatat!</p>
+        </div>
+
+        <section class="items-section">
+            <div class="section-title-row">
+                <h2>Barang Tersedia</h2>
+                <a href="daftar-barang.html" class="btn-lihat-semua">Lihat Selengkapnya →</a>
+            </div>
+            <div class="items-grid items-grid-4" id="available-items">
+                <div class="item-card">
+                    <img src="assets/img/Mikrotik.jpg" alt="Mikrotik">
+                    <div class="item-info">
+                        <h3>Mikrotik</h3>
+                        <div class="item-footer">
+                            <span class="status available">Tersedia</span>
+                            <a href="peminjaman.html" class="btn-pinjam">Pinjam</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <img src="assets/img/Kabel_HDMI.jpg" alt="Kabel HDMI">
+                    <div class="item-info">
+                        <h3>Kabel HDMI</h3>
+                        <div class="item-footer">
+                            <span class="status available">Tersedia</span>
+                            <a href="peminjaman.html" class="btn-pinjam">Pinjam</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <img src="assets/img/Mouse.jpg" alt="Mouse">
+                    <div class="item-info">
+                        <h3>Mouse</h3>
+                        <div class="item-footer">
+                            <span class="status available">Tersedia</span>
+                            <a href="peminjaman.html" class="btn-pinjam">Pinjam</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <img src="assets/img/arduino.jpg" alt="Arduino">
+                    <div class="item-info">
+                        <h3>Arduino</h3>
+                        <div class="item-footer">
+                            <span class="status available">Tersedia</span>
+                            <a href="peminjaman.html" class="btn-pinjam">Pinjam</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="items-section">
+            <div class="section-title-row">
+                <h2>Barang yang Sering Dipinjam</h2>
+            </div>
+            <div class="items-grid items-grid-4">
+                <div class="item-card">
+                    <div class="card-image-container">
+                        <span class="badge-frequent">🔥 Sering Dipinjam</span>
+                        <img src="assets/img/laptop.jpg" alt="Laptop HP">
+                    </div>
+                    <div class="item-info">
+                        <h3>Laptop</h3>
+                        <div class="item-footer">
+                            <span class="status available">Tersedia</span>
+                            <a href="peminjaman.html" class="btn-pinjam">Pinjam</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer-main">
+        <div class="footer-inner">
+
+            <!-- ✅ PERUBAHAN: KOLOM 1 - Logo saja (kolom baru, terpisah dari brand) -->
+            <div class="footer-col footer-logo-col">
+                <img src="assets/img/logo_kelompok12.png" alt="Logo Pinjam.in" class="footer-logo-img">
+            </div>
+
+            <!-- ✅ PERUBAHAN: KOLOM 2 - Brand/Deskripsi (bergeser ke kanan, struktur disederhanakan) -->
+            <div class="footer-col footer-brand">
+                <a href="index.html" class="footer-logo">Pinjam<span>.in</span></a>
+                <p class="footer-desc">Sistem Peminjaman Barang Jurusan SIJA - Mudah, Cepat, Tercatat.</p>
+                <p class="footer-copy">&copy; 2026 Pinjam.in</p>
+            </div>
+
+            <!-- KOLOM 3: Sosial Media + Kontak (tidak berubah, hanya bergeser) -->
+            <div class="footer-col footer-social-contact">
+                <h4 class="footer-heading">Ikuti Kami</h4>
+                <div class="footer-socials">
+                    <a href="https://www.instagram.com/" target="_blank" class="social-btn instagram">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.975.975 1.246 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.975.975-2.242 1.246-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.975-.975-1.246-2.242-1.308-3.608C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.85c.062-1.366.334-2.633 1.308-3.608C4.516 2.497 5.783 2.225 7.15 2.163 8.416 2.105 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.333.014 7.053.072 5.775.13 4.602.402 3.635 1.368 2.67 2.333 2.397 3.506 2.339 4.784 2.281 6.064 2.267 6.472 2.267 12c0 5.528.014 5.936.072 7.216.058 1.278.33 2.451 1.296 3.416.965.966 2.138 1.238 3.416 1.296C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.278-.058 2.451-.33 3.416-1.296.966-.965 1.238-2.138 1.296-3.416.058-1.28.072-1.688.072-7.216 0-5.528-.014-5.936-.072-7.216-.058-1.278-.33-2.451-1.296-3.416C19.398.402 18.225.13 16.947.072 15.667.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+                        Instagram
+                    </a>
+                    <a href="https://www.facebook.com/" target="_blank" class="social-btn facebook">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97h-1.513c-1.491 0-1.956.93-1.956 1.887v2.268h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+                        Facebook
+                    </a>
+                    <a href="https://www.tiktok.com/" target="_blank" class="social-btn tiktok">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
+                        TikTok
+                    </a>
+                </div>
+
+                <div class="footer-contact">
+                    <h4 class="footer-heading">Hubungi Kami</h4>
+                    <p class="contact-label">Ada kendala? Hubungi kami di:</p>
+                    <a href="https://mail.google.com/mail/?view=cm&to=pinjamin.sija@gmail.com&su=Laporan%20Trouble%20Pinjam.in" target="_blank" class="contact-email">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+                        pinjamin.sija@gmail.com
+                    </a>
+                </div>
+            </div>
+
+            <!-- KOLOM 4: Tim Pembuat (tidak berubah, hanya bergeser) -->
+            <div class="footer-col footer-team">
+                <h4 class="footer-heading">Tim Pembuat</h4>
+                <div class="team-list">
+                    <div class="team-member">
+                        <div class="team-avatar">Y</div>
+                        <div class="team-info">
+                            <span class="team-name">Yasin</span>
+                            <span class="team-role">Developer</span>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-avatar" style="background: linear-gradient(135deg, #28a745, #20c997);">A</div>
+                        <div class="team-info">
+                            <span class="team-name">Adit</span>
+                            <span class="team-role">Developer</span>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-avatar" style="background: linear-gradient(135deg, #e83e8c, #fd7e14);">S</div>
+                        <div class="team-info">
+                            <span class="team-name">Selin</span>
+                            <span class="team-role">Developer</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const username = localStorage.getItem('username');
+            const authContainer = document.getElementById('auth-buttons');
+
+            if (username) {
+                authContainer.innerHTML = `
+                    <a href="user.html" class="btn-user" style="margin-right:10px;">Akun Saya</a>
+                    <button onclick="logout()" class="btn-logout">Logout</button>
+                `;
+            }
+        });
+
+        function logout() {
+            localStorage.clear();
+            window.location.reload();
+        }
+
+        function handlePinjam() {
+            const username = localStorage.getItem('username');
+            if (!username) {
+                alert("Maaf, Anda harus login terlebih dahulu untuk meminjam barang!");
+                window.location.href = 'login.html';
+            } else {
+                window.location.href = 'konfirmasi.html';
+            }
+        }
+    </script>
+</body>
+</html>
