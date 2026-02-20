@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Pinjam.in - Sistem Peminjaman SIJA</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -43,6 +46,7 @@
             <p><strong>Perhatian:</strong> Maksimal peminjaman 3 hari. Keterlambatan akan dicatat!</p>
         </div>
 
+        <!-- Barang Tersedia - 4 kolom -->
         <section class="items-section">
             <div class="section-title-row">
                 <h2>Barang Tersedia</h2>
@@ -55,7 +59,7 @@
                         <h3>Mikrotik</h3>
                         <div class="item-footer">
                             <span class="status available">Tersedia</span>
-                             <a href="peminjaman.html?barang=Mikrotik" class="btn-pinjam">Pinjam</a>
+                            <a href="peminjaman.html?barang=Mikrotik" class="btn-pinjam">Pinjam</a>
                         </div>
                     </div>
                 </div>
@@ -65,7 +69,7 @@
                         <h3>Kabel HDMI</h3>
                         <div class="item-footer">
                             <span class="status available">Tersedia</span>
-                             <a href="peminjaman.html?barang=Kabel HDMI" class="btn-pinjam">Pinjam</a>
+                            <a href="peminjaman.html?barang=Kabel HDMI" class="btn-pinjam">Pinjam</a>
                         </div>
                     </div>
                 </div>
@@ -92,6 +96,7 @@
             </div>
         </section>
 
+        <!-- Barang Sering Dipinjam - 4 kolom -->
         <section class="items-section">
             <div class="section-title-row">
                 <h2>Barang yang Sering Dipinjam</h2>
@@ -100,13 +105,13 @@
                 <div class="item-card">
                     <div class="card-image-container">
                         <span class="badge-frequent">🔥 Sering Dipinjam</span>
-                        <img src="assets/img/laptop.jpg" alt="Laptop HP">
+                        <img src="assets/img/laptop.jpg" alt="Laptop">
                     </div>
                     <div class="item-info">
                         <h3>Laptop</h3>
                         <div class="item-footer">
                             <span class="status available">Tersedia</span>
-                             <a href="peminjaman.html?barang=Laptop" class="btn-pinjam">Pinjam</a>
+                            <a href="peminjaman.html?barang=Laptop" class="btn-pinjam">Pinjam</a>
                         </div>
                     </div>
                 </div>
@@ -114,22 +119,23 @@
         </section>
     </div>
 
+    <!-- FOOTER 4 KOLOM: Logo | Brand | Sosmed | Tim -->
     <footer class="footer-main">
         <div class="footer-inner">
 
-            <!-- ✅ PERUBAHAN: KOLOM 1 - Logo saja (kolom baru, terpisah dari brand) -->
+            <!-- KOLOM 1: Logo -->
             <div class="footer-col footer-logo-col">
                 <img src="assets/img/logo_kelompok12.png" alt="Logo Pinjam.in" class="footer-logo-img">
             </div>
 
-            <!-- ✅ PERUBAHAN: KOLOM 2 - Brand/Deskripsi (bergeser ke kanan, struktur disederhanakan) -->
+            <!-- KOLOM 2: Brand & Deskripsi -->
             <div class="footer-col footer-brand">
                 <a href="index.html" class="footer-logo">Pinjam<span>.in</span></a>
                 <p class="footer-desc">Sistem Peminjaman Barang Jurusan SIJA - Mudah, Cepat, Tercatat.</p>
                 <p class="footer-copy">&copy; 2026 Pinjam.in</p>
             </div>
 
-            <!-- KOLOM 3: Sosial Media + Kontak (tidak berubah, hanya bergeser) -->
+            <!-- KOLOM 3: Sosial Media + Kontak -->
             <div class="footer-col footer-social-contact">
                 <h4 class="footer-heading">Ikuti Kami</h4>
                 <div class="footer-socials">
@@ -146,7 +152,6 @@
                         TikTok
                     </a>
                 </div>
-
                 <div class="footer-contact">
                     <h4 class="footer-heading">Hubungi Kami</h4>
                     <p class="contact-label">Ada kendala? Hubungi kami di:</p>
@@ -157,7 +162,7 @@
                 </div>
             </div>
 
-            <!-- KOLOM 4: Tim Pembuat (tidak berubah, hanya bergeser) -->
+            <!-- KOLOM 4: Tim Pembuat -->
             <div class="footer-col footer-team">
                 <h4 class="footer-heading">Tim Pembuat</h4>
                 <div class="team-list">
@@ -192,7 +197,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             const username = localStorage.getItem('username');
             const authContainer = document.getElementById('auth-buttons');
-
             if (username) {
                 authContainer.innerHTML = `
                     <a href="user.html" class="btn-user" style="margin-right:10px;">Akun Saya</a>
@@ -206,23 +210,15 @@
             window.location.reload();
         }
 
-    function logout() {
-        localStorage.clear();
-        window.location.reload(); // Refresh halaman agar status kembali ke tamu
-    }
-</script>
-
-<script>
-    function handlePinjam() {
-    const username = localStorage.getItem('username');
-    
-    if (!username) {
-        alert("Maaf, Anda harus login terlebih dahulu untuk meminjam barang!");
-        window.location.href = 'login.html';
-    } else {
-        // Jika sudah login, arahkan ke halaman konfirmasi
-        window.location.href = 'konfirmasi.html';
-    }
-}
-</script>
+        function handlePinjam() {
+            const username = localStorage.getItem('username');
+            if (!username) {
+                alert("Maaf, Anda harus login terlebih dahulu untuk meminjam barang!");
+                window.location.href = 'login.html';
+            } else {
+                window.location.href = 'konfirmasi.html';
+            }
+        }
+    </script>
+</body>
 </html>
