@@ -38,16 +38,11 @@
   }
 
   .logo-icon {
-    width: 46px;
-    height: 46px;
+    width: 46px; height: 46px;
     background: linear-gradient(135deg, #1e90ff, #4ab3ff);
     border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 22px;
-    font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 22px; font-weight: 900;
     box-shadow: 0 4px 12px rgba(30,144,255,0.35);
   }
 
@@ -76,8 +71,7 @@
   /* ===== LOGOUT SIDEBAR ===== */
   .sidebar-footer {
     position: absolute;
-    bottom: 24px;
-    left: 0; right: 0;
+    bottom: 24px; left: 0; right: 0;
     padding: 0 20px;
   }
 
@@ -114,11 +108,16 @@
     min-height: 100vh;
   }
 
+  /* ===== TOPBAR ===== */
   .topbar {
     display: flex;
     justify-content: flex-end;
     padding: 18px 36px;
+    position: relative;
   }
+
+  /* Dropdown profil di topbar */
+  .topbar-dropdown { position: relative; }
 
   .user-badge {
     display: flex;
@@ -133,7 +132,11 @@
     font-weight: 700;
     font-size: 14px;
     cursor: pointer;
+    transition: background 0.2s;
+    user-select: none;
   }
+
+  .user-badge:hover { background: rgba(255,255,255,0.32); }
 
   .avatar-sm {
     width: 34px; height: 34px;
@@ -144,6 +147,74 @@
     font-weight: 900; font-size: 12px;
     flex-shrink: 0;
   }
+
+  .badge-chevron {
+    font-size: 10px;
+    opacity: 0.8;
+    transition: transform 0.2s;
+  }
+
+  .topbar-dropdown.open .badge-chevron { transform: rotate(180deg); }
+
+  /* Dropdown menu */
+  .topbar-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.16);
+    border: 1.5px solid #f0f4ff;
+    min-width: 200px;
+    z-index: 999;
+    overflow: hidden;
+    animation: dropDown 0.2s ease;
+  }
+
+  .topbar-dropdown.open .topbar-dropdown-menu { display: block; }
+
+  @keyframes dropDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .dropdown-header {
+    padding: 14px 18px 10px;
+    border-bottom: 1px solid #f0f4ff;
+  }
+
+  .dropdown-header .dh-name {
+    font-size: 14px;
+    font-weight: 800;
+    color: #1a1a2e;
+  }
+
+  .dropdown-header .dh-role {
+    font-size: 12px;
+    color: #aaa;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 18px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #ef4444;
+    background: none;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    transition: background 0.15s;
+  }
+
+  .dropdown-item:hover { background: #fff0f0; }
+  .dropdown-item .di-icon { font-size: 17px; }
 
   /* ===== PAGES ===== */
   .page { display: none; }
@@ -181,41 +252,27 @@
     letter-spacing: -1px;
   }
 
-  .profile-name {
-    font-size: 22px;
-    font-weight: 900;
-    color: #1a1a2e;
-    margin-bottom: 6px;
-  }
+  .profile-name { font-size: 22px; font-weight: 900; color: #1a1a2e; margin-bottom: 6px; }
 
   .profile-badge {
-    background: #e8f4ff;
-    color: #1e90ff;
-    font-size: 12px;
-    font-weight: 800;
-    padding: 4px 16px;
-    border-radius: 50px;
-    letter-spacing: 0.3px;
+    background: #e8f4ff; color: #1e90ff;
+    font-size: 12px; font-weight: 800;
+    padding: 4px 16px; border-radius: 50px; letter-spacing: 0.3px;
   }
 
   .info-list { margin-top: 8px; }
 
   .info-row {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    padding: 18px 0;
-    border-bottom: 1px solid #f5f7ff;
+    display: flex; align-items: center; gap: 18px;
+    padding: 18px 0; border-bottom: 1px solid #f5f7ff;
   }
 
   .info-row:last-child { border-bottom: none; }
 
   .info-icon {
-    width: 46px; height: 46px;
-    border-radius: 14px;
+    width: 46px; height: 46px; border-radius: 14px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
-    flex-shrink: 0;
+    font-size: 20px; flex-shrink: 0;
   }
 
   .ic-blue   { background: #e8f4ff; }
@@ -227,149 +284,77 @@
   .info-content { flex: 1; }
 
   .info-label {
-    font-size: 11px;
-    font-weight: 800;
-    color: #bbb;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    margin-bottom: 4px;
+    font-size: 11px; font-weight: 800; color: #bbb;
+    text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px;
   }
 
-  .info-value {
-    font-size: 16px;
-    font-weight: 700;
-    color: #1a1a2e;
-  }
-
-  .info-empty {
-    font-size: 14px;
-    font-weight: 600;
-    color: #ccc;
-    font-style: italic;
-  }
+  .info-value { font-size: 16px; font-weight: 700; color: #1a1a2e; }
+  .info-empty { font-size: 14px; font-weight: 600; color: #ccc; font-style: italic; }
 
   .btn-edit-profil {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
     width: 100%;
     background: linear-gradient(135deg, #1e90ff, #4ab3ff);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    padding: 16px;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 800;
-    font-size: 15px;
-    cursor: pointer;
-    margin-top: 32px;
+    color: white; border: none; border-radius: 50px; padding: 16px;
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 15px;
+    cursor: pointer; margin-top: 32px;
     transition: transform 0.15s, box-shadow 0.2s;
     box-shadow: 0 4px 18px rgba(30,144,255,0.35);
   }
 
-  .btn-edit-profil:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(30,144,255,0.45);
-  }
+  .btn-edit-profil:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(30,144,255,0.45); }
 
   /* ===== EDIT PAGE ===== */
   .edit-title {
-    font-size: 20px;
-    font-weight: 900;
-    color: #1e90ff;
-    margin-bottom: 28px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    font-size: 20px; font-weight: 900; color: #1e90ff;
+    margin-bottom: 28px; display: flex; align-items: center; gap: 10px;
   }
 
   .form-group { margin-bottom: 22px; }
 
-  .form-label {
-    display: block;
-    font-weight: 800;
-    font-size: 13.5px;
-    color: #444;
-    margin-bottom: 10px;
-  }
+  .form-label { display: block; font-weight: 800; font-size: 13.5px; color: #444; margin-bottom: 10px; }
 
   .form-input {
-    width: 100%;
-    padding: 14px 22px;
-    border: 2px solid #e8ecf5;
-    border-radius: 50px;
-    font-family: 'Nunito', sans-serif;
-    font-size: 15px;
-    color: #222;
-    background: #fafbff;
-    outline: none;
+    width: 100%; padding: 14px 22px;
+    border: 2px solid #e8ecf5; border-radius: 50px;
+    font-family: 'Nunito', sans-serif; font-size: 15px; color: #222;
+    background: #fafbff; outline: none;
     transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
   }
 
-  .form-input:focus {
-    border-color: #1e90ff;
-    background: white;
-    box-shadow: 0 0 0 4px rgba(30,144,255,0.12);
-  }
-
+  .form-input:focus { border-color: #1e90ff; background: white; box-shadow: 0 0 0 4px rgba(30,144,255,0.12); }
   .form-input::placeholder { color: #c5cde0; }
 
   .btn-group { display: flex; gap: 12px; margin-top: 32px; }
 
   .btn-simpan {
-    flex: 1;
-    background: linear-gradient(135deg, #1e90ff, #4ab3ff);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    padding: 15px;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 800;
-    font-size: 15px;
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.2s;
+    flex: 1; background: linear-gradient(135deg, #1e90ff, #4ab3ff);
+    color: white; border: none; border-radius: 50px; padding: 15px;
+    font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 15px;
+    cursor: pointer; transition: transform 0.15s, box-shadow 0.2s;
     box-shadow: 0 4px 16px rgba(30,144,255,0.35);
   }
 
-  .btn-simpan:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(30,144,255,0.45);
-  }
+  .btn-simpan:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(30,144,255,0.45); }
 
   .btn-batal {
-    flex: 1;
-    background: #f0f2f8;
-    color: #666;
-    border: none;
-    border-radius: 50px;
-    padding: 15px;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
-    font-size: 15px;
-    cursor: pointer;
-    transition: background 0.2s;
+    flex: 1; background: #f0f2f8; color: #666; border: none;
+    border-radius: 50px; padding: 15px;
+    font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 15px;
+    cursor: pointer; transition: background 0.2s;
   }
 
   .btn-batal:hover { background: #e3e6f0; color: #444; }
 
   /* ===== TOAST ===== */
   .toast {
-    position: fixed;
-    bottom: 28px;
-    right: 28px;
-    background: #22c55e;
-    color: white;
-    padding: 14px 28px;
-    border-radius: 50px;
-    font-weight: 800;
-    font-size: 14px;
+    position: fixed; bottom: 28px; right: 28px;
+    background: #22c55e; color: white;
+    padding: 14px 28px; border-radius: 50px;
+    font-weight: 800; font-size: 14px;
     box-shadow: 0 6px 24px rgba(34,197,94,0.45);
-    display: none;
-    align-items: center;
-    gap: 8px;
-    z-index: 999;
-    animation: slideUp 0.3s ease;
+    display: none; align-items: center; gap: 8px;
+    z-index: 999; animation: slideUp 0.3s ease;
   }
 
   @keyframes slideUp {
@@ -377,17 +362,11 @@
     to   { transform: translateY(0);    opacity: 1; }
   }
 
-  /* ===== EMPTY STATE ===== */
   .empty-hint {
-    text-align: center;
-    background: #fffbea;
-    border: 2px dashed #fcd34d;
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 24px;
-    color: #b45309;
-    font-size: 13.5px;
-    font-weight: 700;
+    text-align: center; background: #fffbea;
+    border: 2px dashed #fcd34d; border-radius: 16px;
+    padding: 20px; margin-bottom: 24px;
+    color: #b45309; font-size: 13.5px; font-weight: 700;
   }
 </style>
 </head>
@@ -416,7 +395,6 @@
     <span class="nav-icon">📋</span> Riwayat
   </div>
 
-  <!-- TOMBOL LOGOUT POJOK KIRI BAWAH -->
   <div class="sidebar-footer">
     <button class="btn-logout-sidebar" onclick="logout()">
       <span style="font-size:18px;">🚪</span> Logout
@@ -427,29 +405,37 @@
 <!-- MAIN -->
 <div class="main">
 
-  <!-- Topbar -->
+  <!-- TOPBAR dengan dropdown -->
   <div class="topbar">
-    <div class="user-badge">
-      <div class="avatar-sm" id="topAvatar">?</div>
-      <span id="topName">Pengguna</span>
-      <span style="font-size:11px;opacity:.75;margin-left:2px;">▼</span>
+    <div class="topbar-dropdown" id="topbarDropdown">
+      <div class="user-badge" onclick="toggleTopbarDropdown()">
+        <div class="avatar-sm" id="topAvatar">?</div>
+        <span id="topName">Pengguna</span>
+        <span class="badge-chevron">▼</span>
+      </div>
+      <div class="topbar-dropdown-menu">
+        <div class="dropdown-header">
+          <div class="dh-name" id="dropdownName">Pengguna</div>
+          <div class="dh-role">Pengguna</div>
+        </div>
+        <button class="dropdown-item" onclick="logout()">
+          <span class="di-icon">🚪</span> Logout
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- ===== PAGE: PROFIL ===== -->
+  <!-- PAGE: PROFIL -->
   <div class="page active" id="page-profil">
     <div class="card">
-
       <div id="emptyHint" class="empty-hint" style="display:none;">
         ⚠️ Data profil belum diisi. Klik <strong>"Edit Profil"</strong> untuk mengisi data Anda.
       </div>
-
       <div class="profile-header">
         <div class="avatar-lg" id="avatarLg">?</div>
         <div class="profile-name" id="dispNama">—</div>
         <div class="profile-badge" id="dispAngkatan">—</div>
       </div>
-
       <div class="info-list">
         <div class="info-row">
           <div class="info-icon ic-blue">👤</div>
@@ -458,7 +444,6 @@
             <div id="valNama" class="info-empty">Belum diisi</div>
           </div>
         </div>
-
         <div class="info-row">
           <div class="info-icon ic-green">🪪</div>
           <div class="info-content">
@@ -466,7 +451,6 @@
             <div id="valNis" class="info-empty">Belum diisi</div>
           </div>
         </div>
-
         <div class="info-row">
           <div class="info-icon ic-purple">📞</div>
           <div class="info-content">
@@ -474,7 +458,6 @@
             <div id="valTelepon" class="info-empty">Belum diisi</div>
           </div>
         </div>
-
         <div class="info-row">
           <div class="info-icon ic-orange">📧</div>
           <div class="info-content">
@@ -482,7 +465,6 @@
             <div id="valGoogle" class="info-empty">Belum diisi</div>
           </div>
         </div>
-
         <div class="info-row">
           <div class="info-icon ic-teal">🏫</div>
           <div class="info-content">
@@ -491,44 +473,34 @@
           </div>
         </div>
       </div>
-
-      <button class="btn-edit-profil" onclick="showPage('edit')">
-        ✏️ Edit Profil
-      </button>
-
+      <button class="btn-edit-profil" onclick="showPage('edit')">✏️ Edit Profil</button>
     </div>
   </div>
 
-  <!-- ===== PAGE: EDIT ===== -->
+  <!-- PAGE: EDIT -->
   <div class="page" id="page-edit">
     <div class="card">
       <div class="edit-title">✏️ Edit Profil</div>
-
       <div class="form-group">
         <label class="form-label">Nama :</label>
         <input type="text" class="form-input" id="inpNama" placeholder="Masukkan nama lengkap">
       </div>
-
       <div class="form-group">
         <label class="form-label">NIS :</label>
         <input type="text" class="form-input" id="inpNis" placeholder="Masukkan NIS">
       </div>
-
       <div class="form-group">
         <label class="form-label">Nomor Telepon :</label>
         <input type="text" class="form-input" id="inpTelepon" placeholder="Masukkan nomor telepon">
       </div>
-
       <div class="form-group">
         <label class="form-label">Akun Google :</label>
         <input type="email" class="form-input" id="inpGoogle" placeholder="Masukkan email Google">
       </div>
-
       <div class="form-group">
         <label class="form-label">Angkatan, Rombel Kelas :</label>
         <input type="text" class="form-input" id="inpAngkatan" placeholder="Contoh: 50, SIJA A">
       </div>
-
       <div class="btn-group">
         <button class="btn-simpan" onclick="simpan()">💾 Simpan</button>
         <button class="btn-batal" onclick="showPage('profil')">Batal</button>
@@ -538,7 +510,6 @@
 
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast">✅ Data berhasil disimpan!</div>
 
 <script>
@@ -557,7 +528,6 @@
     if (page === 'profil') renderProfil();
   }
 
-  // ===== INISIAL =====
   function getInitials(name) {
     if (!name) return '?';
     return name.trim().split(/\s+/).map(w => w[0]).join('').substring(0, 2).toUpperCase();
@@ -569,7 +539,6 @@
     else        { el.textContent = 'Belum diisi'; el.className = 'info-empty'; }
   }
 
-  // ===== RENDER PROFIL =====
   function renderProfil() {
     const d = userData;
     const initials = getInitials(d.nama);
@@ -578,6 +547,7 @@
     document.getElementById('avatarLg').textContent     = initials;
     document.getElementById('topAvatar').textContent    = initials;
     document.getElementById('topName').textContent      = d.nama || username;
+    document.getElementById('dropdownName').textContent = d.nama || username;
     document.getElementById('dispNama').textContent     = d.nama || '—';
     document.getElementById('dispAngkatan').textContent = d.angkatan || '—';
     document.getElementById('emptyHint').style.display  = isEmpty ? 'block' : 'none';
@@ -589,21 +559,14 @@
     setVal('valAngkatan', d.angkatan);
   }
 
-  // ===== LOAD DATA DARI API =====
   async function loadProfil() {
     try {
       const res  = await fetch(`/api/profil/${username}`);
       const json = await res.json();
-      if (json.success) {
-        userData = json;
-        renderProfil();
-      }
-    } catch (err) {
-      console.error('Gagal memuat profil:', err);
-    }
+      if (json.success) { userData = json; renderProfil(); }
+    } catch (err) { console.error('Gagal memuat profil:', err); }
   }
 
-  // ===== LOAD EDIT FORM =====
   function loadEditForm() {
     document.getElementById('inpNama').value     = userData.nama     || '';
     document.getElementById('inpNis').value      = userData.nis      || '';
@@ -612,7 +575,6 @@
     document.getElementById('inpAngkatan').value = userData.angkatan || '';
   }
 
-  // ===== SIMPAN KE API =====
   async function simpan() {
     const nama = document.getElementById('inpNama').value.trim();
     if (!nama) {
@@ -632,24 +594,29 @@
 
     try {
       const res  = await fetch(`/api/profil/${username}`, {
-        method:  'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(payload)
+        method: 'PUT', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
       const json = await res.json();
-
       if (json.success) {
         userData = { ...userData, ...payload };
         const toast = document.getElementById('toast');
         toast.style.display = 'flex';
         setTimeout(() => { toast.style.display = 'none'; showPage('profil'); }, 1600);
-      } else {
-        alert('Gagal menyimpan: ' + json.message);
-      }
-    } catch (err) {
-      alert('Error koneksi ke server!');
-    }
+      } else { alert('Gagal menyimpan: ' + json.message); }
+    } catch (err) { alert('Error koneksi ke server!'); }
   }
+
+  // ===== TOPBAR DROPDOWN =====
+  function toggleTopbarDropdown() {
+    document.getElementById('topbarDropdown').classList.toggle('open');
+  }
+
+  // Tutup jika klik di luar
+  document.addEventListener('click', function (e) {
+    const dd = document.getElementById('topbarDropdown');
+    if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+  });
 
   // ===== LOGOUT =====
   function logout() {

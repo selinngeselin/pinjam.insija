@@ -3,13 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Pinjam.in - Sistem Peminjaman SIJA</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* ===== DROPDOWN PROFIL ===== */
+        .profile-dropdown {
+            position: relative;
+        }
+
+        .profile-trigger {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 6px 14px 6px 6px;
+            border-radius: 50px;
+            border: 2px solid #e8ecf5;
+            background: white;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .profile-trigger:hover {
+            border-color: #1e90ff;
+            background: #f0f8ff;
+        }
+
+        .profile-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e90ff, #4ab3ff);
+            color: white;
+            font-weight: 900;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .profile-name {
+            font-weight: 700;
+            font-size: 14px;
+            color: #1a1a2e;
+            max-width: 120px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .profile-chevron {
+            font-size: 11px;
+            color: #888;
+            transition: transform 0.2s;
+        }
+
+        .profile-dropdown.open .profile-chevron {
+            transform: rotate(180deg);
+        }
+
+        /* Dropdown menu */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+            border: 1.5px solid #f0f4ff;
+            min-width: 200px;
+            z-index: 999;
+            overflow: hidden;
+            animation: dropDown 0.2s ease;
+        }
+
+        .profile-dropdown.open .dropdown-menu {
+            display: block;
+        }
+
+        @keyframes dropDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header dalam dropdown */
+        .dropdown-header {
+            padding: 16px 18px 12px;
+            border-bottom: 1px solid #f0f4ff;
+        }
+
+        .dropdown-header .dh-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: #1a1a2e;
+        }
+
+        .dropdown-header .dh-role {
+            font-size: 12px;
+            color: #aaa;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* Item menu */
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 13px 18px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.15s;
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .dropdown-item:hover { background: #f5f8ff; color: #1e90ff; }
+
+        .dropdown-item.danger { color: #ef4444; }
+        .dropdown-item.danger:hover { background: #fff0f0; color: #ef4444; }
+
+        .dropdown-item .di-icon { font-size: 17px; }
+
+        .dropdown-divider {
+            height: 1px;
+            background: #f0f4ff;
+            margin: 4px 0;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-left">
-            <a href="index.html" class="logo">Pinjam.in</a>
+            <a href="index.html" class="logo">
+                <img src="assets/img/logo_kelompok12.png" alt="Logo Pinjam.in" class="logo-img">
+                <span class="logo-text">Pinjam<span>.in</span></span>
+            </a>
         </div>
         <div class="nav-center">
             <a href="index.html" class="active">Home</a>
@@ -17,6 +156,7 @@
             <a href="peminjaman.html">Peminjaman</a>
         </div>
         <div class="nav-right" id="auth-buttons">
+            <!-- Default: belum login -->
             <a href="login.html" class="btn-login-nav">Login</a>
             <a href="register.html" class="btn-register-nav">Register</a>
         </div>
@@ -35,21 +175,25 @@
     </header>
 
     <div class="wrapper">
-            <div class="alert-box">
-                <span class="icon">⚠️</span>
-                <p><strong>Perhatian:</strong> Maksimal peminjaman 3 hari. Keterlambatan akan dicatat!</p>
-            </div>
-        
+        <div class="alert-box">
+            <span class="icon">⚠️</span>
+            <p><strong>Perhatian:</strong> Maksimal peminjaman 3 hari. Keterlambatan akan dicatat!</p>
+        </div>
+
+        <!-- Barang Tersedia -->
         <section class="items-section">
-            <h2>Barang Tersedia</h2>
-            <div class="items-grid" id="available-items">
+            <div class="section-title-row">
+                <h2>Barang Tersedia</h2>
+                <a href="daftar-barang.html" class="btn-lihat-semua">Lihat Selengkapnya →</a>
+            </div>
+            <div class="items-grid items-grid-4" id="available-items">
                 <div class="item-card">
                     <img src="assets/img/Mikrotik.jpg" alt="Mikrotik">
                     <div class="item-info">
                         <h3>Mikrotik</h3>
                         <div class="item-footer">
                             <span class="status available">Tersedia</span>
-                             <a href="peminjaman.html?barang=Mikrotik" class="btn-pinjam">Pinjam</a>
+                            <a href="peminjaman.html?barang=Mikrotik" class="btn-pinjam">Pinjam</a>
                         </div>
                     </div>
                 </div>
@@ -59,67 +203,197 @@
                         <h3>Kabel HDMI</h3>
                         <div class="item-footer">
                             <span class="status available">Tersedia</span>
-                             <a href="peminjaman.html?barang=Kabel HDMI" class="btn-pinjam">Pinjam</a>
+                            <a href="peminjaman.html?barang=Kabel HDMI" class="btn-pinjam">Pinjam</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <img src="assets/img/Mouse.jpg" alt="Mouse">
+                    <div class="item-info">
+                        <h3>Mouse</h3>
+                        <div class="item-footer">
+                            <span class="status available">Tersedia</span>
+                            <a href="peminjaman.html" class="btn-pinjam">Pinjam</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <img src="assets/img/arduino.jpg" alt="Arduino">
+                    <div class="item-info">
+                        <h3>Arduino</h3>
+                        <div class="item-footer">
+                            <span class="status available">Tersedia</span>
+                            <a href="peminjaman.html" class="btn-pinjam">Pinjam</a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
+        <!-- Barang Sering Dipinjam -->
         <section class="items-section">
-            <h2>Barang yang Sering Dipinjam</h2>
-            <div class="items-grid">
+            <div class="section-title-row">
+                <h2>Barang yang Sering Dipinjam</h2>
+            </div>
+            <div class="items-grid items-grid-4">
                 <div class="item-card">
                     <div class="card-image-container">
                         <span class="badge-frequent">🔥 Sering Dipinjam</span>
-                        <img src="assets/img/laptop.jpg" alt="Laptop HP">
+                        <img src="assets/img/laptop.jpg" alt="Laptop">
                     </div>
                     <div class="item-info">
                         <h3>Laptop</h3>
                         <div class="item-footer">
                             <span class="status available">Tersedia</span>
-                             <a href="peminjaman.html?barang=Laptop" class="btn-pinjam">Pinjam</a>
+                            <a href="peminjaman.html?barang=Laptop" class="btn-pinjam">Pinjam</a>
                         </div>
                     </div>
                 </div>
-
-                </div>
+            </div>
         </section>
     </div>
-    <footer class="footer">
-        <p>&copy; 2025 Pinjam.in - Sistem Peminjaman SIJA</p>
+
+    <!-- FOOTER -->
+    <footer class="footer-main">
+        <div class="footer-inner">
+            <div class="footer-col footer-logo-col">
+                <img src="assets/img/logo_kelompok12.png" alt="Logo Pinjam.in" class="footer-logo-img">
+            </div>
+            <div class="footer-col footer-brand">
+                <a href="index.html" class="footer-logo">Pinjam<span>.in</span></a>
+                <p class="footer-desc">Sistem Peminjaman Barang Jurusan SIJA - Mudah, Cepat, Tercatat.</p>
+                <p class="footer-copy">&copy; 2026 Pinjam.in</p>
+            </div>
+            <div class="footer-col footer-social-contact">
+                <h4 class="footer-heading">Ikuti Kami</h4>
+                <div class="footer-socials">
+                    <a href="https://www.instagram.com/" target="_blank" class="social-btn instagram">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.334 3.608 1.308.975.975 1.246 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.334 2.633-1.308 3.608-.975.975-2.242 1.246-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.334-3.608-1.308-.975-.975-1.246-2.242-1.308-3.608C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.85c.062-1.366.334-2.633 1.308-3.608C4.516 2.497 5.783 2.225 7.15 2.163 8.416 2.105 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.333.014 7.053.072 5.775.13 4.602.402 3.635 1.368 2.67 2.333 2.397 3.506 2.339 4.784 2.281 6.064 2.267 6.472 2.267 12c0 5.528.014 5.936.072 7.216.058 1.278.33 2.451 1.296 3.416.965.966 2.138 1.238 3.416 1.296C8.333 23.986 8.741 24 12 24s3.667-.014 4.947-.072c1.278-.058 2.451-.33 3.416-1.296.966-.965 1.238-2.138 1.296-3.416.058-1.28.072-1.688.072-7.216 0-5.528-.014-5.936-.072-7.216-.058-1.278-.33-2.451-1.296-3.416C19.398.402 18.225.13 16.947.072 15.667.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+                        Instagram
+                    </a>
+                    <a href="https://www.facebook.com/" target="_blank" class="social-btn facebook">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97h-1.513c-1.491 0-1.956.93-1.956 1.887v2.268h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+                        Facebook
+                    </a>
+                    <a href="https://www.tiktok.com/" target="_blank" class="social-btn tiktok">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
+                        TikTok
+                    </a>
+                </div>
+                <div class="footer-contact">
+                    <h4 class="footer-heading">Hubungi Kami</h4>
+                    <p class="contact-label">Ada kendala? Hubungi kami di:</p>
+                    <a href="https://mail.google.com/mail/?view=cm&to=pinjamin.sija@gmail.com&su=Laporan%20Trouble%20Pinjam.in" target="_blank" class="contact-email">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
+                        pinjamin.sija@gmail.com
+                    </a>
+                </div>
+            </div>
+            <div class="footer-col footer-team">
+                <h4 class="footer-heading">Tim Pembuat</h4>
+                <div class="team-list">
+                    <div class="team-member">
+                        <div class="team-avatar">Y</div>
+                        <div class="team-info">
+                            <span class="team-name">Muhammad Yasyin P. </span>
+                            <span class="team-role">Developer</span>
+                            <span class="team-role">0813-9875-4003</span>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-avatar" style="background: linear-gradient(135deg, #28a745, #20c997);">A</div>
+                        <div class="team-info">
+                            <span class="team-name">Muhammad Aditya N.</span>
+                            <span class="team-role">Developer</span>
+                            <span class="team-role">0882-2351-2966</span>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-avatar" style="background: linear-gradient(135deg, #e83e8c, #fd7e14);">S</div>
+                        <div class="team-info">
+                            <span class="team-name">Selina Agustina</span>
+                            <span class="team-role">Developer</span>
+                            <span class="team-role">0831-2080-0119</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
-</body>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const username = localStorage.getItem('username');
-        const authContainer = document.getElementById('auth-buttons');
 
-        if (username) {
-            // Tambahkan tombol 'Akun Saya' di sebelah Logout
-            authContainer.innerHTML = `
-                <a href="user.html" class="btn-user" style="margin-right:10px;">Akun Saya</a>
-                <button onclick="logout()" class="btn-logout">Logout</button>
-            `;
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const username = localStorage.getItem('username');
+            const authContainer = document.getElementById('auth-buttons');
+
+            if (username) {
+                // Ambil inisial dari nama atau username
+                const initials = getInitials(username);
+
+                authContainer.innerHTML = `
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="profile-trigger" onclick="toggleDropdown()">
+                            <div class="profile-avatar" id="profileAvatar">${initials}</div>
+                            <span class="profile-name" id="profileName">${username}</span>
+                            <span class="profile-chevron">▼</span>
+                        </div>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-header">
+                                <div class="dh-name" id="dropdownName">${username}</div>
+                                <div class="dh-role">Pengguna</div>
+                            </div>
+                            <a href="user.html" class="dropdown-item">
+                                <span class="di-icon">👤</span> Akun Saya
+                            </a>
+                            <a href="riwayat.html" class="dropdown-item">
+                                <span class="di-icon">📋</span> Riwayat Pinjam
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item danger" onclick="logout()">
+                                <span class="di-icon">🚪</span> Logout
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                // Ambil nama lengkap dari API
+                fetch(`/api/profil/${username}`)
+                    .then(r => r.json())
+                    .then(json => {
+                        if (json.success && json.nama) {
+                            const namaEl    = document.getElementById('profileName');
+                            const dropEl    = document.getElementById('dropdownName');
+                            const avatarEl  = document.getElementById('profileAvatar');
+                            if (namaEl)   namaEl.textContent   = json.nama;
+                            if (dropEl)   dropEl.textContent   = json.nama;
+                            if (avatarEl) avatarEl.textContent = getInitials(json.nama);
+                        }
+                    }).catch(() => {});
+            }
+        });
+
+        function getInitials(name) {
+            if (!name) return '?';
+            return name.trim().split(/\s+/).map(w => w[0]).join('').substring(0, 2).toUpperCase();
         }
-    });
 
-    function logout() {
-        localStorage.clear();
-        window.location.reload(); // Refresh halaman agar status kembali ke tamu
-    }
-</script>
+        function toggleDropdown() {
+            const dd = document.getElementById('profileDropdown');
+            if (dd) dd.classList.toggle('open');
+        }
 
-<script>
-    function handlePinjam() {
-    const username = localStorage.getItem('username');
-    
-    if (!username) {
-        alert("Maaf, Anda harus login terlebih dahulu untuk meminjam barang!");
-        window.location.href = 'login.html';
-    } else {
-        // Jika sudah login, arahkan ke halaman konfirmasi
-        window.location.href = 'konfirmasi.html';
-    }
-}
-</script>
+        // Tutup dropdown jika klik di luar
+        document.addEventListener('click', function (e) {
+            const dd = document.getElementById('profileDropdown');
+            if (dd && !dd.contains(e.target)) {
+                dd.classList.remove('open');
+            }
+        });
+
+        function logout() {
+            localStorage.clear();
+            window.location.reload();
+        }
+    </script>
+</body>
 </html>
