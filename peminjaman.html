@@ -3,259 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pinjam.inSIJA - Peminjaman</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Nunito', sans-serif;
-            background: #f4f7ff;
-            color: #1a1a2e;
-        }
-
-        /* ===== NAVBAR ===== */
-        .navbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 48px;
-            height: 68px;
-            background: white;
-            box-shadow: 0 2px 16px rgba(30,144,255,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            font-size: 22px;
-            font-weight: 900;
-            color: #1e90ff;
-            text-decoration: none;
-        }
-
-        .logo span { color: #1a1a2e; }
-
-        .nav-center { display: flex; gap: 4px; }
-
-        .nav-center a {
-            text-decoration: none;
-            color: #666;
-            font-weight: 700;
-            font-size: 14px;
-            padding: 8px 18px;
-            border-radius: 50px;
-            transition: all 0.2s;
-        }
-
-        .nav-center a:hover { background: #f0f8ff; color: #1e90ff; }
-        .nav-center a.active { background: #e8f4ff; color: #1e90ff; }
-
-        .nav-right { display: flex; gap: 10px; align-items: center; }
-
-        .btn-login-nav {
-            text-decoration: none;
-            color: #1e90ff;
-            font-weight: 700;
-            font-size: 14px;
-            padding: 9px 22px;
-            border-radius: 8px;
-            border: 2px solid #1e90ff;
-            transition: all 0.2s;
-        }
-
-        .btn-login-nav:hover { background: #e8f4ff; }
-
-        .btn-register-nav {
-            text-decoration: none;
-            color: white;
-            font-weight: 700;
-            font-size: 14px;
-            padding: 9px 22px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            box-shadow: 0 4px 14px rgba(34,197,94,0.35);
-            transition: all 0.2s;
-        }
-
-        .btn-user {
-            text-decoration: none;
-            color: white;
-            font-weight: 700;
-            font-size: 14px;
-            padding: 9px 22px;
-            border-radius: 50px;
-            background: linear-gradient(135deg, #1e90ff, #4ab3ff);
-            box-shadow: 0 4px 14px rgba(30,144,255,0.35);
-            transition: all 0.2s;
-        }
-
-        .btn-logout {
-            color: #ef4444;
-            font-weight: 700;
-            font-size: 14px;
-            padding: 9px 22px;
-            border-radius: 50px;
-            border: 2px solid #ef4444;
-            background: none;
-            cursor: pointer;
-            font-family: 'Nunito', sans-serif;
-            transition: all 0.2s;
-        }
-
-        .btn-logout:hover { background: #fff0f0; }
-
-        /* ===== MAIN ===== */
-        .wrapper {
-            max-width: 700px;
-            margin: 48px auto;
-            padding: 0 24px 64px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 24px;
-            padding: 44px 48px;
-            box-shadow: 0 8px 40px rgba(30,144,255,0.1);
-            border: 1.5px solid #eef2ff;
-        }
-
-        .card-title {
-            font-size: 24px;
-            font-weight: 900;
-            color: #1a1a2e;
-            margin-bottom: 8px;
-        }
-
-        .card-subtitle {
-            font-size: 14px;
-            color: #888;
-            font-weight: 600;
-            margin-bottom: 36px;
-        }
-
-        .form-group { margin-bottom: 24px; }
-
-        .form-label {
-            display: block;
-            font-weight: 800;
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .form-input, .form-select, .form-textarea {
-            width: 100%;
-            padding: 14px 18px;
-            border: 2px solid #e8ecf5;
-            border-radius: 12px;
-            font-family: 'Nunito', sans-serif;
-            font-size: 15px;
-            color: #222;
-            background: #fafbff;
-            outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
-            border-color: #1e90ff;
-            background: white;
-            box-shadow: 0 0 0 4px rgba(30,144,255,0.1);
-        }
-
-        .form-input::placeholder,
-        .form-textarea::placeholder { color: #c5cde0; }
-
-        .form-select { cursor: pointer; appearance: auto; }
-
-        .form-textarea {
-            resize: vertical;
-            min-height: 110px;
-        }
-
-        /* Stok info di bawah dropdown barang */
-        .stok-badge {
-            display: none;
-            margin-top: 8px;
-            font-size: 13px;
-            font-weight: 700;
-            padding: 6px 14px;
-            border-radius: 50px;
-            width: fit-content;
-        }
-        .stok-badge.ok    { background: #ecfdf5; color: #16a34a; }
-        .stok-badge.low   { background: #fffbeb; color: #d97706; }
-        .stok-badge.habis { background: #fef2f2; color: #dc2626; }
-
-        /* Durasi info */
-        .durasi-info {
-            font-size: 12px;
-            color: #f59e0b;
-            font-weight: 700;
-            margin-top: 6px;
-            display: none;
-        }
-
-        .btn-submit {
-            width: 100%;
-            background: linear-gradient(135deg, #1e90ff, #4ab3ff);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 16px;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 900;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 8px;
-            transition: transform 0.15s, box-shadow 0.2s;
-            box-shadow: 0 4px 18px rgba(30,144,255,0.35);
-            letter-spacing: 0.3px;
-        }
-
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(30,144,255,0.45);
-        }
-
-        .btn-submit:disabled {
-            background: #aaa;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 28px;
-            right: 28px;
-            color: white;
-            padding: 14px 28px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 14px;
-            display: none;
-            align-items: center;
-            gap: 8px;
-            z-index: 999;
-            animation: slideUp 0.3s ease;
-        }
-        .toast.success { background: #22c55e; box-shadow: 0 6px 24px rgba(34,197,94,0.45); }
-        .toast.error   { background: #ef4444; box-shadow: 0 6px 24px rgba(239,68,68,0.45); }
-
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to   { transform: translateY(0);    opacity: 1; }
-        }
-    </style>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Pinjam.in - Peminjaman</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- NAVBAR -->
+    <!-- NAVBAR (sama persis dengan index.html) -->
     <nav class="navbar">
-        <a href="index.html" class="logo">Pinjam.in<span>SIJA</span></a>
+        <div class="nav-left">
+            <a href="index.html" class="logo">
+                <img src="assets/img/logo_kelompok12.png" alt="Logo Pinjam.in" class="logo-img">
+                <span class="logo-text">Pinjam<span>.in</span></span>
+            </a>
+        </div>
         <div class="nav-center">
             <a href="index.html">Home</a>
             <a href="daftar-barang.html">Daftar Barang</a>
@@ -267,25 +30,25 @@
         </div>
     </nav>
 
-    <!-- FORM -->
-    <div class="wrapper">
-        <div class="card">
-            <div class="card-title">Form Pengajuan Peminjaman</div>
-            <div class="card-subtitle">Silakan isi data di bawah ini dengan lengkap dan benar.</div>
+    <!-- FORM PEMINJAMAN -->
+    <div class="pinjam-section">
+        <div class="pinjam-container">
+            <h2>Form Pengajuan Peminjaman</h2>
+            <p>Silakan isi data di bawah ini dengan lengkap dan benar.</p>
 
             <div class="form-group">
-                <label class="form-label">Nama Lengkap</label>
-                <input type="text" class="form-input" id="inpNama" placeholder="Masukkan nama sesuai kartu pelajar">
+                <label>Nama Lengkap</label>
+                <input type="text" class="pinjam-input" id="inpNama" placeholder="Masukkan nama sesuai kartu pelajar">
             </div>
 
             <div class="form-group">
-                <label class="form-label">Kelas / Jurusan</label>
-                <input type="text" class="form-input" id="inpKelas" placeholder="Contoh: XII SIJA 1">
+                <label>Kelas / Jurusan</label>
+                <input type="text" class="pinjam-input" id="inpKelas" placeholder="Contoh: XII SIJA 1">
             </div>
 
             <div class="form-group">
-                <label class="form-label">Barang yang Dipinjam</label>
-                <select class="form-select" id="inpBarang" onchange="cekStokBarang()">
+                <label>Barang yang Dipinjam</label>
+                <select class="pinjam-input" id="inpBarang" onchange="cekStokBarang()">
                     <option value="">-- Pilih Barang --</option>
                     <option value="Mikrotik">Mikrotik</option>
                     <option value="Kabel HDMI">Kabel HDMI</option>
@@ -295,19 +58,18 @@
                     <option value="Kabel LAN">Kabel LAN</option>
                     <option value="Raspberry Pi">Raspberry Pi</option>
                 </select>
-                <!-- Badge stok real-time -->
                 <div class="stok-badge" id="stokBadge"></div>
             </div>
 
             <div class="form-group">
-                <label class="form-label">Durasi Peminjaman (Hari)</label>
-                <input type="number" class="form-input" id="inpDurasi" placeholder="Maksimal 3 hari" min="1" max="3">
+                <label>Durasi Peminjaman (Hari)</label>
+                <input type="number" class="pinjam-input" id="inpDurasi" placeholder="Maksimal 3 hari" min="1" max="3">
                 <div class="durasi-info" id="durasiInfo">⚠️ Maksimal peminjaman adalah 3 hari!</div>
             </div>
 
             <div class="form-group">
-                <label class="form-label">Keperluan Peminjaman</label>
-                <textarea class="form-textarea" id="inpKeperluan" placeholder="Contoh: Untuk Praktik Jaringan Dasar"></textarea>
+                <label>Keperluan Peminjaman</label>
+                <textarea class="pinjam-input pinjam-textarea" id="inpKeperluan" placeholder="Contoh: Untuk Praktik Jaringan Dasar"></textarea>
             </div>
 
             <button class="btn-submit" id="btnSubmit" onclick="ajukan()">Ajukan Peminjaman</button>
@@ -317,12 +79,8 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // Cache data stok dari API
         let stokData = [];
 
-        // ============================================================
-        // Load semua stok barang dari API saat halaman dibuka
-        // ============================================================
         async function loadStok() {
             try {
                 const res  = await fetch('/api/items');
@@ -333,21 +91,13 @@
             }
         }
 
-        // ============================================================
-        // Cek stok barang yang dipilih di dropdown
-        // ============================================================
         function cekStokBarang() {
             const namaBarang = document.getElementById('inpBarang').value;
             const badge      = document.getElementById('stokBadge');
             const btnSubmit  = document.getElementById('btnSubmit');
 
-            if (!namaBarang) {
-                badge.style.display = 'none';
-                btnSubmit.disabled  = false;
-                return;
-            }
+            if (!namaBarang) { badge.style.display = 'none'; btnSubmit.disabled = false; return; }
 
-            // Cari di data stok
             const item = stokData.find(i =>
                 i.name.toLowerCase().includes(namaBarang.toLowerCase()) ||
                 namaBarang.toLowerCase().includes(i.name.toLowerCase().split(' ')[0])
@@ -356,7 +106,6 @@
             if (item) {
                 const stok = item.quantity;
                 badge.style.display = 'block';
-
                 if (stok <= 0) {
                     badge.className    = 'stok-badge habis';
                     badge.textContent  = '⛔ Stok Habis — Tidak bisa dipinjam';
@@ -376,11 +125,7 @@
             }
         }
 
-        // ============================================================
-        // DOMContentLoaded — setup navbar & auto-fill
-        // ============================================================
         document.addEventListener('DOMContentLoaded', async function () {
-            // Load stok terlebih dahulu
             await loadStok();
 
             const username      = localStorage.getItem('username');
@@ -391,7 +136,6 @@
                     <a href="user.html" class="btn-user">👤 Akun Saya</a>
                     <button onclick="logout()" class="btn-logout">Logout</button>
                 `;
-                // Auto-fill dari profil API
                 fetch(`/api/profil/${username}`)
                     .then(r => r.json())
                     .then(json => {
@@ -402,32 +146,24 @@
                     }).catch(() => {});
             }
 
-            // Auto-pilih barang dari URL parameter (?barang=NamaBarang)
             const urlParams     = new URLSearchParams(window.location.search);
             const barangDipilih = urlParams.get('barang');
             if (barangDipilih) {
                 const select = document.getElementById('inpBarang');
                 for (let option of select.options) {
                     if (option.value.toLowerCase() === barangDipilih.toLowerCase()) {
-                        option.selected = true;
-                        select.style.borderColor = '#1e90ff';
-                        select.style.boxShadow   = '0 0 0 4px rgba(30,144,255,0.15)';
-                        setTimeout(() => {
-                            select.style.borderColor = '';
-                            select.style.boxShadow   = '';
-                        }, 2000);
+                        option.selected          = true;
+                        select.style.borderColor = '#007bff';
+                        select.style.boxShadow   = '0 0 5px rgba(0,123,255,0.2)';
+                        setTimeout(() => { select.style.borderColor = ''; select.style.boxShadow = ''; }, 2000);
                         break;
                     }
                 }
-                // Langsung cek stok barang yang dipilih dari URL
                 cekStokBarang();
             }
         });
 
-        function logout() {
-            localStorage.clear();
-            window.location.href = 'index.html';
-        }
+        function logout() { localStorage.clear(); window.location.href = 'index.html'; }
 
         document.getElementById('inpDurasi').addEventListener('input', function () {
             const info = document.getElementById('durasiInfo');
@@ -438,20 +174,14 @@
             }
         });
 
-        // ============================================================
-        // Tampilkan toast notifikasi
-        // ============================================================
         function showToast(msg, type = 'success') {
-            const toast     = document.getElementById('toast');
-            toast.textContent  = msg;
-            toast.className    = `toast ${type}`;
+            const toast         = document.getElementById('toast');
+            toast.textContent   = msg;
+            toast.className     = `toast ${type}`;
             toast.style.display = 'flex';
             setTimeout(() => toast.style.display = 'none', 2500);
         }
 
-        // ============================================================
-        // Submit form — simpan peminjaman + kurangi stok di MongoDB
-        // ============================================================
         async function ajukan() {
             const nama      = document.getElementById('inpNama').value.trim();
             const kelas     = document.getElementById('inpKelas').value.trim();
@@ -460,7 +190,6 @@
             const keperluan = document.getElementById('inpKeperluan').value.trim();
             const username  = localStorage.getItem('username') || '';
 
-            // Validasi field kosong
             const fields = [
                 { id: 'inpNama',      val: nama },
                 { id: 'inpKelas',     val: kelas },
@@ -479,31 +208,22 @@
                 }
             });
 
-            if (!valid) {
-                showToast('⚠️ Harap isi semua field terlebih dahulu!', 'error');
-                return;
-            }
+            if (!valid) { showToast('⚠️ Harap isi semua field terlebih dahulu!', 'error'); return; }
 
-            // Cek stok sekali lagi sebelum submit (validasi sisi klien)
             const item = stokData.find(i =>
                 i.name.toLowerCase().includes(barang.toLowerCase()) ||
                 barang.toLowerCase().includes(i.name.toLowerCase().split(' ')[0])
             );
-            if (item && item.quantity <= 0) {
-                showToast('⛔ Stok barang ini sudah habis!', 'error');
-                return;
-            }
+            if (item && item.quantity <= 0) { showToast('⛔ Stok barang ini sudah habis!', 'error'); return; }
 
-            const btnSubmit = document.getElementById('btnSubmit');
+            const btnSubmit       = document.getElementById('btnSubmit');
             btnSubmit.disabled    = true;
             btnSubmit.textContent = 'Memproses...';
 
             try {
-                // STEP 1: Simpan data peminjaman ke database
                 const resLoan  = await fetch('/api/loans', {
-                    method:  'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body:    JSON.stringify({ nama, kelas, barang, durasi, keperluan, username })
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nama, kelas, barang, durasi, keperluan, username })
                 });
                 const jsonLoan = await resLoan.json();
 
@@ -514,28 +234,16 @@
                     return;
                 }
 
-                // STEP 2: Kurangi stok barang di MongoDB via /api/borrow
                 const resBorrow  = await fetch('/api/borrow', {
-                    method:  'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body:    JSON.stringify({ item: barang, jumlah: 1, nama, kelas })
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ item: barang, jumlah: 1, nama, kelas })
                 });
                 const jsonBorrow = await resBorrow.json();
+                if (!jsonBorrow.success) console.warn('Stok gagal dikurangi:', jsonBorrow.message);
 
-                if (!jsonBorrow.success) {
-                    // Peminjaman sudah tersimpan, tapi stok gagal dikurangi
-                    // Tetap lanjutkan tapi beri peringatan di console
-                    console.warn('Stok gagal dikurangi:', jsonBorrow.message);
-                }
-
-                // Update cache stok lokal
                 await loadStok();
-
-                // Sukses — tampilkan toast dan redirect
                 showToast('✅ Pengajuan berhasil dikirim!', 'success');
-                setTimeout(() => {
-                    window.location.href = 'konfirmasi.html';
-                }, 1800);
+                setTimeout(() => { window.location.href = 'konfirmasi.html'; }, 1800);
 
             } catch (err) {
                 showToast('❌ Error koneksi ke server!', 'error');

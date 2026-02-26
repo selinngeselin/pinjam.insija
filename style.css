@@ -1,9 +1,5 @@
 /* RESET & GLOBAL */
-* {
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     font-family: 'Segoe UI', sans-serif;
@@ -11,7 +7,9 @@ body {
     color: #333;
 }
 
-/* NAVBAR */
+/* ============================================ */
+/* NAVBAR                                       */
+/* ============================================ */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -22,238 +20,192 @@ body {
     position: sticky; top: 0; z-index: 1000;
 }
 
-.logo { 
-    font-size: 24px; 
-    font-weight: bold; 
-    color: #007bff; 
-    text-decoration: none; }
+.logo { text-decoration: none; display: flex; align-items: center; }
+
+.logo-img { height: 35px; width: auto; object-fit: contain; }
+
+.logo-text {
+    font-size: 22px;
+    font-weight: bold;
+    color: #1e88e5;
+    margin-left: 10px;
+}
+
+/* Warna ".in" di dalam logo-text */
+.logo-text span { color: #333; }
 
 .nav-center a {
-    text-decoration: none; 
+    text-decoration: none;
     color: #666;
-    margin: 0 15px; 
-    font-weight: 500; 
+    margin: 0 15px;
+    font-weight: 500;
     transition: 0.3s;
 }
 
-.nav-center a.active, .nav-center a:hover { 
-    color: #007bff; 
+.nav-center a.active, .nav-center a:hover { color: #007bff; }
+
+.container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+.wrapper { width: 92.5%; margin: 0 auto; padding: 0 20px; }
+
+/* ============================================ */
+/* BUTTONS                                      */
+/* ============================================ */
+.btn-primary {
+    background: #007bff; color: white;
+    padding: 12px 20px; border-radius: 8px;
+    text-decoration: none; font-weight: bold; transition: 0.3s;
 }
 
-
-/* Pastikan kontainer memiliki lebar yang konsisten */
-.container {
-    max-width: 1100px; /* Samakan dengan lebar maksimal kotak peringatan Anda */
-    margin: 0 auto;    /* Membuat konten berada di tengah halaman */
-    padding: 0 20px;
-}
-
-.wrapper {
-    max-width: 1100px; 
-    margin: 0 50px;
-    padding: 0 20px;
-}
-
-/* HERO SECTION */
-.hero {
-    width: 90%;
-    height: 450px;
-    margin: 30px auto;
-    display: flex;
-    align-items: center;
-    padding-left: 50px;
-
-    background-image: url('assets/img/hero-devices.jpg'); 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-
-    border-radius: 20px;
-    overflow: hidden;
-}
-
-.hero-content {
-    max-width: 500px; /* Membatasi teks agar tetap di area kiri yang kosong */
-    background: rgba(255, 255, 255, 0.1); /* Opsional: sedikit transparansi agar teks lebih terbaca */
-    padding: 20px;
-    border-radius: 15px;
-}
-
-.hero-content h1 { 
-    font-size: 3rem; 
-    line-height: 1.2; 
-    margin: 20px 0; 
-    color: #2c3e50; 
-}
-
-.hero-content h1 span { 
-    color: #007bff; 
-}
-
-.hero-buttons { 
-    display: flex; 
-    gap: 15px;
-    margin-top: 30px; 
-}
-
-.btn-primary { 
-    background: #007bff; 
-    color: white; 
-    padding: 12px 20px; 
-    border-radius: 8px; 
-    text-decoration: none; 
-    font-weight: bold;
-    transition: 0.3s; 
-}
-
-.btn-secondary { 
-    background: #e7f1ff; 
-    color: #007bff; 
-    padding: 12px 25px; 
-    border-radius: 8px; 
-    text-decoration: none; 
-    font-weight: bold; 
-    transition: 0.3s;
-    border: 1px solid #007bff; /* Garis tepi biru */
+.btn-secondary {
+    background: #e7f1ff; color: #007bff;
+    padding: 12px 25px; border-radius: 8px;
+    text-decoration: none; font-weight: bold;
+    transition: 0.3s; border: 1px solid #007bff;
 }
 
 .btn-login-nav {
-    background: #007bff; 
-    color: white; 
-    padding: 8px 18px; 
-    border-radius: 6px; 
-    text-decoration: none; 
-    font-weight: bold; 
-    transition: 0.3s; 
+    background: #007bff; color: white;
+    padding: 8px 18px; border-radius: 6px;
+    text-decoration: none; font-weight: bold; transition: 0.3s;
 }
 
 .btn-register-nav {
-    background: #28a745; 
-    color: white; 
-    padding: 8px 18px; 
-    border-radius: 6px; 
-    text-decoration: none; 
-    font-weight: bold; 
-    transition: 0.3s; 
+    background: #28a745; color: white;
+    padding: 8px 18px; border-radius: 6px;
+    text-decoration: none; font-weight: bold; transition: 0.3s;
 }
 
-/* ALERT BOX */
+.btn-user {
+    background-color: #3498db; color: white;
+    padding: 8px 15px; border-radius: 5px;
+    text-decoration: none; font-size: 14px; font-weight: bold;
+}
+
+.btn-user:hover { background-color: #2980b9; }
+
+.btn-logout {
+    background: #dc3545 !important;
+    color: white !important;
+    padding: 8px 18px; border-radius: 6px;
+    border: none; cursor: pointer;
+    font-weight: bold; font-family: 'Segoe UI', sans-serif;
+    transition: 0.3s;
+}
+
+/* ============================================ */
+/* HERO                                         */
+/* ============================================ */
+.hero {
+    width: 90%; height: 450px;
+    margin: 30px auto;
+    display: flex; align-items: center; padding-left: 50px;
+    background-image: url('assets/img/hero-devices.jpg');
+    background-size: cover; background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 20px; overflow: hidden;
+}
+
+.hero-content {
+    max-width: 500px;
+    background: rgba(255,255,255,0.1);
+    padding: 20px; border-radius: 15px;
+}
+
+.hero-content h1 { font-size: 3rem; line-height: 1.2; margin: 20px 0; color: #2c3e50; }
+.hero-content h1 span { color: #007bff; }
+.hero-buttons { display: flex; gap: 15px; margin-top: 30px; }
+
+/* ============================================ */
+/* ALERT BOX                                    */
+/* ============================================ */
 .alert-box {
-    background: #fff5f5; 
+    background: #fff5f5;
     border-left: 5px solid #ff4d4d;
-    padding: 20px; 
-    border-radius: 10px;
-    display: flex; 
-    align-items: center; 
-    gap: 15px;
-    margin: 30px 0; 
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    padding: 20px; border-radius: 10px;
+    display: flex; align-items: center; gap: 15px;
+    margin: 30px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
-/* ITEM GRID */
+/* ============================================ */
+/* SECTION TITLE ROW                            */
+/* ============================================ */
+.section-title-row {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 20px;
+}
+
+.section-title-row h2 { font-size: 1.4rem; color: #2c3e50; }
+
+.btn-lihat-semua {
+    background-color: #007bff; color: white;
+    padding: 9px 20px; border-radius: 8px;
+    text-decoration: none; font-weight: 600;
+    font-size: 0.9rem; transition: 0.3s; white-space: nowrap;
+}
+
+.btn-lihat-semua:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,123,255,0.25);
+}
+
+/* ============================================ */
+/* ITEM GRID - 4 KOLOM                          */
+/* ============================================ */
 .items-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 25px; 
-    margin-top: 20px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px; margin-top: 10px; margin-bottom: 30px;
 }
+
+.items-grid-4 { grid-template-columns: repeat(4, 1fr); }
 
 .item-card {
-    background: white; 
-    border-radius: 15px; 
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-    transition: 0.3s;
+    background: white; border-radius: 15px; overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.3s;
 }
 
-.item-card:hover { 
-    transform: translateY(-5px); 
-}
+.item-card:hover { transform: translateY(-5px); }
+.item-card img { width: 100%; height: 120px; object-fit: contain; }
+.item-info { padding: 15px; }
 
-.item-card img { 
-    width: 100%; 
-    height: 180px; 
-    object-fit: cover; 
-}
+.card-image-container { position: relative; width: 90%; height: 160px; overflow: hidden; }
+.card-image-container img { width: 100%; height: 120px; object-fit: contain; }
 
-.item-info { 
-    padding: 15px; 
-}
-
-/* Container gambar harus relative agar label bisa menempel di dalamnya */
-.card-image-container {
-    position: relative;
-    width: 100%;
-    height: 180px;
-    overflow: hidden;
-}
-
-.card-image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Styling Label Sering Dipinjam */
 .badge-frequent {
-    position: absolute;
-    top: 10px;      /* Jarak dari atas gambar */
-    left: 10px;     /* Jarak dari kiri gambar */
-    background-color: rgba(255, 193, 7, 0.9); /* Warna kuning transparan */
-    color: #000;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
-    z-index: 10;    /* Memastikan label berada di depan gambar */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    position: absolute; top: 10px; left: 10px;
+    background-color: rgba(255,193,7,0.9); color: #000;
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: bold;
+    z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-.item-footer { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    margin-top: 15px; 
+.item-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; }
+.status.available { color: #28a745; font-size: 0.9rem; font-weight: bold; }
+
+.btn-pinjam {
+    background: #007bff; color: white;
+    padding: 6px 15px; border-radius: 6px;
+    text-decoration: none; font-size: 0.9rem;
 }
 
-.status.available { 
-    color: #28a745; 
-    font-size: 0.9rem; 
-    font-weight: bold; 
-}
+.btn-pinjam:hover { background: #0056b3; }
 
-.btn-pinjam { 
-    background: #007bff; 
-    color: white; 
-    padding: 6px 15px; 
-    border-radius: 6px; 
-    text-decoration: none; 
-    font-size: 0.9rem; 
-}
+.items-section { margin-bottom: 20px; }
 
 .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
-    gap: 20px;
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 30px;
+    flex-wrap: wrap; gap: 20px;
 }
 
-.search-container {
-    flex-grow: 1;
-    max-width: 400px;
-}
+.search-container { flex-grow: 1; max-width: 400px; }
 
 .search-container input {
-    width: 100%;
-    padding: 12px 20px;
-    border: 2px solid #e0e0e0;
-    border-radius: 10px;
-    font-size: 1rem;
-    outline: none;
-    transition: 0.3s;
+    width: 100%; padding: 12px 20px;
+    border: 2px solid #e0e0e0; border-radius: 10px;
+    font-size: 1rem; outline: none; transition: 0.3s;
 }
 
 .search-container input:focus {
@@ -261,767 +213,558 @@ body {
     box-shadow: 0 0 8px rgba(0,123,255,0.1);
 }
 
-.form-section {
+/* ============================================ */
+/* FORM PEMINJAMAN                              */
+/* ============================================ */
+.pinjam-section {
     display: flex;
-    justify-content: center; /* Menengahkan secara horizontal */
-    align-items: flex-start; /* Memulai dari atas namun tetap di tengah */
-    min-height: 80vh;        /* Memberikan ruang tinggi minimal */
-    padding: 40px 20px;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 80vh;
+    padding: 40px 20px 64px;
+    background-color: #f8fafd;
 }
 
-.form-container {
+.pinjam-container {
     width: 100%;
-    max-width: 800px; /* Atur lebar form agar nyaman dilihat */
-    background: white;
-    padding: 30px;
+    max-width: 500px;
+    background: #fff;
+    padding: 35px;
     border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
-.form-container h2 {
-    margin-bottom: 10px;
+.pinjam-container h2 {
+    font-size: 22px;
+    font-weight: 800;
     color: #2c3e50;
+    margin-bottom: 8px;
+    text-align: center;
 }
 
-.form-container p {
-    margin-bottom: 25px;
+.pinjam-container p {
+    font-size: 14px;
     color: #666;
-    font-size: 0.95rem;
+    margin-bottom: 25px;
+    text-align: center;
 }
 
-.form-group {
+/* Gunakan .form-group yang sudah ada, tapi override label-nya */
+.pinjam-container .form-group {
     margin-bottom: 20px;
 }
 
-.form-group label {
+.pinjam-container .form-group label {
     display: block;
-    margin-bottom: 8px;
     font-weight: 600;
+    font-size: 14px;
     color: #333;
+    margin-bottom: 8px;
 }
 
-.form-group input, 
-.form-group select, 
-.form-group textarea {
+/* Input fields peminjaman */
+.pinjam-input {
     width: 100%;
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
+    font-family: 'Segoe UI', sans-serif;
     font-size: 1rem;
-    font-family: inherit;
-    transition: 0.3s;
+    color: #333;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    /* Penting: override appearance untuk <select> */
+    appearance: auto;
 }
 
-.form-group input:focus, 
-.form-group select:focus, 
-.form-group textarea:focus {
+.pinjam-input:focus {
     border-color: #007bff;
-    outline: none;
     box-shadow: 0 0 5px rgba(0,123,255,0.2);
 }
 
+.pinjam-input::placeholder { color: #aaa; }
+
+.pinjam-textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+/* Stok badge */
+.stok-badge {
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 8px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: none;
+}
+
+.stok-badge.ok  { background: #d4edda; color: #155724; }
+.stok-badge.low { background: #fff3cd; color: #856404; }
+.stok-badge.habis { background: #f8d7da; color: #721c24; }
+
+/* Durasi info hint */
+.durasi-info {
+    font-size: 12px;
+    color: #f59e0b;
+    font-weight: 700;
+    margin-top: 6px;
+    display: none;
+}
+
+/* Tombol submit */
 .btn-submit {
     width: 100%;
     background: #007bff;
     color: white;
-    padding: 14px;
     border: none;
     border-radius: 8px;
-    font-size: 1rem;
+    padding: 13px;
+    font-family: 'Segoe UI', sans-serif;
     font-weight: bold;
+    font-size: 16px;
     cursor: pointer;
-    transition: 0.3s;
+    margin-top: 8px;
+    transition: background 0.3s, transform 0.15s, box-shadow 0.2s;
 }
 
 .btn-submit:hover {
     background: #0056b3;
     transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,123,255,0.3);
 }
 
+.btn-submit:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Toast notifikasi */
+.toast {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    padding: 14px 28px;
+    border-radius: 50px;
+    font-weight: 800; font-size: 14px;
+    display: none; align-items: center; gap: 8px;
+    z-index: 999;
+    animation: slideUp 0.3s ease;
+}
+
+.toast.success { background: #22c55e; color: white; box-shadow: 0 6px 24px rgba(34,197,94,0.45); }
+.toast.error   { background: #ef4444; color: white; box-shadow: 0 6px 24px rgba(239,68,68,0.45); }
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ============================================ */
+/* FORM LOGIN & REGISTER                        */
+/* ============================================ */
+.form-section {
+    display: flex; justify-content: center;
+    align-items: flex-start; min-height: 80vh; padding: 40px 20px;
+}
+
+.form-container {
+    width: 100%; max-width: 800px; background: white;
+    padding: 30px; border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.form-container h2 { margin-bottom: 10px; color: #2c3e50; }
+.form-container p { margin-bottom: 25px; color: #666; font-size: 0.95rem; }
+
+.form-group { margin-bottom: 20px; }
+
+.form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #333; }
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%; padding: 12px;
+    border: 1px solid #ddd; border-radius: 8px;
+    font-size: 1rem; font-family: inherit; transition: 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #007bff; outline: none;
+    box-shadow: 0 0 5px rgba(0,123,255,0.2);
+}
+
+.login-page { background-color: #f4f7f6; }
+
+.login-card {
+    max-width: 450px; margin: 50px auto; padding: 35px;
+    background: #fff; border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.form-header { text-align: center; margin-bottom: 30px; }
+.form-footer { text-align: center; margin-top: 25px; font-size: 0.9rem; }
+.form-footer a { color: #007bff; text-decoration: none; font-weight: bold; }
+.form-footer a:hover { text-decoration: underline; color: #0056b3; }
+
+.back-link {
+    display: block; margin-top: 15px;
+    color: #888 !important; font-weight: normal !important; transition: 0.3s;
+}
+
+.back-link:hover { color: #333 !important; transform: translateX(-5px); }
+
+/* ============================================ */
+/* CONFIRM                                      */
+/* ============================================ */
 .confirm-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
+    display: flex; justify-content: center;
+    align-items: center; min-height: 80vh;
 }
 
 .confirm-card {
-    background: white;
-    padding: 40px;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    max-width: 500px;
-    width: 100%;
+    background: white; padding: 40px; border-radius: 20px;
+    text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    max-width: 500px; width: 100%;
 }
 
 .success-icon {
-    font-size: 50px;
-    background: #28a745;
-    color: white;
-    width: 80px;
-    height: 80px;
-    line-height: 80px;
-    border-radius: 50%;
-    margin: 0 auto 20px;
+    font-size: 50px; background: #28a745; color: white;
+    width: 80px; height: 80px; line-height: 80px;
+    border-radius: 50%; margin: 0 auto 20px;
 }
 
-.confirm-card h2 {
-    color: #2c3e50;
-    margin-bottom: 15px;
-}
-
-.confirm-card p {
-    color: #666;
-    line-height: 1.6;
-}
+.confirm-card h2 { color: #2c3e50; margin-bottom: 15px; }
+.confirm-card p { color: #666; line-height: 1.6; }
 
 .confirm-details {
-    background: #f8fafd;
-    padding: 15px;
-    border-radius: 10px;
-    margin: 25px 0;
-    text-align: left;
-    border-left: 4px solid #007bff; /* Senada dengan alert-box Anda */
+    background: #f8fafd; padding: 15px; border-radius: 10px;
+    margin: 25px 0; text-align: left; border-left: 4px solid #007bff;
 }
 
-.confirm-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 25px;
-}
+.confirm-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: 25px; }
 
 .confirm-buttons a {
-    display: block; /* Agar tombol memenuhi lebar container */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Durasi animasi halus */
+    display: block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-decoration: none;
 }
 
 .confirm-buttons a:hover {
-    transform: translateY(-4px); /* Mengangkat tombol ke atas sejauh 8px */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Menambah bayangan agar efek 'naik' terasa nyata */
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
 
-/* Khusus Halaman Login agar background sedikit berbeda */
-.login-page {
-    background-color: #f4f7f6;
-}
-
-.login-card {
-    max-width: 450px; /* Lebih ramping dari form peminjaman */
-    margin: 80px auto;
-    padding: 40px;
-}
-
-.form-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.form-footer {
-    text-align: center;
-    margin-top: 25px;
-    font-size: 0.9rem;
-}
-
-.form-footer a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.back-link {
-    display: block;
-    margin-top: 15px;
-    color: #888 !important;
-    font-weight: normal !important;
-    transition: 0.3s;
-}
-
-.back-link:hover {
-    color: #333 !important;
-    transform: translateX(-5px); /* Animasi geser ke kiri sedikit */
-}
-
-/* Pastikan ini ada di style.css Anda */
-.login-card {
-    max-width: 450px;
-    margin: 50px auto; /* Margin atas dikurangi sedikit agar form panjang tidak terpotong */
-    padding: 35px;
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-/* Animasi hover untuk link pendaftaran */
-.form-footer a:hover {
-    text-decoration: underline;
-    color: #0056b3;
-}
-
+/* ============================================ */
+/* ADMIN                                        */
+/* ============================================ */
 .admin-page { background-color: #f8f9fa; }
-
 .dashboard-section { padding: 30px 0; }
 
 .table-container {
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    overflow-x: auto; /* Agar tabel bisa discroll di HP */
+    background: #ffffff; padding: 25px; border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    margin-top: 20px; overflow-x: auto;
 }
 
-.admin-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background: white;
-}
-
-.admin-table th, .admin-table td {
-    padding: 15px 20px; /* Memberikan ruang agar teks tidak rapat */
-    text-align: left;
-    border-bottom: 1px solid #eee;
-}
+.admin-table { width: 100%; border-collapse: collapse; text-align: left; }
 
 .admin-table th {
-    background-color: #f8f9fa;
-    color: #333;
-    font-weight: bold;
-}
-
-/* Status Badges */
-.badge {
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: bold;
-}
-.badge.pending { background: #fff3cd; color: #856404; }
-
-/* Tombol Aksi dengan Efek Hover Melompat */
-.btn-action {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: transform 0.2s ease; /* Sama dengan tombol konfirmasi */
-}
-
-.btn-action:hover { transform: translateY(-3px); }
-
-.approve { background: #28a745; color: white; margin-right: 5px; }
-.reject { background: #dc3545; color: white; }
-
-.profile-container {
-    display: flex;
-    gap: 30px;
-    margin-top: 40px;
-    align-items: flex-start;
-}
-
-.profile-sidebar {
-    flex: 1;
-    max-width: 350px;
-}
-
-.profile-content {
-    flex: 2;
-}
-
-.profile-card {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-
-.profile-img {
-    font-size: 60px;
-    background: #f0f4f8;
-    width: 100px;
-    height: 100px;
-    line-height: 100px;
-    border-radius: 50%;
-    margin: 0 auto 20px;
-}
-
-.user-meta {
-    text-align: left;
-    margin: 20px 0;
-}
-
-.user-meta p {
-    margin-bottom: 10px;
-    font-size: 0.95rem;
-}
-
-.status-card {
-    margin-bottom: 15px;
-    border-left: 5px solid #007bff; /* Aksen biru khas Pinjam.in */
-}
-
-.badge.success {
-    background: #d4edda;
-    color: #155724;
-}
-
-.btn-logout-alt {
-    width: 100%;
-    margin-top: 20px;
-    color: #dc3545 !important;
-    border-color: #dc3545 !important;
-}
-
-/* Responsif untuk HP */
-@media (max-width: 768px) {
-    .profile-container {
-        flex-direction: column;
-    }
-    .profile-sidebar {
-        max-width: 100%;
-    }
-}
-
-/* Container utama untuk tabel */
-.table-container {
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Bayangan halus agar terlihat elegan */
-    margin-top: 20px;
-    overflow-x: auto; /* Agar tabel tidak rusak di layar kecil */
-}
-
-/* Styling Tabel */
-.admin-table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-}
-
-.admin-table th {
-    background-color: #f8f9fa;
-    color: #333;
-    font-weight: 600;
-    padding: 15px;
-    border-bottom: 2px solid #eee;
+    background-color: #f8f9fa; color: #333;
+    font-weight: 600; padding: 15px; border-bottom: 2px solid #eee;
 }
 
 .admin-table td {
-    padding: 15px;
-    border-bottom: 1px solid #f1f1f1;
-    color: #555;
-    vertical-align: middle;
+    padding: 15px; border-bottom: 1px solid #f1f1f1;
+    color: #555; vertical-align: middle;
 }
 
-/* Efek baris saat diarahkan kursor */
-.admin-table tbody tr:hover {
-    background-color: #fcfcfc;
+.admin-table tbody tr:hover { background-color: #fcfcfc; }
+
+.badge { padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; }
+.badge.pending { background: #fff3cd; color: #856404; }
+.badge.success { background: #d4edda; color: #155724; }
+
+.btn-action {
+    padding: 8px 15px; border: none; border-radius: 5px;
+    cursor: pointer; font-weight: bold; transition: transform 0.2s ease;
 }
 
-/* Tombol Selesai (Action Button) */
+.btn-action:hover { transform: translateY(-3px); }
+.approve { background: #28a745; color: white; margin-right: 5px; }
+.reject  { background: #dc3545; color: white; }
+
 .btn-action.approve {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s ease; /* Menggunakan transisi yang sama dengan tombol home */
+    background-color: #28a745; color: white; border: none;
+    padding: 8px 16px; border-radius: 8px;
+    cursor: pointer; font-weight: 500; transition: all 0.3s ease;
 }
 
-/* Animasi melompat ke atas saat hover (Konsistensi Desain) */
 .btn-action.approve:hover {
-    background-color: #218838;
-    transform: translateY(-3px); /* Efek melompat sesuai permintaan Anda sebelumnya */
-    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+    background-color: #218838; transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(40,167,69,0.3);
 }
 
-.btn-logout {
-    background: #dc3545 !important;
-    color: white !important;
-    padding: 10px 20px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.3s;
+/* ============================================ */
+/* PROFILE                                      */
+/* ============================================ */
+.profile-container { display: flex; gap: 30px; margin-top: 40px; align-items: flex-start; }
+.profile-sidebar { flex: 1; max-width: 350px; }
+.profile-content { flex: 2; }
+
+.profile-card {
+    background: white; padding: 30px; border-radius: 20px;
+    text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-.btn-user {
-    background-color: #3498db; /* Biru */
-    color: white;
-    padding: 8px 15px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: bold;
+.profile-img {
+    font-size: 60px; background: #f0f4f8;
+    width: 100px; height: 100px; line-height: 100px;
+    border-radius: 50%; margin: 0 auto 20px;
 }
 
-.btn-user:hover {
-    background-color: #2980b9;
-}
+.user-meta { text-align: left; margin: 20px 0; }
+.user-meta p { margin-bottom: 10px; font-size: 0.95rem; }
+.status-card { margin-bottom: 15px; border-left: 5px solid #007bff; }
+.btn-logout-alt { width: 100%; margin-top: 20px; color: #dc3545 !important; border-color: #dc3545 !important; }
 
-/* Reset untuk menghindari konflik */
-.user-page {
-    margin: 0 !important;
-    padding: 0 !important;
-}
+/* ============================================ */
+/* USER PAGE                                    */
+/* ============================================ */
+.user-page { margin: 0 !important; padding: 0 !important; }
 
-.user-page * {
-    box-sizing: border-box;
-}
-
-/* Background gradient hanya untuk halaman user */
 body.user-page {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #1e5799 0%, #2989d8 50%, #207cca 100%) !important;
     min-height: 100vh;
 }
 
-.user-container {
-    display: flex;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-}
+.user-container { display: flex; min-height: 100vh; margin: 0; padding: 0; }
 
-/* Sidebar */
 .user-sidebar {
-    width: 280px;
-    background-color: #ffffff;
-    padding: 20px;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-    min-height: 100vh;
+    width: 280px; background-color: #ffffff;
+    padding: 20px; box-shadow: 2px 0 10px rgba(0,0,0,0.1); min-height: 100vh;
 }
 
-.user-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 40px;
-    padding: 10px;
-}
+.user-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 40px; padding: 10px; }
 
 .user-logo-icon {
-    width: 50px;
-    height: 50px;
+    width: 50px; height: 50px;
     background: linear-gradient(135deg, #1e88e5, #42a5f5);
     border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 24px; font-weight: bold;
 }
 
-.user-logo-text {
-    display: flex;
-    flex-direction: column;
-}
-
-.user-brand {
-    font-size: 20px;
-    font-weight: bold;
-    color: #1e88e5;
-}
-
-.user-brand span {
-    color: #333;
-}
-
-.user-tagline {
-    font-size: 11px;
-    color: #666;
-}
+.user-logo-text { display: flex; flex-direction: column; }
+.user-brand { font-size: 20px; font-weight: bold; color: #1e88e5; }
+.user-brand span { color: #333; }
+.user-tagline { font-size: 11px; color: #666; }
 
 .user-menu-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 15px 20px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: #333;
-    text-decoration: none;
+    display: flex; align-items: center; gap: 15px;
+    padding: 15px 20px; margin-bottom: 10px;
+    border-radius: 8px; cursor: pointer;
+    transition: all 0.3s ease; color: #333; text-decoration: none;
 }
 
-.user-menu-item:hover {
-    background-color: #f5f5f5;
-}
+.user-menu-item:hover { background-color: #f5f5f5; }
+.user-menu-item.active { background-color: #1e88e5; color: white; }
+.user-menu-item svg { width: 24px; height: 24px; }
+.user-menu-item span { font-size: 16px; font-weight: 500; }
 
-.user-menu-item.active {
-    background-color: #1e88e5;
-    color: white;
-}
+.user-main-content { flex: 1; padding: 40px; overflow-y: auto; }
 
-.user-menu-item svg {
-    width: 24px;
-    height: 24px;
-}
-
-.user-menu-item span {
-    font-size: 16px;
-    font-weight: 500;
-}
-
-/* Main Content */
-.user-main-content {
-    flex: 1;
-    padding: 40px;
-    overflow-y: auto;
-}
-
-.user-header {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 30px;
-}
+.user-header { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 30px; }
 
 .user-profile {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    display: flex; align-items: center; gap: 10px;
     background-color: rgba(255,255,255,0.2);
-    padding: 8px 15px;
-    border-radius: 25px;
-    cursor: pointer;
+    padding: 8px 15px; border-radius: 25px; cursor: pointer;
 }
 
 .user-avatar {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
+    width: 35px; height: 35px; border-radius: 50%;
     background-color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    color: #1e88e5;
-    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; color: #1e88e5; font-size: 14px;
 }
 
-.user-name {
-    color: white;
-    font-weight: 500;
-    font-size: 14px;
-}
+.user-name { color: white; font-weight: 500; font-size: 14px; }
 
-.user-dropdown-icon {
-    color: white;
-    font-size: 12px;
-}
-
-/* Form Card */
 .user-form-card {
-    background-color: white;
-    border-radius: 15px;
+    background-color: white; border-radius: 15px;
     padding: 50px 60px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    max-width: 900px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-width: 900px;
 }
 
-.user-form-group {
-    margin-bottom: 30px;
-}
-
-.user-form-group label {
-    display: block;
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #333;
-    font-weight: 400;
-}
+.user-form-group { margin-bottom: 30px; }
+.user-form-group label { display: block; font-size: 18px; margin-bottom: 10px; color: #333; font-weight: 400; }
 
 .user-form-group input {
-    width: 100%;
-    padding: 15px 20px;
-    border: 2px solid #333;
-    border-radius: 30px;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    outline: none;
-    background-color: white;
+    width: 100%; padding: 15px 20px;
+    border: 2px solid #333; border-radius: 30px;
+    font-size: 16px; transition: all 0.3s ease;
+    outline: none; background-color: white;
 }
 
 .user-form-group input:focus {
     border-color: #1e88e5;
-    box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1);
+    box-shadow: 0 0 0 3px rgba(30,136,229,0.1);
 }
 
-.user-button-group {
-    display: flex;
-    gap: 15px;
-    margin-top: 40px;
-}
+.user-button-group { display: flex; gap: 15px; margin-top: 40px; }
 
 .user-btn {
-    padding: 15px 40px;
-    border: none;
-    border-radius: 30px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    padding: 15px 40px; border: none; border-radius: 30px;
+    font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;
 }
 
-.user-btn-primary {
-    background-color: #1e88e5;
-    color: white;
-}
+.user-btn-primary { background-color: #1e88e5; color: white; }
 
 .user-btn-primary:hover {
-    background-color: #1565c0;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(30, 136, 229, 0.3);
+    background-color: #1565c0; transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(30,136,229,0.3);
 }
 
-.user-btn-secondary {
-    background-color: #f5f5f5;
-    color: #333;
-}
+.user-btn-secondary { background-color: #f5f5f5; color: #333; }
+.user-btn-secondary:hover { background-color: #e0e0e0; }
 
-.user-btn-secondary:hover {
-    background-color: #e0e0e0;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .user-container {
-        flex-direction: column;
-    }
-
-    .user-sidebar {
-        width: 100%;
-        min-height: auto;
-    }
-
-    .user-main-content {
-        padding: 20px;
-    }
-
-    .user-form-card {
-        padding: 30px 25px;
-    }
-}
-
-/* CSS LAMA (yang sudah ada) */
-.user-page {
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-body.user-page {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1e5799 0%, #2989d8 50%, #207cca 100%) !important;
-    min-height: 100vh;
-}
-
-.user-container {
-    display: flex;
-    min-height: 100vh;
-}
-
-/* ... semua CSS yang sudah ada ... */
-
-.user-btn-secondary:hover {
-    background-color: #e0e0e0;
-}
-
-/* ============================================ */
-/* CSS BARU - TAMBAHKAN DI BAWAH INI */
-/* ============================================ */
-
-/* Info Card - Tampilan setelah simpan */
 .user-info-card {
-    background-color: white;
-    border-radius: 15px;
+    background-color: white; border-radius: 15px;
     padding: 50px 60px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    max-width: 900px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-width: 900px;
 }
 
-.info-title {
-    font-size: 28px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 40px;
-    text-align: center;
-}
+.info-title { font-size: 28px; font-weight: 600; color: #333; margin-bottom: 40px; text-align: center; }
 
 .info-item {
-    display: flex;
-    margin-bottom: 25px;
-    padding-bottom: 25px;
-    border-bottom: 1px solid #f0f0f0;
+    display: flex; margin-bottom: 25px;
+    padding-bottom: 25px; border-bottom: 1px solid #f0f0f0;
 }
 
-.info-item:last-of-type {
-    border-bottom: none;
+.info-item:last-of-type { border-bottom: none; }
+.info-label { font-size: 18px; font-weight: 500; color: #666; width: 250px; flex-shrink: 0; }
+.info-value { font-size: 18px; color: #333; font-weight: 400; }
+
+/* ============================================ */
+/* FOOTER - 4 KOLOM                             */
+/* ============================================ */
+.footer-main {
+    background: #1a1f2e; color: #ccc;
+    margin-top: 50px; padding: 50px 5% 30px;
 }
 
-.info-label {
-    font-size: 18px;
-    font-weight: 500;
-    color: #666;
-    width: 250px;
-    flex-shrink: 0;
+.footer-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 0.3fr 1fr 1.4fr 1fr;
+    column-gap: 25px; row-gap: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    align-items: start;
 }
 
-.info-value {
-    font-size: 18px;
-    color: #333;
-    font-weight: 400;
+.footer-logo-col {
+    display: flex; align-items: flex-start;
+    justify-content: center; padding-top: 4px;
 }
 
-/* Update Responsive yang sudah ada */
+.footer-logo-img {
+    height: 130px; width: auto;
+    object-fit: contain; flex-shrink: 0; border-radius: 10px;
+}
+
+.footer-logo {
+    font-size: 24px; font-weight: bold; color: #fff;
+    text-decoration: none; display: inline-block; margin-bottom: 10px;
+}
+
+.footer-logo span { color: #4d9fff; }
+.footer-desc { font-size: 0.9rem; line-height: 1.5; color: #aaa; margin-bottom: 15px; }
+.footer-copy { font-size: 0.8rem; color: #666; }
+
+.footer-heading {
+    font-size: 0.85rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px;
+    color: #fff; margin-bottom: 14px;
+}
+
+.footer-socials { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+
+.social-btn {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 16px; border-radius: 8px;
+    text-decoration: none; font-size: 0.9rem; font-weight: 600;
+    color: white; transition: transform 0.2s, opacity 0.2s; width: fit-content;
+}
+
+.social-btn:hover { transform: translateX(5px); opacity: 0.85; }
+.social-btn.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+.social-btn.facebook  { background: #1877f2; }
+.social-btn.tiktok    { background: #010101; border: 1px solid #333; }
+
+.footer-contact { margin-top: 5px; }
+.contact-label  { font-size: 0.85rem; color: #aaa; margin-bottom: 10px; }
+
+.contact-email {
+    display: flex; align-items: center; gap: 8px;
+    color: #4d9fff; text-decoration: none;
+    font-size: 0.9rem; font-weight: 500; transition: 0.2s;
+}
+
+.contact-email:hover { color: #80bfff; text-decoration: underline; }
+
+.team-list   { display: flex; flex-direction: column; gap: 14px; }
+.team-member { display: flex; align-items: center; gap: 14px; }
+
+.team-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+    color: white; font-size: 18px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+}
+
+.team-info  { display: flex; flex-direction: column; }
+.team-name  { font-size: 0.95rem; font-weight: 600; color: #eee; }
+.team-role  { font-size: 0.78rem; color: #888; }
+
+/* ============================================ */
+/* RESPONSIVE                                   */
+/* ============================================ */
+@media (max-width: 1024px) {
+    .items-grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+}
+
 @media (max-width: 768px) {
-    .user-container {
-        flex-direction: column;
-    }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 30px; }
+    .pinjam-container { padding: 28px 20px; max-width: 100%; }
+    .user-container { flex-direction: column; }
+    .user-sidebar { width: 100%; min-height: auto; }
+    .user-main-content { padding: 20px; }
+    .user-form-card, .user-info-card { padding: 30px 25px; }
+    .info-item { flex-direction: column; gap: 5px; }
+    .info-label { width: 100%; font-size: 16px; }
+    .info-value { font-size: 16px; }
+    .user-button-group { flex-direction: column; }
+    .user-btn { width: 100%; }
+}
 
-    .user-sidebar {
-        width: 100%;
-        min-height: auto;
-    }
+@media (max-width: 480px) {
+    .footer-inner { grid-template-columns: 1fr; gap: 30px; }
+    .footer-logo-col { justify-content: flex-start; }
+}
 
-    .user-main-content {
-        padding: 20px;
-    }
-
-    .user-form-card,
-    .user-info-card {  /* Tambahkan .user-info-card di sini */
-        padding: 30px 25px;
-    }
-
-    /* Tambahkan ini juga untuk responsive info section */
-    .info-item {
-        flex-direction: column;
-        gap: 5px;
-    }
-
-    .info-label {
-        width: 100%;
-        font-size: 16px;
-    }
-
-    .info-value {
-        font-size: 16px;
-    }
-
-    .user-button-group {
-        flex-direction: column;
-    }
-
-    .user-btn {
-        width: 100%;
-    }
+@media (max-width: 600px) {
+    .items-grid-4 { grid-template-columns: 1fr; }
+    .section-title-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .profile-container { flex-direction: column; }
+    .profile-sidebar { max-width: 100%; }
+    .wrapper { width: 95%; }
 }
