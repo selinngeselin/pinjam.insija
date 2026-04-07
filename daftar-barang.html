@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Barang - Pinjam.in</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .stock-info {
+            font-size: 13px;
+            color: #555;
+            margin-bottom: 6px;
+        }
+        .stock-info span {
+            font-weight: bold;
+            color: #333;
+        }
+        .stock-info.low span {
+            color: #e67e22;
+        }
+        .stock-info.empty span {
+            color: #e74c3c;
+        }
+
+        /* Overlay "Barang Habis" di tengah gambar */
+        .card-image-container {
+            position: relative;
+        }
+        .item-card > img {
+            display: block;
+            width: 100%;
+        }
+        .overlay-habis {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.65);
+            color: #fff;
+            font-weight: bold;
+            font-size: 15px;
+            padding: 8px 18px;
+            border-radius: 8px;
+            white-space: nowrap;
+            z-index: 5;
+            pointer-events: none;
+        }
+        .item-card.habis .overlay-habis {
+            display: block;
+        }
+
+        .btn-pinjam.disabled {
+            background: #aaa;
+            pointer-events: none;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .status.unavailable {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html" class="logo">
+                <img src="assets/img/logo_kelompok12.png" alt="Logo Pinjam.in" class="logo-img">
+                <span class="logo-text">Pinjam<span>.in</span></span>
+            </a>
+        </div>
+        <div class="nav-center">
+            <a href="index.html">Home</a>
+            <a href="daftar-barang.html" class="active">Daftar Barang</a>
+            <a href="peminjaman.html">Peminjaman</a>
+        </div>
+    </nav>
+
+    <div class="wrapper">
+        <section class="items-section">
+            <div class="section-header">
+                <h2>Cari Peralatan SIJA</h2>
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Ketik nama barang (misal: Mikrotik)..." onkeyup="searchBarang()">
+                </div>
+            </div>
+
+            <div class="items-grid" id="itemsGrid">
+
+                <!-- Router Mikrotik -->
+                <div class="item-card" data-name="Mikrotik" data-key="mikrotik">
+                    <div class="card-image-container">
+                        <img src="assets/img/Mikrotik.jpg" alt="Mikrotik">
+                        <div class="overlay-habis">⛔ Barang Habis</div>
+                    </div>
+                    <div class="item-info">
+                        <h3>Router Mikrotik</h3>
+                        <div class="stock-info" id="stock-label-mikrotik">
+                            Stok: <span id="stock-mikrotik">...</span>/10
+                        </div>
+                        <div class="item-footer">
+                            <span class="status available" id="status-mikrotik">Tersedia</span>
+                            <a href="peminjaman.html?barang=Mikrotik" class="btn-pinjam" id="btn-mikrotik">Pinjam</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kabel HDMI -->
+                <div class="item-card" data-name="Kabel HDMI" data-key="hdmi">
+                    <div class="card-image-container">
+                        <img src="assets/img/Kabel_HDMI.jpg" alt="Kabel HDMI">
+                        <div class="overlay-habis">⛔ Barang Habis</div>
+                    </div>
+                    <div class="item-info">
+                        <h3>Kabel HDMI</h3>
+                        <div class="stock-info" id="stock-label-hdmi">
+                            Stok: <span id="stock-hdmi">...</span>/10
+                        </div>
+                        <div class="item-footer">
+                            <span class="status available" id="status-hdmi">Tersedia</span>
+                            <a href="peminjaman.html?barang=Kabel HDMI" class="btn-pinjam" id="btn-hdmi">Pinjam</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Laptop HP ProBook -->
+                <div class="item-card" data-name="Laptop" data-key="laptop">
+                    <div class="card-image-container">
+                        <span class="badge-frequent">🔥 Sering Dipinjam</span>
+                        <img src="assets/img/laptop.jpg" alt="Laptop">
+                        <div class="overlay-habis">⛔ Barang Habis</div>
+                    </div>
+                    <div class="item-info">
+                        <h3>Laptop HP ProBook</h3>
+                        <div class="stock-info" id="stock-label-laptop">
+                            Stok: <span id="stock-laptop">...</span>/10
+                        </div>
+                        <div class="item-footer">
+                            <span class="status available" id="status-laptop">Tersedia</span>
+                            <a href="peminjaman.html?barang=Laptop" class="btn-pinjam" id="btn-laptop">Pinjam</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Mapping key kartu → kata kunci nama barang di database (huruf kecil)
+        const ITEM_MAP = {
+            mikrotik: 'mikrotik',
+            hdmi:     'hdmi',
+            laptop:   'laptop'
+        };
+
+        function updateTampilan(key, stok) {
+            const card       = document.querySelector(`.item-card[data-key="${key}"]`);
+            const stockSpan  = document.getElementById('stock-' + key);
+            const stockLabel = document.getElementById('stock-label-' + key);
+            const statusEl   = document.getElementById('status-' + key);
+            const btnEl      = document.getElementById('btn-' + key);
+
+            stockSpan.textContent = stok;
+
+            // Warna label stok
+            stockLabel.className = 'stock-info';
+            if (stok === 0)       stockLabel.classList.add('empty');
+            else if (stok <= 3)   stockLabel.classList.add('low');
+
+            // Jika habis
+            if (stok <= 0) {
+                card.classList.add('habis');
+                statusEl.textContent = 'Habis';
+                statusEl.className   = 'status unavailable';
+                btnEl.classList.add('disabled');
+                btnEl.removeAttribute('href');
+            } else {
+                card.classList.remove('habis');
+                statusEl.textContent = 'Tersedia';
+                statusEl.className   = 'status available';
+                btnEl.classList.remove('disabled');
+            }
+        }
+
+        // Ambil stok dari API dan update semua tampilan
+        async function loadStok() {
+            try {
+                const res  = await fetch('/api/items');
+                const json = await res.json();
+                if (!json.success) return;
+
+                json.data.forEach(item => {
+                    const nameLower = item.name.toLowerCase();
+                    const key = Object.keys(ITEM_MAP).find(k =>
+                        nameLower.includes(ITEM_MAP[k])
+                    );
+                    if (key) updateTampilan(key, item.quantity);
+                });
+            } catch (err) {
+                console.error('Gagal memuat stok:', err);
+            }
+        }
+
+        // ========== SEARCH ==========
+        function searchBarang() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.getElementsByClassName('item-card');
+            for (let i = 0; i < cards.length; i++) {
+                let name = cards[i].getAttribute('data-name').toLowerCase();
+                cards[i].style.display = name.includes(input) ? "" : "none";
+            }
+        }
+
+        // Inisialisasi
+        loadStok();
+    </script>
+</body>
+</html>

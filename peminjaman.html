@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Pinjam.in - Peminjaman</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- NAVBAR (sama persis dengan index.html) -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html" class="logo">
+                <img src="assets/img/logo_kelompok12.png" alt="Logo Pinjam.in" class="logo-img">
+                <span class="logo-text">Pinjam<span>.in</span></span>
+            </a>
+        </div>
+        <div class="nav-center">
+            <a href="index.html">Home</a>
+            <a href="daftar-barang.html">Daftar Barang</a>
+            <a href="peminjaman.html" class="active">Peminjaman</a>
+        </div>
+        <div class="nav-right" id="auth-buttons">
+            <a href="login.html" class="btn-login-nav">Login</a>
+            <a href="register.html" class="btn-register-nav">Register</a>
+        </div>
+    </nav>
+
+    <!-- FORM PEMINJAMAN -->
+    <div class="pinjam-section">
+        <div class="pinjam-container">
+            <h2>Form Pengajuan Peminjaman</h2>
+            <p>Silakan isi data di bawah ini dengan lengkap dan benar.</p>
+
+            <div class="form-group">
+                <label>Nama Lengkap</label>
+                <input type="text" class="pinjam-input" id="inpNama" placeholder="Masukkan nama sesuai kartu pelajar">
+            </div>
+
+            <div class="form-group">
+                <label>Kelas / Jurusan</label>
+                <input type="text" class="pinjam-input" id="inpKelas" placeholder="Contoh: XII SIJA 1">
+            </div>
+
+            <div class="form-group">
+                <label>Barang yang Dipinjam</label>
+                <select class="pinjam-input" id="inpBarang" onchange="cekStokBarang()">
+                    <option value="">-- Pilih Barang --</option>
+                    <option value="Mikrotik">Mikrotik</option>
+                    <option value="Kabel HDMI">Kabel HDMI</option>
+                    <option value="Laptop">Laptop</option>
+                    <option value="Switch Hub">Switch Hub</option>
+                    <option value="Access Point">Access Point</option>
+                    <option value="Kabel LAN">Kabel LAN</option>
+                    <option value="Raspberry Pi">Raspberry Pi</option>
+                </select>
+                <div class="stok-badge" id="stokBadge"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Durasi Peminjaman (Hari)</label>
+                <input type="number" class="pinjam-input" id="inpDurasi" placeholder="Maksimal 3 hari" min="1" max="3">
+                <div class="durasi-info" id="durasiInfo">⚠️ Maksimal peminjaman adalah 3 hari!</div>
+            </div>
+
+            <div class="form-group">
+                <label>Keperluan Peminjaman</label>
+                <textarea class="pinjam-input pinjam-textarea" id="inpKeperluan" placeholder="Contoh: Untuk Praktik Jaringan Dasar"></textarea>
+            </div>
+
+            <button class="btn-submit" id="btnSubmit" onclick="ajukan()">Ajukan Peminjaman</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        let stokData = [];
+
+        async function loadStok() {
+            try {
+                const res  = await fetch('/api/items');
+                const json = await res.json();
+                if (json.success) stokData = json.data;
+            } catch (err) {
+                console.warn('Gagal load stok:', err);
+            }
+        }
+
+        function cekStokBarang() {
+            const namaBarang = document.getElementById('inpBarang').value;
+            const badge      = document.getElementById('stokBadge');
+            const btnSubmit  = document.getElementById('btnSubmit');
+
+            if (!namaBarang) { badge.style.display = 'none'; btnSubmit.disabled = false; return; }
+
+            const item = stokData.find(i =>
+                i.name.toLowerCase().includes(namaBarang.toLowerCase()) ||
+                namaBarang.toLowerCase().includes(i.name.toLowerCase().split(' ')[0])
+            );
+
+            if (item) {
+                const stok = item.quantity;
+                badge.style.display = 'block';
+                if (stok <= 0) {
+                    badge.className    = 'stok-badge habis';
+                    badge.textContent  = '⛔ Stok Habis — Tidak bisa dipinjam';
+                    btnSubmit.disabled = true;
+                } else if (stok <= 3) {
+                    badge.className    = 'stok-badge low';
+                    badge.textContent  = `⚠️ Stok tersisa: ${stok}`;
+                    btnSubmit.disabled = false;
+                } else {
+                    badge.className    = 'stok-badge ok';
+                    badge.textContent  = `✅ Stok tersedia: ${stok}`;
+                    btnSubmit.disabled = false;
+                }
+            } else {
+                badge.style.display = 'none';
+                btnSubmit.disabled  = false;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async function () {
+            await loadStok();
+
+            const username      = localStorage.getItem('username');
+            const authContainer = document.getElementById('auth-buttons');
+
+            if (username) {
+                authContainer.innerHTML = `
+                    <a href="user.html" class="btn-user">👤 Akun Saya</a>
+                    <button onclick="logout()" class="btn-logout">Logout</button>
+                `;
+                fetch(`/api/profil/${username}`)
+                    .then(r => r.json())
+                    .then(json => {
+                        if (json.success) {
+                            if (json.nama)     document.getElementById('inpNama').value  = json.nama;
+                            if (json.angkatan) document.getElementById('inpKelas').value = json.angkatan;
+                        }
+                    }).catch(() => {});
+            }
+
+            const urlParams     = new URLSearchParams(window.location.search);
+            const barangDipilih = urlParams.get('barang');
+            if (barangDipilih) {
+                const select = document.getElementById('inpBarang');
+                for (let option of select.options) {
+                    if (option.value.toLowerCase() === barangDipilih.toLowerCase()) {
+                        option.selected          = true;
+                        select.style.borderColor = '#007bff';
+                        select.style.boxShadow   = '0 0 5px rgba(0,123,255,0.2)';
+                        setTimeout(() => { select.style.borderColor = ''; select.style.boxShadow = ''; }, 2000);
+                        break;
+                    }
+                }
+                cekStokBarang();
+            }
+        });
+
+        function logout() { localStorage.clear(); window.location.href = 'index.html'; }
+
+        document.getElementById('inpDurasi').addEventListener('input', function () {
+            const info = document.getElementById('durasiInfo');
+            if (parseInt(this.value) > 3) {
+                this.value = 3;
+                info.style.display = 'block';
+                setTimeout(() => info.style.display = 'none', 2500);
+            }
+        });
+
+        function showToast(msg, type = 'success') {
+            const toast         = document.getElementById('toast');
+            toast.textContent   = msg;
+            toast.className     = `toast ${type}`;
+            toast.style.display = 'flex';
+            setTimeout(() => toast.style.display = 'none', 2500);
+        }
+
+        async function ajukan() {
+            const nama      = document.getElementById('inpNama').value.trim();
+            const kelas     = document.getElementById('inpKelas').value.trim();
+            const barang    = document.getElementById('inpBarang').value;
+            const durasi    = document.getElementById('inpDurasi').value.trim();
+            const keperluan = document.getElementById('inpKeperluan').value.trim();
+            const username  = localStorage.getItem('username') || '';
+
+            const fields = [
+                { id: 'inpNama',      val: nama },
+                { id: 'inpKelas',     val: kelas },
+                { id: 'inpBarang',    val: barang },
+                { id: 'inpDurasi',    val: durasi },
+                { id: 'inpKeperluan', val: keperluan },
+            ];
+
+            let valid = true;
+            fields.forEach(f => {
+                const el = document.getElementById(f.id);
+                if (!f.val) {
+                    el.style.borderColor = '#ef4444';
+                    valid = false;
+                    setTimeout(() => el.style.borderColor = '', 2000);
+                }
+            });
+
+            if (!valid) { showToast('⚠️ Harap isi semua field terlebih dahulu!', 'error'); return; }
+
+            const item = stokData.find(i =>
+                i.name.toLowerCase().includes(barang.toLowerCase()) ||
+                barang.toLowerCase().includes(i.name.toLowerCase().split(' ')[0])
+            );
+            if (item && item.quantity <= 0) { showToast('⛔ Stok barang ini sudah habis!', 'error'); return; }
+
+            const btnSubmit       = document.getElementById('btnSubmit');
+            btnSubmit.disabled    = true;
+            btnSubmit.textContent = 'Memproses...';
+
+            try {
+                const resLoan  = await fetch('/api/loans', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nama, kelas, barang, durasi, keperluan, username })
+                });
+                const jsonLoan = await resLoan.json();
+
+                if (!jsonLoan.success) {
+                    showToast('❌ Gagal mengajukan: ' + jsonLoan.message, 'error');
+                    btnSubmit.disabled    = false;
+                    btnSubmit.textContent = 'Ajukan Peminjaman';
+                    return;
+                }
+
+                const resBorrow  = await fetch('/api/borrow', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ item: barang, jumlah: 1, nama, kelas })
+                });
+                const jsonBorrow = await resBorrow.json();
+                if (!jsonBorrow.success) console.warn('Stok gagal dikurangi:', jsonBorrow.message);
+
+                await loadStok();
+                showToast('✅ Pengajuan berhasil dikirim!', 'success');
+                setTimeout(() => { window.location.href = 'konfirmasi.html'; }, 1800);
+
+            } catch (err) {
+                showToast('❌ Error koneksi ke server!', 'error');
+                btnSubmit.disabled    = false;
+                btnSubmit.textContent = 'Ajukan Peminjaman';
+            }
+        }
+    </script>
+</body>
+</html>

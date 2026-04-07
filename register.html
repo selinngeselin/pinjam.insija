@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Daftar Akun - Pinjam.in</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page">
+
+    <div class="auth-layout register">
+
+        <!-- KIRI: Form Register -->
+        <div class="auth-form-side">
+            <div class="auth-form-box">
+                <div class="auth-logo">
+                    <a href="index.html">
+                        <img src="assets/img/logo_kelompok12.png" alt="Logo" class="auth-logo-img">
+                        <span>Pinjam<span class="auth-logo-dot">.in</span></span>
+                    </a>
+                </div>
+
+                <div class="form-header">
+                    <h2>Buat Akun Baru</h2>
+                    <p>Daftar sekarang untuk mulai meminjam alat praktik SIJA.</p>
+                </div>
+
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="reg-nama">Nama Lengkap</label>
+                        <input type="text" id="reg-nama" placeholder="Masukkan nama lengkap" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-nis">NIS (Nomor Induk Siswa)</label>
+                        <input type="number" id="reg-nis" placeholder="Masukkan NIS" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-email">Email</label>
+                        <input type="email" id="reg-email" placeholder="contoh@smail.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-password">Password</label>
+                        <input type="password" id="reg-password" placeholder="Buat password minimal 8 karakter" required>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Daftar Sekarang</button>
+
+                    <div class="form-footer">
+                        <p>Sudah punya akun? <a href="login.html">Login di sini</a></p>
+                        <a href="index.html" class="back-link">← Kembali ke Beranda</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- KANAN: Foto/Ilustrasi -->
+        <div class="auth-image-side">
+            <img src="assets/img/spiderman.jpg" alt="Ilustrasi Register" class="auth-image">
+            <div class="auth-image-overlay">
+                <h2>Bergabung Sekarang</h2>
+                <p>Buat akun dan mulai pinjam peralatan SIJA kapan saja.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const dataUser = {
+                username: document.getElementById('reg-nama').value,
+                password: document.getElementById('reg-password').value,
+                role: 'user'
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataUser)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert("Akun berhasil dibuat! Silakan login.");
+                    window.location.href = 'login.html';
+                } else {
+                    alert("Gagal mendaftar: " + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("Terjadi kesalahan koneksi ke server.");
+            }
+        });
+    </script>
+</body>
+</html>
