@@ -363,6 +363,112 @@ body {
 }
 
 /* ============================================ */
+/* AUTH LAYOUT (Login & Register dengan foto)   */
+/* ============================================ */
+.auth-layout {
+    display: flex;
+    min-height: 100%;
+    background: #f4f7f6;
+    align-items: center;      /* Sejajarkan vertikal di tengah */
+    justify-content: center;
+    padding: 40px 5%;
+}
+
+/* Khusus register: foto di kanan, jadi border-radius dibalik */
+.auth-layout.register .auth-image-side {
+    border-radius: 0 20px 20px 0;   /* Sudut kanan yang membulat */
+}
+
+.auth-layout.register .auth-form-box {
+    border-radius: 20px 0 0 20px;   /* Sudut kiri yang membulat */
+}
+
+.auth-image-side {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px 0 0 20px;        
+    align-self: stretch;      
+    max-width: 500px;         
+}
+
+.auth-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    
+}
+
+.auth-image-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 40px;
+    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
+    color: white;
+}
+
+.auth-image-overlay h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+
+.auth-image-overlay p {
+    font-size: 0.95rem;
+    opacity: 0.88;
+}
+
+.auth-form-side {
+    flex: none;               
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;               
+    background: transparent;
+}
+
+.auth-form-box {
+    width: 100%;
+    max-width: 420px;
+    background: white;
+    padding: 40px 36px;
+    border-radius: 0 20px 20px 0;   
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.auth-logo {
+    margin-bottom: 28px;
+    text-align: center;
+}
+
+.auth-logo a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 22px;
+    font-weight: 800;
+    color: #1e88e5;
+}
+
+.auth-logo-img {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+}
+
+.auth-logo-dot { color: #333; }
+
+@media (max-width: 768px) {
+    .auth-image-side { display: none; }
+    .auth-form-side { flex: unset; width: 100%; min-height: 100vh; }
+}
+
+
+/* ============================================ */
 /* FORM LOGIN & REGISTER                        */
 /* ============================================ */
 .form-section {

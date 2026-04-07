@@ -10,9 +10,19 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="login-page">
-    <div class="wrapper">
-        <section class="form-section">
-            <div class="form-container login-card">
+
+    <div class="auth-layout register">
+
+        <!-- KIRI: Form Register -->
+        <div class="auth-form-side">
+            <div class="auth-form-box">
+                <div class="auth-logo">
+                    <a href="index.html">
+                        <img src="assets/img/logo_kelompok12.png" alt="Logo" class="auth-logo-img">
+                        <span>Pinjam<span class="auth-logo-dot">.in</span></span>
+                    </a>
+                </div>
+
                 <div class="form-header">
                     <h2>Buat Akun Baru</h2>
                     <p>Daftar sekarang untuk mulai meminjam alat praktik SIJA.</p>
@@ -40,25 +50,34 @@
                     </div>
 
                     <button type="submit" class="btn-submit">Daftar Sekarang</button>
-                    
+
                     <div class="form-footer">
                         <p>Sudah punya akun? <a href="login.html">Login di sini</a></p>
                         <a href="index.html" class="back-link">← Kembali ke Beranda</a>
                     </div>
                 </form>
             </div>
-        </section>
+        </div>
+
+        <!-- KANAN: Foto/Ilustrasi -->
+        <div class="auth-image-side">
+            <img src="assets/img/spiderman.jpg" alt="Ilustrasi Register" class="auth-image">
+            <div class="auth-image-overlay">
+                <h2>Bergabung Sekarang</h2>
+                <p>Buat akun dan mulai pinjam peralatan SIJA kapan saja.</p>
+            </div>
+        </div>
+
     </div>
 
     <script>
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            // Mengambil data dari input form
             const dataUser = {
-                username: document.getElementById('reg-nama').value, // Menggunakan nama sebagai username
+                username: document.getElementById('reg-nama').value,
                 password: document.getElementById('reg-password').value,
-                role: 'user' // Memaksa role menjadi 'user' demi keamanan
+                role: 'user'
             };
 
             try {
@@ -72,7 +91,7 @@
 
                 if (result.success) {
                     alert("Akun berhasil dibuat! Silakan login.");
-                    window.location.href = 'login.html'; 
+                    window.location.href = 'login.html';
                 } else {
                     alert("Gagal mendaftar: " + result.message);
                 }

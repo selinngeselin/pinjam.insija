@@ -10,7 +10,10 @@ app.use(express.static('./'));
 app.use('/img', express.static(path.join(__dirname, 'img')));
 
 // ===== KONEKSI MONGODB =====
-mongoose.connect('mongodb://localhost:27017/sija_pinjam_db')
+// Mengambil URL dari environment Docker, jika tidak ada pakai localhost
+const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/sija_pinjam_db';
+
+mongoose.connect(mongoURI)
   .then(() => {
     console.log('Koneksi MongoDB SIJA Berhasil!');
     seedDatabase();

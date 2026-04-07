@@ -10,9 +10,28 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="login-page">
-    <div class="wrapper">
-        <section class="form-section">
-            <div class="form-container login-card">
+
+    <div class="auth-layout">
+
+        <!-- KIRI: Foto/Ilustrasi -->
+        <div class="auth-image-side">
+            <img src="assets/img/spiderman.jpg" alt="Ilustrasi Login" class="auth-image">
+            <div class="auth-image-overlay">
+                <h2>Sistem Peminjaman<br>Barang Jurusan SIJA</h2>
+                <p>Pinjam alat dengan mudah, cepat, dan tercatat.</p>
+            </div>
+        </div>
+
+        <!-- KANAN: Form Login -->
+        <div class="auth-form-side">
+            <div class="auth-form-box">
+                <div class="auth-logo">
+                    <a href="index.html">
+                        <img src="assets/img/logo_kelompok12.png" alt="Logo" class="auth-logo-img">
+                        <span>Pinjam<span class="auth-logo-dot">.in</span></span>
+                    </a>
+                </div>
+
                 <div class="form-header">
                     <h2>Selamat Datang Kembali</h2>
                     <p>Silakan login untuk mengelola peminjaman alat SIJA.</p>
@@ -30,61 +49,59 @@
                     </div>
 
                     <button type="submit" class="btn-submit">Masuk Sekarang</button>
-                    
+
                     <div class="form-footer">
                         <p>Belum punya akun? <a href="register.html">Daftar di sini</a></p>
                         <a href="index.html" class="back-link">← Kembali ke Beranda</a>
                     </div>
                 </form>
             </div>
-        </section>
+        </div>
+
     </div>
 
     <script>
     document.getElementById('loginForm').addEventListener('submit', async function(e) {
         e.preventDefault();
 
-        // Samakan ID-nya dengan yang ada di HTML tadi
-        const usernameInput = document.getElementById('username'); 
+        const usernameInput = document.getElementById('username');
         const passwordInput = document.getElementById('password');
 
         if (!usernameInput || !passwordInput) {
-            console.error("Input tidak ditemukan! Periksa kembali ID di HTML.");
+            console.error("Input tidak ditemukan!");
             return;
         }
 
-        const username = usernameInput.value.trim();// Nilai ini akan dikirim ke backend
+        const username = usernameInput.value.trim();
         const password = passwordInput.value;
 
-            try {
-                const response = await fetch('/api/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, password })
-                });
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
 
-                const result = await response.json();
+            const result = await response.json();
 
-                if (result.success) {
-                    // SIMPAN ROLE DI BROWSER (Agar sistem tidak lupa)
-                    localStorage.setItem('role', result.role);
-                    localStorage.setItem('username', result.username);
+            if (result.success) {
+                localStorage.setItem('role', result.role);
+                localStorage.setItem('username', result.username);
 
-                    // LOGIKA PENGALIHAN (REDIRECT)
-                    if (result.role === 'admin') {
-                        alert("Selamat datang, Admin!");
-                        window.location.href = 'admin.html'; // Pintu khusus admin
-                    } else {
-                        alert("Login Berhasil!");
-                        window.location.href = 'user.html'; // Pintu user biasa
-                    }
+                if (result.role === 'admin') {
+                    alert("Selamat datang, Admin!");
+                    window.location.href = 'admin.html';
                 } else {
-                    alert("Login Gagal: " + result.message);
+                    alert("Login Berhasil!");
+                    window.location.href = 'user.html';
                 }
-            } catch (error) {
-                alert("Gagal terhubung ke server.");
+            } else {
+                alert("Login Gagal: " + result.message);
             }
-        });
+        } catch (error) {
+            alert("Gagal terhubung ke server.");
+        }
+    });
     </script>
 </body>
 </html>
