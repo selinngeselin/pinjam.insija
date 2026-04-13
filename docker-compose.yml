@@ -9,7 +9,7 @@ services:
       - "80:3000"
     environment:
       # Ini yang dibaca oleh process.env.MONGO_URI di server.js kamu
-      - MONGO_URI=mongodb://database:27017/sija_pinjam_db
+      - MONGO_URI=mongodb://sija_pinjam_db:27017/sija_pinjam_db
     depends_on:
       - database
 
