@@ -15,7 +15,7 @@ services:
       - database
 
   database:
-    image: mongo:latest
+    image: mongo:4.4
     container_name: sija-pinjam-db
     restart: always
     ports:
