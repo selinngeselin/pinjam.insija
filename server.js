@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const fs = require('fs');
@@ -11,7 +12,7 @@ app.use('/img', express.static(path.join(__dirname, 'img')));
 
 // ===== KONEKSI MONGODB =====
 // Mengambil URL dari environment Docker, jika tidak ada pakai localhost
-const mongoURI = process.env.MONGO_URI || 'mongodb://database:27017/sija_pinjam_db';
+const mongoURI = process.env.MONGO_URI || 'mongodb://localhost:27017/sija_pinjam_db';
 
 mongoose.connect(mongoURI)
   .then(() => {
